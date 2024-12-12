@@ -11,3 +11,5 @@ dolphinrc
 QtProject.conf
 trashrc
 kde.org/UserFeedback.org.kde.dolphin.conf
+filetypesrc
+mimeapps.list
