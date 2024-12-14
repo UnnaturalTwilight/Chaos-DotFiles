@@ -6,7 +6,7 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-    (metric :label ""
+    (metric :label "" 
       :value {volume * 100}
     :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
     (metric :label ""
@@ -43,7 +43,7 @@
     :orientation "h"
     :space-evenly false
     :halign "center"
-  {music != "" ? "🎵 ${music}" : ""}))
+  {music != "" ? "󰝚   ${music}" : "󰝛"}))
 
 
 (defwidget metric [label value onchange]

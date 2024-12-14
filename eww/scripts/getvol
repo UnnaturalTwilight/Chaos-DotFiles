@@ -1,6 +1,8 @@
 #!/bin/sh
 
-if [ "[MUTED]" == $(get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}') ]; then
+MUTED=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
+
+if [ -n "$MUTED" ]; then
     echo 0
     exit
 else
