@@ -1,20 +1,20 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (workspaces)
-    (music)
+    (status)
     (sidestuff)))
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-    (metric :label "" 
+    (metric :label ""
       :value {volume * 100}
     :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
-    (metric :label ""
-      :value {EWW_RAM.used_mem_perc}
-    :onchange "")
-    (metric :label ""
-      :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
-    :onchange "")
+    ; (metric :label ""
+    ;   :value {EWW_RAM.used_mem_perc}
+    ; :onchange "")
+    ; (metric :label ""
+    ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+    ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :battery {EWW_BATTERY.BAT1.capacity}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
@@ -28,22 +28,22 @@
     :space-evenly true
     :halign "start"
     :spacing 10
-    (button :onclick "wmctrl -s 0" 1)
-    (button :onclick "wmctrl -s 1" 2)
-    (button :onclick "wmctrl -s 2" 3)
-    (button :onclick "wmctrl -s 3" 4)
-    (button :onclick "wmctrl -s 4" 5)
-    (button :onclick "wmctrl -s 5" 6)
-    (button :onclick "wmctrl -s 6" 7)
-    (button :onclick "wmctrl -s 7" 8)
-    (button :onclick "wmctrl -s 8" 9)))
+    (button :onclick "hyprctl dispatch workspace 1 -q" "󰎦")
+    (button :onclick "hyprctl dispatch workspace 2 -q" "󰎩")
+    (button :onclick "hyprctl dispatch workspace 3 -q" "󰎬")
+    (button :onclick "hyprctl dispatch workspace 4 -q" "󰎮")
+    (button :onclick "hyprctl dispatch workspace 5 -q" "󰎰")
+    (button :onclick "hyprctl dispatch workspace 6 -q" "󱅃")
+  ))
 
-(defwidget music []
+(defwidget status []
   (box :class "music"
     :orientation "h"
     :space-evenly false
     :halign "center"
-  {music != "" ? "󰝚   ${music}" : "󰝛"}))
+    (button :onclick "playerctl play-pause" {music != "" ? "󰝚   ${music} " : ""})
+  
+  ))
 
 
 (defwidget metric [label value onchange]
@@ -107,7 +107,7 @@
     :orientation "v"
     :halign "start"
     :valign "start"
-    (label :xalign 0 :markup "<span font_size=\"large\">Activate Linux</span>")
+    (label :xalign 0 :markup "<span font_size=\"xx-large\">Activate Linux</span>")
     (label :xalign 0 :text "Go to Settings to activate Linux")))
 (defwindow activate-linux
   :monitor 0
