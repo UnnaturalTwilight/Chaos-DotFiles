@@ -16,7 +16,7 @@ import sys
 # ===== PARAMETERS =====
 # set according to your device:
 device_dpi = 1000 # mouse dpi
-screen_dpi = 96
+screen_dpi = 201
 screen_scaling_factor = 1
 sample_point_count = 20 # should be enough but you can try to increase for accuracy of windows function
 sensitivity_factor = 6

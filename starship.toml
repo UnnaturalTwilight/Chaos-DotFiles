@@ -22,7 +22,7 @@ $nim\
 $rust\
 $scala\
 [](fg:three bg:four)\
-$docker_context\
+$docker_context\ 
 [](fg:four bg:five)\
 $time\
 [ ](fg:five)\
@@ -52,6 +52,24 @@ four = '#00ffff'
 five = '#000000'
 six = '#ffffff'
 
+[palettes.trans]
+zero = '#5bcefa'
+one = '#f5a9b8'
+two = '#ffffff'
+three = '#f5a9b8'
+four = '#f5a9b8'
+five = '#5bcefa'
+six = '#ffffff'
+
+[palettes.gendy]
+zero = '#ff76a4'
+one = '#ffffff'
+two = '#c011d7'
+three = '#000000'
+four = '#000000'
+five = '#2f3cb9'
+six = '#ffffff'
+
 # You can also replace your username with a neat symbol like   or disable this
 # and use the os module below
 [username]
@@ -63,7 +81,7 @@ disabled = false
 
 [sudo]
 format = '[$symbol]($style)'
-symbol = ' '
+symbol = ' '
 style = "bg:zero"
 disabled = false
 

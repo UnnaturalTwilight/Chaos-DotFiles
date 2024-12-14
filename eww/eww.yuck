@@ -1,0 +1,116 @@
+(defwidget bar []
+  (centerbox :orientation "h"
+    (workspaces)
+    (music)
+    (sidestuff)))
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
+    (metric :label ""
+      :value {volume * 100}
+    :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
+    (metric :label ""
+      :value {EWW_RAM.used_mem_perc}
+    :onchange "")
+    (metric :label ""
+      :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+    :onchange "")
+    (_battery :status {EWW_BATTERY.BAT1.status}
+      :battery {EWW_BATTERY.BAT1.capacity}
+      :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
+      :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
+    :value {EWW_BATTERY.BAT1.capacity} :onchange "")
+  time))
+
+(defwidget workspaces []
+  (box :class "workspaces"
+    :orientation "h"
+    :space-evenly true
+    :halign "start"
+    :spacing 10
+    (button :onclick "wmctrl -s 0" 1)
+    (button :onclick "wmctrl -s 1" 2)
+    (button :onclick "wmctrl -s 2" 3)
+    (button :onclick "wmctrl -s 3" 4)
+    (button :onclick "wmctrl -s 4" 5)
+    (button :onclick "wmctrl -s 5" 6)
+    (button :onclick "wmctrl -s 6" 7)
+    (button :onclick "wmctrl -s 7" 8)
+    (button :onclick "wmctrl -s 8" 9)))
+
+(defwidget music []
+  (box :class "music"
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+  {music != "" ? "🎵 ${music}" : ""}))
+
+
+(defwidget metric [label value onchange]
+  (box :orientation "h"
+    :class "metric"
+    :space-evenly false
+    :spacing 1
+    (box :class "label" label)
+    (scale :min 0
+      :max 101
+      :active {onchange != ""}
+      :value value
+    :onchange onchange)))
+
+(defwidget _battery [battery status full one two three
+  four five six seven eight nine low charge value onchange]
+  (box :class "metric"
+    :space-evenly false
+    :spacing 1
+    (label :text {status == 'Charging' ? charge :
+      battery < 5 ? low :
+      battery < 15 ? nine :
+      battery < 25 ? eight :
+      battery < 35 ? seven :
+      battery < 45 ? six :
+      battery < 55 ? five :
+      battery < 65 ? four :
+      battery < 75 ? three :
+      battery < 85 ? two :
+    battery < 95 ? one : full})
+    (scale :min 0
+      :max 101
+      :active {onchange != ""}
+      :value value
+    :onchange onchange)))
+
+
+(deflisten music :initial ""
+"playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(defpoll volume :interval "1s"
+"scripts/getvol")
+
+(defpoll time :interval "10s"
+"date '+%l:%M %b %d, %Y'")
+
+(defwindow bar
+  :monitor 0
+  :exclusive true
+  :geometry (geometry :x "0%"
+    :y "5px"
+    :width "90%"
+    :height "10px"
+  :anchor "top center")
+  :focusable false
+  (bar))
+
+;; too funny
+(defwidget activate-linux []
+  (box
+    :orientation "v"
+    :halign "start"
+    :valign "start"
+    (label :xalign 0 :markup "<span font_size=\"large\">Activate Linux</span>")
+    (label :xalign 0 :text "Go to Settings to activate Linux")))
+(defwindow activate-linux
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "8px" :y "32px" :width "250px" :anchor "bottom right")
+  (activate-linux))
