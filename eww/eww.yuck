@@ -2,7 +2,8 @@
   (centerbox :orientation "h"
     (workspaces)
     (status)
-    (sidestuff)))
+    (sidestuff)
+  ))
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
@@ -20,6 +21,7 @@
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity} :onchange "")
+    (alertmode)
   time))
 
 (defwidget workspaces []
@@ -33,7 +35,7 @@
     (button :onclick "hyprctl dispatch workspace 3 -q" "󰎬")
     (button :onclick "hyprctl dispatch workspace 4 -q" "󰎮")
     (button :onclick "hyprctl dispatch workspace 5 -q" "󰎰")
-    (button :onclick "hyprctl dispatch workspace 6 -q" "󱅃")
+    (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
   ))
 
 (defwidget status []
@@ -80,6 +82,19 @@
       :value value
     :onchange onchange)))
 
+(defwidget alertmode []
+  (box :class "toggle"
+    :orientation "h"
+    :space-evenly false
+    :spacing 1
+    (button :onclick "dunstctl set-paused toggle" { dnd == "false" ? " " : " "})
+  ))
+
+(defpoll dnd :interval "1s"
+"dunstctl is-paused")
+
+; (defpoll get-workspace :interval "1s"
+; "hyprctl activeworkspace -j | jq '.id'")
 
 (deflisten music :initial ""
 "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
