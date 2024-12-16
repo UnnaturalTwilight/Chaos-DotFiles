@@ -7,14 +7,18 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-    (metric :label ""
+    (metric :label "󰃟"
+      :value {round((bright / 96000) * 100, 0)}
+    :onchange "brightnessctl s {}%")
+    (_volume :mute "" 
+      :low "" :high ""
       :value {volume * 100}
     :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
     ; (metric :label ""
-    ;   :value {EWW_RAM.used_mem_perc}
+      ;   :value {EWW_RAM.used_mem_perc}
     ; :onchange "")
     ; (metric :label ""
-    ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+      ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
     ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :battery {EWW_BATTERY.BAT1.capacity}
@@ -44,7 +48,7 @@
     :space-evenly false
     :halign "center"
     (button :onclick "playerctl play-pause" {music != "" ? "󰝚   ${music} " : ""})
-  
+    
   ))
 
 
@@ -60,8 +64,7 @@
       :value value
     :onchange onchange)))
 
-(defwidget _battery [battery status full one two three
-  four five six seven eight nine low charge value onchange]
+(defwidget _battery [battery status full one two three four five six seven eight nine low charge value onchange]
   (box :class "metric"
     :space-evenly false
     :spacing 1
@@ -82,6 +85,18 @@
       :value value
     :onchange onchange)))
 
+(defwidget _volume [value mute low high onchange]
+  (box :class "metric"
+    :space-evenly false
+    :spacing 1
+    (label :text {value == 0 ? mute :
+      value < 30 ? low : high})
+    (scale :min 0
+      :max 101
+      :active {onchange != ""}
+      :value value
+    :onchange onchange)))
+
 (defwidget alertmode []
   (box :class "toggle"
     :orientation "h"
@@ -95,6 +110,9 @@
 
 ; (defpoll get-workspace :interval "1s"
 ; "hyprctl activeworkspace -j | jq '.id'")
+
+(defpoll bright :interval "1s"
+"scripts/getbright")
 
 (deflisten music :initial ""
 "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
