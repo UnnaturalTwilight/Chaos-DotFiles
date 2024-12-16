@@ -9,7 +9,7 @@
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
     (metric :label "󰃟"
       :value {round((bright / 96000) * 100, 0)}
-    :onchange "brightnessctl s {}%")
+    :onchange "brightnessctl s {}% -n9600")
     (_volume :mute "" 
       :low "" :high ""
       :value {volume * 100}
@@ -48,7 +48,6 @@
     :space-evenly false
     :halign "center"
     (button :onclick "playerctl play-pause" {music != "" ? "󰝚   ${music} " : ""})
-    
   ))
 
 
@@ -89,8 +88,8 @@
   (box :class "metric"
     :space-evenly false
     :spacing 1
-    (label :text {value == 0 ? mute :
-      value < 30 ? low : high})
+    (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
+      value < 40 ? low : high})
     (scale :min 0
       :max 101
       :active {onchange != ""}
@@ -102,17 +101,17 @@
     :orientation "h"
     :space-evenly false
     :spacing 1
-    (button :onclick "dunstctl set-paused toggle" { dnd == "false" ? " " : " "})
+    (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
   ))
 
-(defpoll dnd :interval "1s"
+(defpoll dnd :interval "10s"
 "dunstctl is-paused")
 
 ; (defpoll get-workspace :interval "1s"
 ; "hyprctl activeworkspace -j | jq '.id'")
 
 (defpoll bright :interval "1s"
-"scripts/getbright")
+"brightnessctl -m g")
 
 (deflisten music :initial ""
 "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
