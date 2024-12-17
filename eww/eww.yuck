@@ -1,7 +1,7 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (workspaces)
-    (status)
+    (music)
     (sidestuff)
   ))
 
@@ -10,16 +10,19 @@
     (metric :label "󰃟"
       :value {round((bright / 96000) * 100, 0)}
     :onchange "brightnessctl s {}% -n9600")
-    (_volume :mute "" 
-      :low "" :high ""
+    (_volume :mute " "
+      :low " " :high " "
       :value {volume * 100}
     :onchange "scripts/setvol {}")
-  ; (metric :label ""
-  ;   :value {EWW_RAM.used_mem_perc}
-  ; :onchange "")
-  ; (metric :label ""
-  ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
-  ; :onchange "")
+    ; (metric :label ""
+    ;   :value {EWW_RAM.used_mem_perc}
+    ; :onchange "")
+    ; (metric :label ""
+    ;   :value {EWW_CPU.avg}
+    ; :onchange "")
+    ; (metric :label ""
+    ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+    ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :battery {EWW_BATTERY.BAT1.capacity}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
@@ -42,14 +45,17 @@
     (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
   ))
 
-(defwidget status []
+(defwidget music []
   (box :class "music"
     :orientation "h"
     :space-evenly false
+    :spacing 10
     :halign "center"
-    (button :onclick "playerctl play-pause" {music != "" ? "󰝚   ${music} " : ""})
+    :visible {music != ""}
+    (button :onclick "playerctl previous" "󰑟" )
+    (button :onclick "playerctl play-pause" "${music}")
+    (button :onclick "playerctl next" "󰈑")
   ))
-
 
 (defwidget metric [label value onchange]
   (box :orientation "h"
@@ -66,7 +72,7 @@
 (defwidget _battery [battery status full one two three four five six seven eight nine low charge value onchange]
   (box :class "metric"
     :space-evenly false
-    :spacing 1
+    :spacing -3
     (label :text {status == 'Charging' ? charge :
       battery < 5 ? low :
       battery < 15 ? nine :
@@ -80,16 +86,16 @@
     battery < 95 ? one : full})
     (scale :min 0
       :max 101
-      :active {onchange != ""}
-      :value value
-    :onchange onchange)))
+      :active false
+      :value value)))
 
 (defwidget _volume [value mute low high onchange]
   (box :class "metric"
     :space-evenly false
-    :spacing 1
+    :spacing -7
+    :tooltip {volume * 100}
     (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
-      value < 40 ? low : high})
+    value < 40 ? low : high})
     (scale :min 0
       :max 101
       :active {onchange != ""}
@@ -114,7 +120,7 @@
 "brightnessctl -m g")
 
 (deflisten music :initial ""
-"playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
 
 (defpoll volume :interval "1s"
 "scripts/getvol")
