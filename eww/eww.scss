@@ -35,7 +35,6 @@
   margin-right: 10px;
 }
 
-
 .metric button:hover {
   color: #D35D6E;
 }
@@ -46,6 +45,14 @@
 
 .workspaces button:hover {
   color: #D35D6E;
+}
+
+.current {
+  color: #D35D6E;
+}
+
+.empty {
+  color: #4e4e4e;
 }
 
 .music button:hover {

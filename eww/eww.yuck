@@ -1,7 +1,7 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (workspaces)
-    (music)
+    (status)
     (sidestuff)
   ))
 
@@ -31,26 +31,38 @@
     (alertmode)
   time))
 
+(deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+(deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title")
+
 (defwidget workspaces []
-  (box :class "workspaces"
+  (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+    (box :space-evenly false
+      :spacing 10
+      (label :text "${workspaces}${current_workspace}" :visible false)
+      (for workspace in workspaces
+        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+          (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+            (label :text "${workspace.id}" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
+          )))
+      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
+    )))
+
+(defwidget status []
+  (box :class "status"
     :orientation "h"
-    :space-evenly true
-    :halign "start"
-    :spacing 10
-    (button :onclick "hyprctl dispatch workspace 1 -q" "󰎦")
-    (button :onclick "hyprctl dispatch workspace 2 -q" "󰎩")
-    (button :onclick "hyprctl dispatch workspace 3 -q" "󰎬")
-    (button :onclick "hyprctl dispatch workspace 4 -q" "󰎮")
-    (button :onclick "hyprctl dispatch workspace 5 -q" "󰎰")
-    (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
-  ))
+    :halign "center"
+    :space-evenly false
+    :spacing 50
+    (label :text "${window}" :visible ${window != ""})
+    (music)))
 
 (defwidget music []
   (box :class "music"
     :orientation "h"
     :space-evenly false
     :spacing 10
-    :halign "center"
+    :halign "end"
     :visible {music != ""}
     (button :onclick "playerctl previous" "󰑟" )
     (button :onclick "playerctl play-pause" "${music}")
@@ -87,7 +99,7 @@
     (scale :min 0
       :max 101
       :active false
-      :value value)))
+    :value value)))
 
 (defwidget _volume [value mute low high onchange]
   (box :class "metric"
@@ -113,8 +125,22 @@
 (defpoll dnd :interval "10s"
 "dunstctl is-paused")
 
-; (defpoll get-workspace :interval "1s"
-; "hyprctl activeworkspace -j | jq '.id'")
+; obsolete by copying the hypr wiki
+;(defpoll get-workspaces :interval "3s"
+;hyprctl workspaces -j | jq '[[(.[][\"id\"] | if . < 0 then empty end)] | sort | .[], .[-1]+1]'")
+; basicly the above produces an array of workspaces excluding special workspaces, sorts it and adds one to the end
+
+; (defwidget workspaces []
+;   (box :class "workspaces"
+;     :orientation "h"
+;     :space-evenly true
+;     :halign "start"
+;     :spacing 10
+;     ; Less pretty but more dynamic
+;     (for entry in get-workspaces
+;       (button :onclick "hyprctl dispatch workspace ${entry} -q" "${entry}"))
+;     (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
+;   ))
 
 (defpoll bright :interval "1s"
 "brightnessctl -m g")
