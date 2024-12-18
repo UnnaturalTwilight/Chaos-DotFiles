@@ -1,3 +1,6 @@
+(include "activate.yuck")
+
+;; Bar
 (defwidget bar []
   (centerbox :orientation "h"
     (status)
@@ -7,6 +10,7 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
+    (padding :space 60)
     (music)
     (padding :space 60)
     (metric :label "󰃟"
@@ -127,7 +131,7 @@
   ))
 
 (defwidget padding [space] 
-  (box :class "gap" :orientation "h" :width space))
+  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand true))
 
 (defpoll dnd :interval "10s"
 "dunstctl is-paused")
@@ -171,17 +175,3 @@
   :anchor "top center")
   :focusable false
   (bar))
-
-;; too funny
-(defwidget activate-linux []
-  (box
-    :orientation "v"
-    :halign "start"
-    :valign "start"
-    (label :xalign 0 :markup "<span font_size=\"xx-large\">Activate Linux</span>")
-    (label :xalign 0 :text "Go to Settings to activate Linux")))
-(defwindow activate-linux
-  :monitor 0
-  :stacking "fg"
-  :geometry (geometry :x "8px" :y "32px" :width "250px" :anchor "bottom right")
-  (activate-linux))
