@@ -1,0 +1,179 @@
+;; Only include ether livebar or testbar in main config
+
+;; Bar
+(defwidget bar []
+    (centerbox :orientation "h"
+      (status)
+      (padding :space 10)
+      (sidestuff)
+    ))
+  
+  (defwidget sidestuff []
+    (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
+      (padding :space 60)
+      (music)
+      (padding :space 60)
+      (metric :label "󰃟"
+        :value {round((bright / 96000) * 100, 0)}
+      :onchange "brightnessctl s {}% -n9600")
+      (_volume :mute " "
+        :low " " :high " "
+        :value {volume * 100}
+      :onchange "scripts/setvol {}")
+      ; (metric :label ""
+      ;   :value {EWW_RAM.used_mem_perc}
+      ; :onchange "")
+      ; (metric :label ""
+      ;   :value {EWW_CPU.avg}
+      ; :onchange "")
+      ; (metric :label ""
+      ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+      ; :onchange "")
+      (_battery :status {EWW_BATTERY.BAT1.status}
+        :battery {EWW_BATTERY.BAT1.capacity}
+        :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
+        :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
+      :value {EWW_BATTERY.BAT1.capacity} :onchange "")
+      (alertmode)
+    time))
+  
+  (deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
+  (deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+  (deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title 80") ; max title length 80chars
+  
+  (defwidget workspaces []
+    (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
+      (box :space-evenly false
+        :spacing 10
+        (label :text "${workspaces}${current_workspace}" :visible false)
+        (for workspace in workspaces
+          (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+            (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+              (label :text "${workspace.id}" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
+            )))
+        (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
+      )))
+  
+  (defwidget status []
+    (box :class "status"
+      :orientation "h"
+      :halign "fill"
+      :space-evenly false
+      :spacing 20
+      (workspaces)
+        (systray :orientation "h" :icon-size 16 :spacing 5)
+      (label :text "${window}" :visible {window != ""})
+      ))    
+  
+  
+  (defwidget music []
+    (box :class "music"
+      :orientation "h"
+      :space-evenly false
+      :spacing 10
+      :halign "end"
+      :visible {music != ""}
+      (button :onclick "playerctl previous" "󰑟" )
+      (button :onclick "playerctl play-pause" "${music}")
+      (button :onclick "playerctl next" "󰈑")
+    ))
+  
+  (defwidget metric [label value onchange]
+    (box :orientation "h"
+      :class "metric"
+      :space-evenly false
+      :spacing 1
+      (box :class "label" label)
+      (scale :min 0
+        :max 101
+        :active {onchange != ""}
+        :value value
+      :onchange onchange)))
+  
+  (defwidget _battery [battery status full one two three four five six seven eight nine low charge value onchange]
+    (box :class "metric"
+      :space-evenly false
+      :spacing -3
+      (label :text {status == 'Charging' ? charge :
+        battery < 5 ? low :
+        battery < 15 ? nine :
+        battery < 25 ? eight :
+        battery < 35 ? seven :
+        battery < 45 ? six :
+        battery < 55 ? five :
+        battery < 65 ? four :
+        battery < 75 ? three :
+        battery < 85 ? two :
+      battery < 95 ? one : full})
+      (scale :min 0
+        :max 101
+        :active false
+      :value value)))
+  
+  (defwidget _volume [value mute low high onchange]
+    (box :class "metric"
+      :space-evenly false
+      :spacing -7
+      :tooltip value
+      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
+      value < 40 ? low : high})
+      (scale :min 0
+        :max 101
+        :active {onchange != ""}
+        :value value
+      :onchange onchange)))
+  
+  (defwidget alertmode []
+    (box :class "toggle"
+      :orientation "h"
+      :space-evenly false
+      :spacing 1
+      (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
+    ))
+  
+  (defwidget padding [space] 
+    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand true))
+  
+  (defpoll dnd :interval "10s"
+  "dunstctl is-paused")
+  
+  ; obsolete by copying the hypr wiki
+  ;(defpoll get-workspaces :interval "3s"
+  ;hyprctl workspaces -j | jq '[[(.[][\"id\"] | if . < 0 then empty end)] | sort | .[], .[-1]+1]'")
+  ; basicly the above produces an array of workspaces excluding special workspaces, sorts it and adds one to the end
+  
+  ; (defwidget workspaces []
+  ;   (box :class "workspaces"
+  ;     :orientation "h"
+  ;     :space-evenly true
+  ;     :halign "start"
+  ;     :spacing 10
+  ;     ; Less pretty but more dynamic
+  ;     (for entry in get-workspaces
+  ;       (button :onclick "hyprctl dispatch workspace ${entry} -q" "${entry}"))
+  ;     (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
+  ;   ))
+  
+  (defpoll bright :interval "1s"
+  "brightnessctl -m g")
+  
+  (deflisten music :initial ""
+  "playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
+  
+  (defpoll volume :interval "1s"
+  "scripts/getvol")
+  
+  (defpoll time :interval "10s"
+  "date '+%l:%M %b %d, %Y'")
+  
+  (defwindow bar
+    :monitor 0
+    :exclusive true
+    :geometry (geometry :x "0%"
+      :y "5px"
+      :width "90%"
+      :height "10px"
+    :anchor "top center")
+    :focusable false
+    (bar))
+  
