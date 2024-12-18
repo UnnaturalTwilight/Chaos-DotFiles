@@ -20,7 +20,7 @@
       "name": "ai",
       "placeholder": "AI",
       "switcher_only": true,
-      "weight": 5
+      "weight": 0
     },
     "applications": {
       "actions": {
@@ -58,11 +58,11 @@
     },
     "calc": {
       "icon": "accessories-calculator",
-      "min_chars": 4,
+      "min_chars": 1,
       "name": "calc",
       "placeholder": "Calculator",
       "require_number": true,
-      "weight": 5
+      "weight": 10
     },
     "clipboard": {
       "avoid_line_breaks": true,
@@ -111,7 +111,7 @@
       "placeholder": "Finder",
       "refresh": true,
       "show_icon_when_single": true,
-      "switcher_only": true,
+      "switcher_only": false,
       "use_fd": false,
       "weight": 5
     },
@@ -210,5 +210,31 @@
   },
   "theme": "default",
   "timeout": 0,
-  "use_uwsm": false
+  "use_uwsm": false,
+  "plugins": [
+    {
+      "name": "power",
+      "placeholder": "Power",
+      "switcher_only": false,
+      "recalculate_score": true,
+      "show_icon_when_single": true,
+      "entries": [
+        {
+          "label": "Shutdown",
+          "icon": "system-shutdown",
+          "exec": "shutdown now"
+        },
+        {
+          "label": "Reboot",
+          "icon": "system-reboot",
+          "exec": "reboot"
+        },
+        {
+          "label": "Lock Screen",
+          "icon": "system-lock-screen",
+          "exec": "playerctl --all-players pause & hyprlock"
+        }
+      ]
+    }
+  ]
 }

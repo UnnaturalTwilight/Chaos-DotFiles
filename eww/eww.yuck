@@ -4,7 +4,7 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (status)
-    (systray :orientation "h" :icon-size 16)
+    (padding :space 10)
     (sidestuff)
   ))
 
@@ -59,8 +59,9 @@
     :orientation "h"
     :halign "fill"
     :space-evenly false
-    :spacing 50
+    :spacing 20
     (workspaces)
+      (systray :orientation "h" :icon-size 16 :spacing 5)
     (label :text "${window}" :visible {window != ""})
     ))    
 
