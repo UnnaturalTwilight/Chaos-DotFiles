@@ -1,6 +1,6 @@
 /Code - OSS
 /dconf
-/pulse/cookie
+/pulse
 /session
 /systemd
 ktrashrc
@@ -10,7 +10,7 @@ kdeglobals
 dolphinrc
 QtProject.conf
 trashrc
-kde.org/UserFeedback.org.kde.dolphin.conf
+kde.org
 filetypesrc
 mimeapps.list
 baloofileinformationrc
@@ -27,3 +27,5 @@ gtk*
 cava/shaders
 menus
 qalculate/qalc.history
+yay
+Electron
