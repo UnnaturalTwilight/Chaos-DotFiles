@@ -13,6 +13,5 @@ Couldn't have done this without all the example configs on the hypr wiki, they w
 ## Shortlist of things I use not included in this repo
 - zsh
 - [Nordzy-cursors](https://github.com/guillaumeboehm/Nordzy-cursors)
-- 
 
 Credit to the peek joke of "Activate Linux" goes to [Activate Linux by Nycta](https://github.com/Nycta-b424b3c7/eww_activate-linux)
