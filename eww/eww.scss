@@ -18,6 +18,12 @@
   color: #ffd5cd;
 }
 
+.tooltip {
+  background-color: rgba(15, 20, 90, 0.9);
+  padding: 3;
+  border-radius: 5;
+}
+
 .metric scale trough highlight {
   all: unset;
   background-color: #D35D6E;
@@ -39,11 +45,7 @@
   color: #D35D6E;
 }
 
-// .label {
-//   font-size: large;
-// }
-
-.workspaces button:hover {
+.workspaces-widget button:hover {
   color: #D35D6E;
 }
 
@@ -63,10 +65,16 @@
   color: #D35D6E;
 }
 
-// testing
+// TEST STYLES
+
 // .gap {
 //   background-color: #000000;
 // }
+
+.debug button:hover {
+  color: #D35D6E;
+}
+
 
 // Too funny
 .activate-linux {

@@ -1,36 +1,54 @@
-;; Live // Main instance of my bar
+;; Live Config of Bar
 
-;; Bar
+;; Vars
+(deflisten workspaces :initial "[]" "scripts/get-workspaces") 
+(deflisten current_workspace :initial "1" "scripts/get-active-workspace")
+(deflisten window :initial "..." "scripts/get-window-title 900") ; Jank cause I don't want to remove the title length liming feature. 0 = window class always displayed
+
+(deflisten music :initial ""
+"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(defpoll dnd :interval "10s"
+"dunstctl is-paused")
+
+(defpoll bright :interval "1s"
+"brightnessctl -m g")
+
+(defpoll volume :interval "1s"
+"scripts/getvol")
+
+(defvar debug-buttons false)
+
+;; Widgets
 (defwidget bar []
-  (centerbox :orientation "h"
+  (box :orientation "h" :space-evenly false :spacing 10
+    (box :class "debug" :orientation "h" :spacing 10 :visible {debug-buttons}
+      (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+      (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
+        (button :onclick "${EWW_CMD} kill" "󰅜")))
     (status)
-    (padding :space 10)
+    (padding :space 20 :expand true)
+    (music)
+    (padding :space 20)
     (sidestuff)
   ))
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-    (padding :space 60)
-    (music)
-    (padding :space 60)
     (metric :label "󰃟"
       :value {round((bright / 96000) * 100, 0)}
     :onchange "brightnessctl s {}% -n9600")
     (_volume :mute " "
       :low " " :high " "
-      :value {volume * 100}
+      :value {round(volume * 100, 0)}
     :onchange "scripts/setvol {}")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :battery {EWW_BATTERY.BAT1.capacity}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
-    :value {EWW_BATTERY.BAT1.capacity} :onchange "")
+    :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-  time))
-
-(deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
-(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
-(deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title 80") ; max title length 80chars
+  (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")})))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
@@ -52,10 +70,9 @@
     :space-evenly false
     :spacing 20
     (workspaces)
-      (systray :orientation "h" :icon-size 16 :spacing 5)
-    (label :text "${window}" :visible {window != ""})
-    ))    
-
+    (systray :orientation "h" :icon-size 16 :spacing 5)
+    (label :text "${window}" :visible {window != ""} :truncate true)
+  ))
 
 (defwidget music []
   (box :class "music"
@@ -70,49 +87,51 @@
   ))
 
 (defwidget metric [label value onchange]
-  (box :orientation "h"
-    :class "metric"
-    :space-evenly false
-    :spacing 1
-    (box :class "label" label)
-    (scale :min 0
-      :max 101
-      :active {onchange != ""}
-      :value value
-    :onchange onchange)))
+  (tooltip (label :text {"${value}%"} :class "tooltip" )
+    (box :orientation "h"
+      :class "metric"
+      :space-evenly false
+      :spacing 1
+      (label :text label)
+      (scale :min 0
+        :max 101
+        :active {onchange != ""}
+        :value value
+      :onchange onchange))))
 
-(defwidget _battery [battery status full one two three four five six seven eight nine low charge value onchange]
-  (box :class "metric"
-    :space-evenly false
-    :spacing -3
-    (label :text {status == 'Charging' ? charge :
-      battery < 5 ? low :
-      battery < 15 ? nine :
-      battery < 25 ? eight :
-      battery < 35 ? seven :
-      battery < 45 ? six :
-      battery < 55 ? five :
-      battery < 65 ? four :
-      battery < 75 ? three :
-      battery < 85 ? two :
-    battery < 95 ? one : full})
-    (scale :min 0
-      :max 101
-      :active false
-    :value value)))
+(defwidget _battery [battery status full one two three four five six seven eight nine low charge value]
+  (tooltip (label :text {"${battery}%"} :class "tooltip" )
+    (box :class "metric"
+      :space-evenly false
+      :spacing -3
+      (label :text {status == 'Charging' ? charge :
+        battery < 5 ? low :
+        battery < 15 ? nine :
+        battery < 25 ? eight :
+        battery < 35 ? seven :
+        battery < 45 ? six :
+        battery < 55 ? five :
+        battery < 65 ? four :
+        battery < 75 ? three :
+        battery < 85 ? two :
+      battery < 95 ? one : full})
+      (scale :min 0
+        :max 101
+        :active false
+      :value value))))
 
 (defwidget _volume [value mute low high onchange]
-  (box :class "metric"
-    :space-evenly false
-    :spacing -7
-    :tooltip value
-    (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
-    value < 40 ? low : high})
-    (scale :min 0
-      :max 101
-      :active {onchange != ""}
-      :value value
-    :onchange onchange)))
+  (tooltip (label :text {value} :class "tooltip" )
+    (box :class "metric"
+      :space-evenly false
+      :spacing -7
+      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
+      value < 40 ? low : high})
+      (scale :min 0
+        :max 101
+        :active {onchange != ""}
+        :value value
+      :onchange onchange))))
 
 (defwidget alertmode []
   (box :class "toggle"
@@ -122,24 +141,10 @@
     (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
   ))
 
-(defwidget padding [space] 
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand true))
+(defwidget padding [space ?expand]
+  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
 
-(defpoll dnd :interval "10s"
-"dunstctl is-paused")
-
-(defpoll bright :interval "1s"
-"brightnessctl -m g")
-
-(deflisten music :initial ""
-"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
-
-(defpoll volume :interval "1s"
-"scripts/getvol")
-
-(defpoll time :interval "10s"
-"date '+%l:%M %b %d, %Y'")
-
+;; Window
 (defwindow bar
   :monitor 0
   :exclusive true
