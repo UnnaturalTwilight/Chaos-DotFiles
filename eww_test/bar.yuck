@@ -2,21 +2,17 @@
 
 ;; Bar
 (defwidget bar []
-    (centerbox :orientation "h"
+    (box :orientation "h" :space-evenly false :spacing 10
+      (box :class "debug" :orientation "h" :spacing 10 (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃") (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"}) (button :onclick "${EWW_CMD} kill" "󰅜")))
       (status)
-      ; (padding :space 10)
-      (box :class "debug" :orientation "h" :spacing 10
-      (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
-      (button :onclick "${EWW_CMD} kill" "󰅜")
-      )
+      (padding :space 20 :expand true)
+      (music)
+      (padding :space 20)    
       (sidestuff)
     ))
   
   (defwidget sidestuff []
     (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-      (padding :space 60)
-      (music)
-      (padding :space 60)
       (metric :label "󰃟"
         :value {round((bright / 96000) * 100, 0)}
       :onchange "brightnessctl s {}% -n9600")
@@ -43,7 +39,7 @@
   
   (deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
   (deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
-  (deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title 80") ; max title length 80chars
+  (deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title 800") ; max title length 80chars
   
   (defwidget workspaces []
     (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
@@ -57,7 +53,7 @@
             )))
         (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
       )))
-  
+
   (defwidget status []
     (box :class "status"
       :orientation "h"
@@ -66,9 +62,8 @@
       :spacing 20
       (workspaces)
         (systray :orientation "h" :icon-size 16 :spacing 5)
-      (label :text "${window}" :visible {window != ""})
+      (label :text "${window}" :visible {window != ""} :truncate true)
       ))    
-  
   
   (defwidget music []
     (box :class "music"
@@ -83,7 +78,7 @@
     ))
   
   (defwidget metric [label value onchange]
-    (box :orientation "h"
+    (tooltip (label :text {"${value}%"} :class "tooltip" ) (box :orientation "h"
       :class "metric"
       :space-evenly false
       :spacing 1
@@ -92,10 +87,10 @@
         :max 101
         :active {onchange != ""}
         :value value
-      :onchange onchange)))
+      :onchange onchange))))
   
   (defwidget _battery [battery status full one two three four five six seven eight nine low charge value onchange]
-    (box :class "metric"
+    (tooltip (label :text {"${battery}%"} :class "tooltip" ) (box :class "metric"
       :space-evenly false
       :spacing -3
       (label :text {status == 'Charging' ? charge :
@@ -112,20 +107,19 @@
       (scale :min 0
         :max 101
         :active false
-      :value value)))
+      :value value))))
   
   (defwidget _volume [value mute low high onchange]
-    (box :class "metric"
+    (tooltip (label :text {value} :class "tooltip" ) (box :class "metric"
       :space-evenly false
       :spacing -7
-      :tooltip value
       (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" {value == 0 ? mute :
       value < 40 ? low : high})
       (scale :min 0
         :max 101
         :active {onchange != ""}
         :value value
-      :onchange onchange)))
+      :onchange onchange))))
   
   (defwidget alertmode []
     (box :class "toggle"
@@ -135,8 +129,8 @@
       (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
     ))
   
-  (defwidget padding [space] 
-    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand true))
+  (defwidget padding [space ?expand] 
+    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
   
   (defpoll dnd :interval "10s"
   "dunstctl is-paused")

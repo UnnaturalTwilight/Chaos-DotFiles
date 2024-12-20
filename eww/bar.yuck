@@ -1,4 +1,4 @@
-;; Only include ether livebar or testbar in main config
+;; Live // Main instance of my bar
 
 ;; Bar
 (defwidget bar []

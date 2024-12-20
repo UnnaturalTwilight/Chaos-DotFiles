@@ -1,9 +1,0 @@
-#!/bin/sh
-
-MUTED=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
-
-if [ -n "$MUTED" ]; then
-    wpctl set-mute @DEFAULT_SINK@ 0
-fi
-
-wpctl set-volume @DEFAULT_SINK@ $1%
