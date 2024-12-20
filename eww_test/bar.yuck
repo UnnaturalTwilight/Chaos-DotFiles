@@ -19,13 +19,16 @@
 
 (defvar debug-buttons true)
 
+(defpoll speaker_raw :interval "1s"
+"pactl get-default-sink")
+
 ; (defpoll time :interval "10s" ; now useing eww's magic var
 ; "date '+%l:%M %b %d, %Y'")a
 
 ;; Widgets
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
-    (box :class "debug" :orientation "h" :spacing 10 :visible {debug-buttons}
+    (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :visible {debug-buttons}
       (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
       (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
         (button :onclick "${EWW_CMD} kill" "󰅜")))
@@ -133,7 +136,7 @@
       :value value))))
 
 (defwidget _volume [value mute low high onchange]
-  (tooltip (label :text {value} :class "tooltip" )
+  (tooltip (label :text { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "  ${value}" : "󰓃  ${value}"} :class "tooltip" )
     (box :class "metric"
       :space-evenly false
       :spacing -7

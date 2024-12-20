@@ -19,6 +19,9 @@
 
 (defvar debug-buttons false)
 
+(defpoll speaker_raw :interval "1s"
+"pactl get-default-sink")
+
 ;; Widgets
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
@@ -121,7 +124,7 @@
       :value value))))
 
 (defwidget _volume [value mute low high onchange]
-  (tooltip (label :text {value} :class "tooltip" )
+  (tooltip (label :text { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "  ${value}" : "󰓃  ${value}"} :class "tooltip" )
     (box :class "metric"
       :space-evenly false
       :spacing -7
