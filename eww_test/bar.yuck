@@ -1,10 +1,14 @@
-;; Only include ether livebar or testbar in main config
+;; TESTING COPY OF BAR
 
 ;; Bar
 (defwidget bar []
     (centerbox :orientation "h"
       (status)
-      (padding :space 10)
+      ; (padding :space 10)
+      (box :class "debug" :orientation "h" :spacing 10
+      (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+      (button :onclick "${EWW_CMD} kill" "󰅜")
+      )
       (sidestuff)
     ))
   
