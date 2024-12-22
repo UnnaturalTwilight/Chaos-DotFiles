@@ -200,3 +200,14 @@
   :anchor "top left")
   :focusable false
   (sys_sidecar))
+
+(defwindow pow_sidecar
+  :monitor 0
+  :exclusive false
+  :geometry (geometry :x "0%"
+    :y "5px"
+    :width "5%"
+    :height "10px"
+  :anchor "top right")
+  :focusable false
+  (sys_sidecar))
