@@ -6,6 +6,9 @@
 ; (include "power.yuck")
 ; (include "music.yuck") 
 ; (include "blutooth.yuck") ; Possably just install a gui app for this
-; (include "sysmonitor.yuck") ; just a little resource monitor
+(include "sysmonitor.yuck") ; just a little resource monitor
 
-;; Widget launch widget
+;; Common Widgets 
+
+(defwidget padding [space ?expand]
+    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))

@@ -11,6 +11,23 @@
   border-radius: 5px;
 }
 
+.bar button:hover {
+  color: #D35D6E;
+}
+
+.sysmonitor {
+  background-color: #3a3a3a;
+  background: linear-gradient(0deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
+  color: #b0b4bc;
+  padding: 5px;
+  border-radius: 5px;
+  font-family: JetBrainsMono NFM
+}
+
+.sysmonitor button:hover {
+  color: #D35D6E;
+}
+
 // Styles on classes (see eww.yuck for more information)
 
 .sidestuff slider {
@@ -41,13 +58,13 @@
   margin-right: 10px;
 }
 
-.metric button:hover {
-  color: #D35D6E;
-}
+// .metric button:hover {
+//   color: #D35D6E;
+// }
 
-.workspaces-widget button:hover {
-  color: #D35D6E;
-}
+// .workspaces-widget button:hover {
+//   color: #D35D6E;
+// }
 
 .current {
   color: #D35D6E;
@@ -57,13 +74,13 @@
   color: #4e4e4e;
 }
 
-.music button:hover {
-  color: #D35D6E;
-}
+// .music button:hover {
+//   color: #D35D6E;
+// }
 
-.toggle button:hover {
-  color: #D35D6E;
-}
+// .toggle button:hover {
+//   color: #D35D6E;
+// }
 
 // TEST STYLES
 
@@ -73,10 +90,21 @@
   border-radius: 5;
 }
 
-.debug button:hover {
-  color: #D35D6E;
+// .debug button:hover {
+//   color: #D35D6E;
+// }
+
+.stat_module {
+border-radius: 16px;
+margin: 0px 10px 0px 3px;
 }
 
+.statdisk {
+  color: #D35D6E;
+    background-color: #38384d;
+  border-radius: 10px;
+  font-size: 20;
+}
 
 // Too funny
 .activate-linux {

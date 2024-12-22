@@ -1,0 +1,34 @@
+;; Vars
+
+;; Widgets
+(defwidget sys []
+  (box :orientation "v" :space-evenly false :spacing 15 
+    (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+    (tooltip :halign "center" (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
+      (button :onclick "${EWW_CMD} kill" "󰅜"))
+    (stat :icon "" :value {EWW_RAM.used_mem_perc})
+    (stat :icon "" :value {EWW_CPU.avg})
+    (stat :icon "" :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)})
+    (stat :icon "󰃟" :value {round((bright / 96000) * 100, 0)})
+
+  ))
+
+
+(defwidget stat [icon value]
+  (box :class "stat_module" :height 40 :width 40 :vexopand true
+    (circular-progress :value {value}
+      :class "statdisk"
+      :thickness 4
+      :start-at {50 - (value / 2)}
+      icon)))
+
+;; Window
+(defwindow sysmonitor
+  :monitor 0
+  :exclusive true
+  :geometry (geometry :x "5px" :y "0px"
+    :width "30px"
+    :height "100%"
+  :anchor "center left")
+  :focusable false
+  (sys))

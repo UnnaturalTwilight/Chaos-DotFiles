@@ -29,7 +29,7 @@
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
     (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :visible {debug-buttons}
-      (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+      ; (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
       (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
         (button :onclick "${EWW_CMD} kill" "󰅜")))
     (status)
@@ -155,9 +155,6 @@
     :spacing 1
     (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
   ))
-
-(defwidget padding [space ?expand]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
 
 ; obsolete by copying the hypr wiki
 ;(defpoll get-workspaces :interval "3s"
