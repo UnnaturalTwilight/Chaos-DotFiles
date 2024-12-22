@@ -2,7 +2,7 @@
 
 ;; Widgets
 (defwidget sys []
-  (box :orientation "v" :space-evenly false :spacing 15 
+  (box :orientation "v" :space-evenly false :spacing 15 :class "tooltip"
     (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
     (tooltip :halign "center" (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
       (button :onclick "${EWW_CMD} kill" "󰅜"))

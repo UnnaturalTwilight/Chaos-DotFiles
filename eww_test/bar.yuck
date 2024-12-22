@@ -28,10 +28,6 @@
 ;; Widgets
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
-    (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :visible {debug-buttons}
-      ; (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
-      (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
-        (button :onclick "${EWW_CMD} kill" "󰅜")))
     (status)
     (padding :space 20 :expand true)
     (music)
@@ -49,13 +45,13 @@
       :value {round(volume * 100, 0)}
     :onchange "scripts/setvol {}")
     ; (metric :label ""
-    ;   :value {EWW_RAM.used_mem_perc}
+      ;   :value {EWW_RAM.used_mem_perc}
     ; :onchange "")
     ; (metric :label ""
-    ;   :value {EWW_CPU.avg}
+      ;   :value {EWW_CPU.avg}
     ; :onchange "")
     ; (metric :label ""
-    ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+      ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
     ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :battery {EWW_BATTERY.BAT1.capacity}
@@ -63,7 +59,7 @@
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-  (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")})))
+    (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")})))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
@@ -173,14 +169,34 @@
     ;     (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
   ;   ))
 
+;; sidecars
+(defwidget sys_sidecar []
+  (box :class "debug" :orientation "h" :space-evenly false :spacing 10
+    (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
+      (button :onclick "${EWW_CMD} kill" "󰅜"))
+    (tooltip (sys) (label :text "sys" :truncate true))
+    (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+  ))
+
 ;; Window
 (defwindow bar
   :monitor 0
-  :exclusive true
+  :exclusive false
   :geometry (geometry :x "0%"
     :y "5px"
-    :width "90%"
+    :width "89%"
     :height "10px"
   :anchor "top center")
   :focusable false
   (bar))
+
+(defwindow sys_sidecar
+  :monitor 0
+  :exclusive false
+  :geometry (geometry :x "0%"
+    :y "5px"
+    :width "5%"
+    :height "10px"
+  :anchor "top left")
+  :focusable false
+  (sys_sidecar))
