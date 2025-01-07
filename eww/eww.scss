@@ -1,3 +1,6 @@
+// vars
+$pinkish: #D35D6E;
+
 * {
   all: unset; // Unsets everything so you can style everything from scratch
 }
@@ -11,6 +14,20 @@
   border-radius: 5px;
 }
 
+menu {
+  padding: 3px;
+  background-color: rgba(58, 58, 58, 0.9);
+  border-radius: 3px;
+
+  menuitem {
+    border-radius: 3px;
+    padding: 3px 5px;
+  }
+  
+  menuitem:hover {
+    background-color: $pinkish;
+  }
+}
 // Styles on classes (see eww.yuck for more information)
 
 .sidestuff slider {
@@ -26,7 +43,7 @@
 
 .metric scale trough highlight {
   all: unset;
-  background-color: #D35D6E;
+  background-color: $pinkish;
   color: #000000;
   border-radius: 10px;
 }
@@ -42,15 +59,15 @@
 }
 
 .metric button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .workspaces-widget button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .current {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .empty {
@@ -58,11 +75,11 @@
 }
 
 .music button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .toggle button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 // TEST STYLES
@@ -72,7 +89,7 @@
 // }
 
 .debug button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 
