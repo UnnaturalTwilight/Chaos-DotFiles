@@ -35,6 +35,4 @@ alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini
 
 eval "$(starship init zsh)"
 
-# hyfetch
-
 eval "$(zoxide init zsh)"

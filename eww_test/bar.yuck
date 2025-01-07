@@ -26,8 +26,8 @@
 ; "date '+%l:%M %b %d, %Y'")a
 
 ;; Widgets
-(defwidget bar []
-  (box :orientation "h" :space-evenly false :spacing 10
+(defwidget bar [] 
+  (box :orientation "h" :space-evenly false :spacing 10 :class "mainbar" :hexpand true :halign "fill" :width 1700 ; no %, me :(
     (status)
     (padding :space 20 :expand true)
     (music)
@@ -171,24 +171,32 @@
 
 ;; sidecars
 (defwidget sys_sidecar []
-  (box :class "debug" :orientation "h" :space-evenly false :spacing 10
+  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "start"
     (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
       (button :onclick "${EWW_CMD} kill" "󰅜"))
     (tooltip (sys) (label :text "sys" :truncate true))
     (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
   ))
 
+(defwidget pow_sidecar []
+  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "end"
+    (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
+      (button :onclick "${EWW_CMD} kill" "󰅜"))
+    (button :onclick "zsh | hyprlock" "")
+    (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+  ))
+
 ;; Window
 (defwindow bar
   :monitor 0
-  :exclusive false
+  :exclusive true
   :geometry (geometry :x "0%"
     :y "5px"
-    :width "89%"
-    :height "10px"
+    :width "97%"
+    :height "32px"
   :anchor "top center")
   :focusable false
-  (bar))
+  (centerbox :orientation "h" :space-evenly false (sys_sidecar)(bar)(pow_sidecar)))
 
 (defwindow sys_sidecar
   :monitor 0
@@ -210,4 +218,4 @@
     :height "32px"
   :anchor "top right")
   :focusable false
-  (systray :orientation "h" :icon-size 16 :spacing 5))
+  (pow_sidecar))

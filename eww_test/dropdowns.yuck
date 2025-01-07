@@ -22,6 +22,8 @@
       :start-at {50 - (value / 2)}
       icon)))
 
+;; Power menu
+
 ;; Window
 (defwindow sysmonitor
   :monitor 0

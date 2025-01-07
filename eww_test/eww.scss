@@ -1,18 +1,27 @@
+// vars
+$pinkish: #D35D6E;
+
 * {
   all: unset; // Unsets everything so you can style everything from scratch
 }
 
 // Global Styles
 .bar {
-  background-color: #3a3a3a;
-  background: linear-gradient(90deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
+  // background-color: #3a3a3a;
+  // background: linear-gradient(90deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
   color: #b0b4bc;
+  // padding: 5px;
+  // border-radius: 5px;
+}
+
+.mainbar {
+  background: linear-gradient(90deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
   padding: 5px;
   border-radius: 5px;
 }
 
 .bar button:hover {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .sysmonitor {
@@ -25,7 +34,22 @@
 }
 
 .sysmonitor button:hover {
-  color: #D35D6E;
+  color: $pinkish;
+}
+
+menu {
+  padding: 3px;
+  background-color: rgba(58, 58, 58, 0.9);
+  border-radius: 3px;
+
+  menuitem {
+    border-radius: 3px;
+    padding: 3px 5px;
+  }
+  
+  menuitem:hover {
+    background-color: $pinkish;
+  }
 }
 
 // Styles on classes (see eww.yuck for more information)
@@ -43,7 +67,7 @@
 
 .metric scale trough highlight {
   all: unset;
-  background-color: #D35D6E;
+  background-color: $pinkish;
   color: #000000;
   border-radius: 10px;
 }
@@ -59,15 +83,15 @@
 }
 
 // .metric button:hover {
-//   color: #D35D6E;
+//   color: $pinkish;
 // }
 
 // .workspaces-widget button:hover {
-//   color: #D35D6E;
+//   color: $pinkish;
 // }
 
 .current {
-  color: #D35D6E;
+  color: $pinkish;
 }
 
 .empty {
@@ -75,11 +99,11 @@
 }
 
 // .music button:hover {
-//   color: #D35D6E;
+//   color: $pinkish;
 // }
 
 // .toggle button:hover {
-//   color: #D35D6E;
+//   color: $pinkish;
 // }
 
 // TEST STYLES
@@ -105,7 +129,7 @@
 }
 
 // .debug button:hover {
-//   color: #D35D6E;
+//   color: $pinkish;
 // }
 
 .stat_module {
@@ -114,7 +138,7 @@ margin: 0px 10px 0px 3px;
 }
 
 .statdisk {
-  color: #D35D6E;
+  color: $pinkish;
     background-color: #38384d;
   border-radius: 10px;
   font-size: 20;
