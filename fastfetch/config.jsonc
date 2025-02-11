@@ -7,8 +7,12 @@
         }
     },
     "modules": [
+        "break",
         "title",
-        "separator",
+        {
+            "type": "custom",
+            "format": "{#35}┄╼━━━━━━━━━╾┄{#}"
+        },
         "os",  
         {
             "type": "host",
