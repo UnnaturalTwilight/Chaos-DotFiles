@@ -64,14 +64,15 @@
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
     (box :space-evenly false
-      :spacing 10
-      (label :text "${workspaces}${current_workspace}" :visible false)
+      :spacing 7
+      (label :text "${workspaces} ${current_workspace}" :visible false)
       (for workspace in workspaces
+        (tooltip (label :text "${workspace.id}" :class "tooltip" )
         (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-          (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
-            (label :text "${workspace.id}" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
-          )))
-      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
+        (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+        (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
+      ))))
+      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇 ")
     )))
 
 (defwidget status []
@@ -81,7 +82,9 @@
     :space-evenly false
     :spacing 20
     (workspaces)
+    (padding :space 20 :expand true)
     (systray :orientation "h" :icon-size 16 :spacing 5)
+    (padding :space 20 :expand true)
     (label :text "${window}" :visible {window != ""} :truncate true)
   ))
 

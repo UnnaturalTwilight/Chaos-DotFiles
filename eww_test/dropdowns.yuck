@@ -10,7 +10,6 @@
     (stat :icon "" :value {EWW_CPU.avg})
     (stat :icon "" :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)})
     (stat :icon "󰃟" :value {round((bright / 96000) * 100, 0)})
-
   ))
 
 
