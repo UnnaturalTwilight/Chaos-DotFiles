@@ -57,7 +57,8 @@
         },
         {
             "type": "battery",
-            "format": "{/4}{-}{/}{4}{?5} [{5}]{?}"
+            "format": "{/4}{-}{/}{4}{?5} [{5}]{?}",
+            "key": "Battery"
         },
         "break",
         "colors"
