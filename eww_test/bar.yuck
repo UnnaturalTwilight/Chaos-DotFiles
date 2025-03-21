@@ -82,9 +82,7 @@
     :space-evenly false
     :spacing 20
     (workspaces)
-    (padding :space 20 :expand true)
     (systray :orientation "h" :icon-size 16 :spacing 5)
-    (padding :space 20 :expand true)
     (label :text "${window}" :visible {window != ""} :truncate true)
   ))
 
@@ -174,7 +172,7 @@
 
 ;; sidecars
 (defwidget sys_sidecar []
-  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "start"
+  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "start" :class "mainbar"
     (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
       (button :onclick "${EWW_CMD} kill" "󰅜"))
     (tooltip (sys) (label :text "sys" :truncate true))
@@ -182,11 +180,8 @@
   ))
 
 (defwidget pow_sidecar []
-  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "end"
-    (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
-      (button :onclick "${EWW_CMD} kill" "󰅜"))
+  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "end" :class "mainbar"
     (button :onclick "zsh | hyprlock" "")
-    (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
   ))
 
 ;; Window
