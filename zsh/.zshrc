@@ -44,6 +44,7 @@ alias logout='hyprctl dispatch exit'
 alias eww-test='$HOME/eww/target/release/eww -c ~/.config/eww_test'
 alias eww='$HOME/eww/target/release/eww'
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
+alias vpn='windscribe-cli'
 
 # autoload -Uz promptinit
 # promptinit
