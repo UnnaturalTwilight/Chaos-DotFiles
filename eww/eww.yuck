@@ -4,6 +4,25 @@
 
 ;; plans for future widgets
 ; (include "power.yuck")
+
+; from https://github.com/iSparsh/gross/blob/main/ till i code my own
+(defwindow bigpowermenu
+    :monitor 0
+    :geometry (geometry :x "15px"
+                        :y "5px"
+                        :width "1%"
+                        :height "1%"
+                        :anchor "top right")
+  (bigpowermenu))
+
+    (defwidget bigpowermenu []
+        (box :orientation "h" :space-evenly true :class "bigpowermenu" :halign "center" :valign "center" :spacing 20
+          (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
+          (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
+          (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "${EWW_CMD} c bigpowermenu && zsh | hyprlock" ""))
+          (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "systemctl suspend" "󰤄"))
+          (tooltip (label :text "Close" :class "tooltip") (button :onclick "${EWW_CMD} c bigpowermenu" "󰜺"))))
+
 ; (include "music.yuck") 
 ; (include "blutooth.yuck") ; Possably just install a gui app for this
 ; (include "sysmonitor.yuck") ; just a little resource monitor

@@ -1,0 +1,48 @@
+(defwindow start
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "0%"
+    :y "20px"
+    :width "98%"
+    :height "92%"
+  :anchor "top center")
+  (fullscreen))
+
+(defwidget fullscreen []
+  (overlay
+    (eventbox
+      :hexpand true
+      :vexpand true
+      :onclick "${EWW_CMD} c start"
+    :class "startBg")
+    (box :spacing 30 :space-evenly false
+        :halign "center"
+        :valign "center"
+      (eventbox
+        :halign "center"
+        :valign "center"
+        :width 500
+        :height 1000
+      :class "startPanel")
+      (eventbox
+        :halign "end"
+        :valign "start"
+        :width 300
+        :height 300
+        :class "startPanel"
+      )
+      (eventbox
+        :halign "left"
+        :valign "end"
+        :width 300
+        :height 400
+        :class "startPanel"
+      ))))
+
+;; Panels
+
+; (defwindow user)
+
+; (defwindow system)
+
+; (defwindow apps)

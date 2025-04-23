@@ -38,7 +38,7 @@
         "terminal",
         {
             "type": "terminalfont",
-            "format": "{/name}{-}{/}{name}{?size} {size}{?}"
+            "format": "{/name}{-}{/}{name}{?size} ({size}pt){?}"
         },
         {
             "type": "cpu",

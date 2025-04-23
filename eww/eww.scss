@@ -5,6 +5,24 @@ $pinkish: #D35D6E;
   all: unset; // Unsets everything so you can style everything from scratch
 }
 
+.bigpowermenu {
+  font-size: 4rem;
+  background: linear-gradient(30deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
+  color: #b0b4bc;
+  //border-radius: 2rem;
+  border: 3px solid #80A0C0;
+  font-family: JetBrainsMono NFM;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 15px;
+}
+
+.bigpowermenu button:hover {
+  color: $pinkish;
+}
+
 // Global Styles
 .bar {
   background-color: #3a3a3a;
@@ -91,7 +109,6 @@ menu {
 .debug button:hover {
   color: $pinkish;
 }
-
 
 // Too funny
 .activate-linux {

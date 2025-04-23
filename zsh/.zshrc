@@ -50,6 +50,9 @@ alias vpn='windscribe-cli'
 # promptinit
 # prompt adam1
 
+# not sure if this is a good idea on how to do this but it works for now
+eval "$(eww shell-completions --shell zsh)"
+
 eval "$(starship init zsh)"
 
 eval "$(zoxide init zsh)"
