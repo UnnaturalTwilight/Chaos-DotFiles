@@ -1,5 +1,7 @@
 ;; TESTING COPY OF BAR
-
+(deflisten cavabars 
+  :initial "startup" 
+  "scripts/cavaiguess") 
 ;; Vars
 (deflisten workspaces :initial "[]" "scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
@@ -94,7 +96,7 @@
     :halign "end"
     :visible {music != ""}
     (button :onclick "playerctl previous" "󰑟" )
-    (button :onclick "playerctl play-pause" "${music}")
+    (button :onclick "playerctl play-pause" "${cavabars}")
     (button :onclick "playerctl next" "󰈑")
   ))
 
@@ -183,7 +185,7 @@
 
 (defwidget pow_sidecar []
   (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "end" :class "mainbar"
-    (button :onclick "${EWW_CMD} o start" "")
+    (button :onclick "scripts/launch-start" "")
     (button :onclick "${EWW_CMD} c start" "󰅜")
     (button :onclick "zsh | hyprlock" "")
   ))

@@ -1,7 +1,7 @@
 // vars
 $pinkish: #D35D6E;
 
-@import url("start.scss");
+@import 'start.scss';
 
 * {
   all: unset; // Unsets everything so you can style everything from scratch
@@ -14,6 +14,10 @@ $pinkish: #D35D6E;
   color: #b0b4bc;
   // padding: 5px;
   // border-radius: 5px;
+}
+
+.music {
+  font-family: JetBrainsMono NF;
 }
 
 .mainbar {

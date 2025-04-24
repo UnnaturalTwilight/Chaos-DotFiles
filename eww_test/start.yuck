@@ -1,10 +1,11 @@
+
 (defwindow start
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "0%"
     :y "20px"
-    :width "98%"
-    :height "92%"
+    :width "1880px"
+    :height "1203px"
   :anchor "top center")
   (fullscreen))
 
@@ -13,36 +14,103 @@
     (eventbox
       :hexpand true
       :vexpand true
-      :onclick "${EWW_CMD} c start"
-    :class "startBg")
-    (box :spacing 30 :space-evenly false
-        :halign "center"
-        :valign "center"
-      (eventbox
-        :halign "center"
-        :valign "center"
-        :width 500
-        :height 1000
-      :class "startPanel")
-      (eventbox
-        :halign "end"
-        :valign "start"
-        :width 300
-        :height 300
-        :class "startPanel"
-      )
-      (eventbox
-        :halign "left"
-        :valign "end"
-        :width 300
-        :height 400
-        :class "startPanel"
-      ))))
+      :onclick "scripts/launch-start close"
+    :class "startBg")))
 
 ;; Panels
 
-; (defwindow user)
+; User & Power
+(defwindow user
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "40px" :y "40px"
+    :width "360px" :height "400px"
+  :anchor "top right")
+  (profile))
 
-; (defwindow system)
+(defwidget profile []
+  (box :class "startPanel" :orientation "v" :space-evenly false
+  (image :path "../profilepic.png" :image-width 300 :image-height 300)
+  (label :text "cal@underkill" :class "hostname") ;Hard coded cause why not
+  (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true
+    (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
+    (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
+    (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "systemctl suspend" "󰤄"))
+    (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "scripts/launch-start && zsh | hyprlock" ""))
+)))
 
-; (defwindow apps)
+; Time & Date
+(defwindow date
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "40px" :y "40px"
+    :width "360px" :height "730px"
+  :anchor "bottom right")
+  (month))
+
+(defwidget month []
+  (box :class "startPanel" :orientation "v" :space-evenly false :vexpand true
+    (box :class "calbox" :orientation "v" :space-evenly false :valign "start" 
+      (label :text {formattime(EWW_TIME, "%H:%M:%S" )} :class "clock")
+      (label :text "Toronto ON Canada" :class "local")
+    (calendar :class "cal"))
+    (label :text {cavabars} :valign "end" :class "icons" :vexpand true)
+    (box :class "music"
+      :orientation "h"
+      :space-evenly false
+      :spacing 10
+      :halign "center"
+      :visible {music != ""}
+      (button :onclick "playerctl previous" "󰑟" )
+      (button :onclick "playerctl play-pause" (label :text "${music}" :truncate true))
+      (button :onclick "playerctl next" "󰈑")
+    )
+
+    ;;;
+    (box :orientation "v" :space-evenly false :valign "end" :class "disks" :spacing 10
+      (disk :char "/  " :icon "󰣇" :filesystem "ext4  " :mountpoint "/")
+      (disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c"))
+    ;;;
+    ))  
+
+; App launcher
+(defwindow apps
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "40px" :y "40px"
+    :width "600px" :height "1163px"
+  :anchor "top left")
+  (list))
+
+(defwidget list []
+  (box :class "startPanel"))  
+
+; sys monitor
+(defwindow sys
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "660px" :y "40px"
+    :width "840px" :height "100px"
+  :anchor "bottom left")
+  (stats))
+
+(defwidget stats []
+  (box :class "startPanel"
+    (box :orientation "v" :space-evenly false :valign "end" :class "disks" :spacing 10
+      (disk :char "/  " :icon "󰣇" :filesystem "ext4  " :mountpoint "/")
+      (padding :space 1 :expand true)
+      (disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c")
+  )))  
+
+; TODO: make the numbers meaningfull and implement real string padding
+(defwidget disk [char icon ?mountpoint ?filesystem ?mountcmd]
+  (eventbox :class "disk" 
+  (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
+    (label :text {icon} :class "disk-icon")
+    (box :orientation "v" :valign "center" :halign "start" :spaceing 20 :class "disk-info" :hexpand true
+      (label :text "${char}  TODO: make #s real" :halign "start" :valign "start")
+      (scale :min 0 :max 101 :active false :value {EWW_DISK[mountpoint].used_perc} 
+          :halign "start" :valign "center" :hexpand true )
+      (label :text "${filesystem}   ${round(EWW_DISK[mountpoint].used/1073741824,1)}/${round(EWW_DISK[mountpoint].total/1073741824,1)} GiB" 
+        :halign "start" :valign "end" )
+      ))))

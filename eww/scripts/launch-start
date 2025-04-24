@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Based on https://github.com/adi1090x/widgets/blob/main/eww/dashboard/launch_dashboard
+
+## Files and cmd
+FILE="$HOME/.cache/eww_launch.start"
+EWW="$HOME/eww/target/release/eww"
+CFG="$HOME/.config/eww_test"
+PANELS=" \
+        user \
+        date \
+         \
+		 \
+    "
+# apps sys
+
+# will always try and close the start screen if close is the first argument
+if test "$1" = "close" 
+then
+	touch "$FILE"
+fi
+
+## Launch or close widgets accordingly
+if [[ ! -f "$FILE" ]]; then
+	touch "$FILE"
+	${EWW} --config "$CFG" open-many $PANELS
+else
+	${EWW} -c "$CFG" close $PANELS
+	rm "$FILE"
+fi
