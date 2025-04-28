@@ -8,7 +8,7 @@ $directory\
 [](fg:one bg:two)\
 $git_branch\
 $git_status\
-[](fg:two bg:three)\
+[](fg:two bg:four)\
 $c\
 $elixir\
 $elm\
@@ -21,9 +21,8 @@ $nodejs\
 $nim\
 $rust\
 $scala\
-[](fg:three bg:four)\
-$docker_context\ 
 [](fg:four bg:five)\
+$docker_context\ 
 $time\
 [ ](fg:five)\
 """
@@ -112,22 +111,22 @@ truncation_symbol = "…/"
 
 [c]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [docker_context]
 symbol = " "
-style = "bg:four"
+style = "bg:five"
 format = '[ $symbol $context ]($style)'
 
 [elixir]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [elm]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [git_branch]
@@ -141,46 +140,46 @@ format = '[$all_status$ahead_behind ]($style)'
 
 [golang]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [gradle]
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [haskell]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [java]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [julia]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [nim]
 symbol = "󰆥 "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [rust]
 symbol = ""
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [scala]
 symbol = " "
-style = "bg:three"
+style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
 
 [time]

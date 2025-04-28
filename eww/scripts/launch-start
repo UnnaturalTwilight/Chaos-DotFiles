@@ -9,10 +9,10 @@ CFG="$HOME/.config/eww_test"
 PANELS=" \
         user \
         date \
-         \
-		 \
+        sys \
+		connections \
     "
-# apps sys
+# start apps
 
 # will always try and close the start screen if close is the first argument
 if test "$1" = "close" 

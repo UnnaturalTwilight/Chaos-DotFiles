@@ -1,7 +1,7 @@
 ;; TESTING COPY OF BAR
-(deflisten cavabars 
-  :initial "startup" 
-  "scripts/cavaiguess") 
+; (deflisten cavabars 
+;   :initial "startup" 
+;   "scripts/cavaiguess") 
 ;; Vars
 (deflisten workspaces :initial "[]" "scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
@@ -56,7 +56,6 @@
       ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
     ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
-      :battery {EWW_BATTERY.BAT1.capacity}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
@@ -96,7 +95,7 @@
     :halign "end"
     :visible {music != ""}
     (button :onclick "playerctl previous" "󰑟" )
-    (button :onclick "playerctl play-pause" "${cavabars}")
+    (button :onclick "playerctl play-pause" "${music}")
     (button :onclick "playerctl next" "󰈑")
   ))
 
@@ -113,22 +112,22 @@
         :value value
       :onchange onchange))))
 
-(defwidget _battery [battery status full one two three four five six seven eight nine low charge value]
-  (tooltip (label :text {"${battery}%"} :class "tooltip" )
+(defwidget _battery [status full one two three four five six seven eight nine low charge value]
+  (tooltip (label :text {"${value}%"} :class "tooltip" )
     (box :class "metric"
       :space-evenly false
       :spacing -3
       (label :text {status == 'Charging' ? charge :
-        battery < 5 ? low :
-        battery < 15 ? nine :
-        battery < 25 ? eight :
-        battery < 35 ? seven :
-        battery < 45 ? six :
-        battery < 55 ? five :
-        battery < 65 ? four :
-        battery < 75 ? three :
-        battery < 85 ? two :
-      battery < 95 ? one : full})
+        value < 5 ? low :
+        value < 15 ? nine :
+        value < 25 ? eight :
+        value < 35 ? seven :
+        value < 45 ? six :
+        value < 55 ? five :
+        value < 65 ? four :
+        value < 75 ? three :
+        value < 85 ? two :
+      value < 95 ? one : full})
       (scale :min 0
         :max 101
         :active false

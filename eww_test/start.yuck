@@ -30,14 +30,14 @@
 
 (defwidget profile []
   (box :class "startPanel" :orientation "v" :space-evenly false
-  (image :path "../profilepic.png" :image-width 300 :image-height 300)
-  (label :text "cal@underkill" :class "hostname") ;Hard coded cause why not
-  (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true
-    (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
-    (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
-    (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "systemctl suspend" "󰤄"))
-    (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "scripts/launch-start && zsh | hyprlock" ""))
-)))
+    (image :path "../profilepic.png" :image-width 300)
+    (label :text "${get_env('USER')}@underkill" :class "hostname") ;Hard coded cause why not
+    (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true
+      (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
+      (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
+      (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "systemctl suspend" "󰤄"))
+      (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "scripts/launch-start && zsh | hyprlock" ""))
+    )))
 
 ; Time & Date
 (defwindow date
@@ -50,28 +50,10 @@
 
 (defwidget month []
   (box :class "startPanel" :orientation "v" :space-evenly false :vexpand true
-    (box :class "calbox" :orientation "v" :space-evenly false :valign "start" 
+    (box :class "calbox" :orientation "v" :space-evenly false :valign "start"
       (label :text {formattime(EWW_TIME, "%H:%M:%S" )} :class "clock")
       (label :text "Toronto ON Canada" :class "local")
-    (calendar :class "cal"))
-    (label :text {cavabars} :valign "end" :class "icons" :vexpand true)
-    (box :class "music"
-      :orientation "h"
-      :space-evenly false
-      :spacing 10
-      :halign "center"
-      :visible {music != ""}
-      (button :onclick "playerctl previous" "󰑟" )
-      (button :onclick "playerctl play-pause" (label :text "${music}" :truncate true))
-      (button :onclick "playerctl next" "󰈑")
-    )
-
-    ;;;
-    (box :orientation "v" :space-evenly false :valign "end" :class "disks" :spacing 10
-      (disk :char "/  " :icon "󰣇" :filesystem "ext4  " :mountpoint "/")
-      (disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c"))
-    ;;;
-    ))  
+      (calendar :class "cal"))))
 
 ; App launcher
 (defwindow apps
@@ -83,34 +65,106 @@
   (list))
 
 (defwidget list []
-  (box :class "startPanel"))  
+  (box :class "startPanel"))
 
 ; sys monitor
 (defwindow sys
   :monitor 0
   :stacking "fg"
-  :geometry (geometry :x "660px" :y "40px"
-    :width "840px" :height "100px"
-  :anchor "bottom left")
+  :geometry (geometry :x "420px" :y "40px"
+    :width "350px" :height "400px"
+  :anchor "bottom right")
   (stats))
 
 (defwidget stats []
-  (box :class "startPanel"
-    (box :orientation "v" :space-evenly false :valign "end" :class "disks" :spacing 10
-      (disk :char "/  " :icon "󰣇" :filesystem "ext4  " :mountpoint "/")
-      (padding :space 1 :expand true)
-      (disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c")
-  )))  
+  (box :class "startPanel" :orientation "v" :space-evenly false :spacing 0 :valign "end"
+    (box :class "circles" :valign "end" :halign "center"
+      (circlemetric :icon "" :percent {EWW_RAM.used_mem_perc}
+      :hovervar `ramhover` :hover {ramhover})
+      (circlemetric :icon "" :percent {EWW_CPU.avg}
+      :hovervar `cpuhover` :hover {cpuhover})
+      (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
+        :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} update bright=`brightnessctl -m g`"
+      :hovervar `brighthover` :hover {brighthover}))
+    (box :orientation "v" :space-evenly true :valign "end" :class "disks" :spacing 10
+      (battbox :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity}
+        :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
+      :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎")
+      (disk :char "/  " :icon "󰣇" :filesystem "ext4" :mountpoint "/")
+      (disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c"))
+  ))
+
+(defvar brighthover false) (defvar cpuhover false) (defvar ramhover false)
 
 ; TODO: make the numbers meaningfull and implement real string padding
 (defwidget disk [char icon ?mountpoint ?filesystem ?mountcmd]
-  (eventbox :class "disk" 
-  (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
-    (label :text {icon} :class "disk-icon")
-    (box :orientation "v" :valign "center" :halign "start" :spaceing 20 :class "disk-info" :hexpand true
-      (label :text "${char}  TODO: make #s real" :halign "start" :valign "start")
-      (scale :min 0 :max 101 :active false :value {EWW_DISK[mountpoint].used_perc} 
-          :halign "start" :valign "center" :hexpand true )
-      (label :text "${filesystem}   ${round(EWW_DISK[mountpoint].used/1073741824,1)}/${round(EWW_DISK[mountpoint].total/1073741824,1)} GiB" 
+  (eventbox :class "disk" :onclick {mountcmd} :hexpand true
+    (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
+      (label :text {icon} :class "disk-icon")
+      (box :orientation "v" :valign "center" :halign "fill" :class "disk-info" :hexpand true
+        (label :text "${char}" :halign "start" :valign "start")
+        (progress :value {EWW_DISK[mountpoint].used_perc}
+        :halign "fill" :valign "center" :hexpand true )
+        (label :text "${filesystem} ${round(EWW_DISK[mountpoint].used/1073741824,1)}/${round(EWW_DISK[mountpoint].total/1073741824,1)} GiB"
         :halign "start" :valign "end" )
       ))))
+
+(defpoll bat_time :interval "1s"
+"acpi -b | awk '{print $5 \" \" $6 \" \" $7}'")
+
+(defwidget battbox [full one two three four five six seven eight nine low charge status value]
+  (eventbox :class "disk" :hexpand true
+    (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
+      (label :class "disk-icon"
+        :text {status == 'Charging' ? charge :
+        value < 5 ? low :
+        value < 15 ? nine :
+        value < 25 ? eight :
+        value < 35 ? seven :
+        value < 45 ? six :
+        value < 55 ? five :
+        value < 65 ? four :
+        value < 75 ? three :
+        value < 85 ? two :
+      value < 95 ? one : full})
+      (box :orientation "v" :valign "center" :halign "fill" :class "disk-info" :hexpand true
+        (label :text "${value}%" :halign "start" :valign "start")
+        (progress :value value
+        :halign "fill" :valign "center" :hexpand true )
+        (label :text {bat_time}
+        :halign "start" :valign "end" )
+      ))))
+
+(defwidget circlemetric [icon percent ?colour ?label ?scrollcmd ?value ?total ?hovervar ?hover]
+  (eventbox :class "circle" :width 90 :height 90 :onscroll "${scrollcmd} {}"
+    :onhover {hovervar != "" ? "${EWW_CMD} update ${hovervar}=true" : "" }
+    :onhoverlost {hovervar != "" ? "${EWW_CMD} update ${hovervar}=false" : "" }
+    (overlay
+      (circular-progress :start-at {(37.5)-(percent/2) > -1 ? (37.5)-(percent/2) : 100+(37.5)-(percent/2)} :value {percent}
+      :class "circle_stat" :thickness 12)
+      (label :text {icon} :class "icons" :visible {hovervar != "" ? !hover : true })
+      (label :text "${round(percent,0)}%" :visible {hovervar != "" ? hover : false })
+    )))
+
+;; connections
+(defwindow connections
+  :monitor 0
+  :stacking "fg"
+  :geometry (geometry :x "420px" :y "520px"
+    :width "350px" :height "150px"
+  :anchor "bottom right")
+  (wireless))
+
+(defwidget wireless []
+  (box :class "startPanel"
+    (overlay
+      (graph :value {EWW_NET.wlan0.NET_UP} :dynamic true :time-range "20s" :thickness 3 :class "net_up")
+      (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
+      (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width "10px" :class "startBg"
+        (label :text {wifi})
+        (label :text "UP: ${round(EWW_NET.wlan0.NET_UP, 1)} Bytes")
+        (label :text "DOWN: ${round(EWW_NET.wlan0.NET_DOWN, 1)} Bytes"))
+    )))
+
+(defpoll wifi :interval "1s"
+"nmcli connection show | awk '/wlan0/ {print $1}'")

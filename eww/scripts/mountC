@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-run0 ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c
-
-notify-send "script ran"

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+direction=$1
+
+if test "$direction" = "up"
+then
+  target=$(clamp 1 10 $(($current+1)))
+  echo "jumping to $target"
+  brightnessctl s 1%- -n9600
+elif test "$direction" = "down"
+then
+  target=$(clamp 1 10 $(($current-1)))
+  echo "jumping to $target"
+  brightnessctl s +1% -n9600
+fi
+/home/cal/eww/target/release/eww --config "/home/cal/.config/eww_test" update bright=`brightnessctl -m g`
