@@ -1,7 +1,7 @@
 ;; TESTING COPY OF BAR
-; (deflisten cavabars 
-;   :initial "startup" 
-;   "scripts/cavaiguess") 
+(deflisten cavabars
+  :initial "startup"
+"scripts/cavaiguess")
 ;; Vars
 (deflisten workspaces :initial "[]" "scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
@@ -24,12 +24,9 @@
 (defpoll speaker_raw :interval "1s"
 "pactl get-default-sink")
 
-; (defpoll time :interval "10s" ; now useing eww's magic var
-; "date '+%l:%M %b %d, %Y'")a
-
 ;; Widgets
-(defwidget bar [] 
-  (box :orientation "h" :space-evenly false :spacing 10 :class "mainbar" :hexpand true :halign "fill" :width 1700 ; no %, me :(
+(defwidget bar []
+  (box :orientation "h" :space-evenly false :spacing 10 :class "mainbar" :hexpand true :halign "fill" :width 1700
     (status)
     (padding :space 20 :expand true)
     (music)
@@ -46,15 +43,6 @@
       :low " " :high " "
       :value {round(volume * 100, 0)}
     :onchange "scripts/setvol {}")
-    ; (metric :label ""
-      ;   :value {EWW_RAM.used_mem_perc}
-    ; :onchange "")
-    ; (metric :label ""
-      ;   :value {EWW_CPU.avg}
-    ; :onchange "")
-    ; (metric :label ""
-      ;   :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
-    ; :onchange "")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
@@ -69,10 +57,10 @@
       (label :text "${workspaces} ${current_workspace}" :visible false)
       (for workspace in workspaces
         (tooltip (label :text "${workspace.id}" :class "tooltip" )
-        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-        (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
-        (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
-      ))))
+          (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+            (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+              (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
+            ))))
       (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇 ")
     )))
 
@@ -138,9 +126,9 @@
     (box :class "metric"
       :space-evenly false
       :spacing -7
-      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" 
-        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 0 \"Switched to internal speakers\"" 
-          : "wpctl set-default 67 && hyprctl notify 1 2000 0 \"Switched to bluetooth headphones\""}
+      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle"
+        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 0 \"Switched to internal speakers\""
+        : "wpctl set-default 67 && hyprctl notify 1 2000 0 \"Switched to bluetooth headphones\""}
       {value == 0 ? mute : value < 40 ? low : high})
       (scale :min 0
         :max 101
@@ -153,25 +141,8 @@
     :orientation "h"
     :space-evenly false
     :spacing 1
-    (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
+    (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} poll dnd" { dnd == "false" ? " " : " "})
   ))
-
-; obsolete by copying the hypr wiki
-;(defpoll get-workspaces :interval "3s"
-  ;hyprctl workspaces -j | jq '[[(.[][\"id\"] | if . < 0 then empty end)] | sort | .[], .[-1]+1]'")
-; basicly the above produces an array of workspaces excluding special workspaces, sorts it and adds one to the end
-
-; (defwidget workspaces []
-  ;   (box :class "workspaces"
-    ;     :orientation "h"
-    ;     :space-evenly true
-    ;     :halign "start"
-    ;     :spacing 10
-    ;     ; Less pretty but more dynamic
-    ;     (for entry in get-workspaces
-      ;       (button :onclick "hyprctl dispatch workspace ${entry} -q" "${entry}"))
-    ;     (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇")
-  ;   ))
 
 ;; sidecars
 (defwidget sys_sidecar []
@@ -204,10 +175,8 @@
 (defwindow sys_sidecar
   :monitor 0
   :exclusive false
-  :geometry (geometry :x "0%"
-    :y "5px"
-    :width "5%"
-    :height "10px"
+  :geometry (geometry :x "0%" :y "5px"
+    :width "5%" :height "10px"
   :anchor "top left")
   :focusable false
   (sys_sidecar))
@@ -215,10 +184,8 @@
 (defwindow pow_sidecar
   :monitor 0
   :exclusive false
-  :geometry (geometry :x "0%"
-    :y "5px"
-    :width "5%"
-    :height "32px"
+  :geometry (geometry :x "0%" :y "5px"
+    :width "5%" :height "32px"
   :anchor "top right")
   :focusable false
   (pow_sidecar))

@@ -1,7 +1,7 @@
 ;; Live Config of Bar
 
 ;; Vars
-(deflisten workspaces :initial "[]" "scripts/get-workspaces") 
+(deflisten workspaces :initial "[]" "scripts/get-workspaces")
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
 (deflisten window :initial "..." "scripts/get-window-title 900") ; Jank cause I don't want to remove the title length liming feature. 0 = window class always displayed
 
@@ -53,7 +53,7 @@
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-  (button :onclick "${EWW_CMD} o bigpowermenu" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
+    (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")})))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
@@ -62,10 +62,10 @@
       (label :text "${workspaces} ${current_workspace}" :visible false)
       (for workspace in workspaces
         (tooltip (label :text "${workspace.id}" :class "tooltip" )
-        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-        (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
-        (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
-      ))))
+          (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
+            (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+              (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
+            ))))
       (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇") (padding :space 0)
     )))
 
@@ -132,9 +132,9 @@
     (box :class "metric"
       :space-evenly false
       :spacing -7
-      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" 
-        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 0 \"Switched to internal speakers\"" 
-          : "wpctl set-default 67 && hyprctl notify 1 2000 0 \"Switched to bluetooth headphones\""}
+      (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle"
+        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 0 \"Switched to internal speakers\""
+        : "wpctl set-default 67 && hyprctl notify 1 2000 0 \"Switched to bluetooth headphones\""}
       {value == 0 ? mute : value < 40 ? low : high})
       (scale :min 0
         :max 101
@@ -147,7 +147,7 @@
     :orientation "h"
     :space-evenly false
     :spacing 1
-    (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} update dnd=`dunstctl is-paused`" { dnd == "false" ? " " : " "})
+    (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} poll dnd" { dnd == "false" ? " " : " "})
   ))
 
 (defwidget padding [space ?expand]

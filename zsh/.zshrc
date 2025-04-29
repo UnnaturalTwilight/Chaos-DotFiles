@@ -9,6 +9,8 @@ bindkey -e
 zstyle :compinstall filename '/home/cal/.zshrc'
 
 autoload -Uz compinit
+
+fpath+=~/.config/zsh/func
 compinit
 # End of lines added by compinstall
 

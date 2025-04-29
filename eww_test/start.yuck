@@ -50,10 +50,11 @@
 
 (defwidget month []
   (box :class "startPanel" :orientation "v" :space-evenly false :vexpand true
-    (box :class "calbox" :orientation "v" :space-evenly false :valign "start"
+    (box :class "calbox" :orientation "v" :space-evenly false :valign "start" :vexpand false
       (label :text {formattime(EWW_TIME, "%H:%M:%S" )} :class "clock")
       (label :text "Toronto ON Canada" :class "local")
-      (calendar :class "cal"))))
+      (calendar :class "cal"))
+    (notifcenter)))
 
 ; App launcher
 (defwindow apps
@@ -84,7 +85,7 @@
       (circlemetric :icon "" :percent {EWW_CPU.avg}
       :hovervar `cpuhover` :hover {cpuhover})
       (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
-        :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} update bright=`brightnessctl -m g`"
+        :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} poll bright"
       :hovervar `brighthover` :hover {brighthover}))
     (box :orientation "v" :space-evenly true :valign "end" :class "disks" :spacing 10
       (battbox :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity}
@@ -136,7 +137,7 @@
       ))))
 
 (defwidget circlemetric [icon percent ?colour ?label ?scrollcmd ?value ?total ?hovervar ?hover]
-  (eventbox :class "circle" :width 90 :height 90 :onscroll "${scrollcmd} {}"
+  (eventbox :class "circle" :width 90 :height 90 :onscroll "${scrollcmd}"
     :onhover {hovervar != "" ? "${EWW_CMD} update ${hovervar}=true" : "" }
     :onhoverlost {hovervar != "" ? "${EWW_CMD} update ${hovervar}=false" : "" }
     (overlay

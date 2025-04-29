@@ -8,6 +8,7 @@
 ; (include "blutooth.yuck") ; Possably just install a gui app for this
 (include "dropdowns.yuck") ; just a little resource monitor
 (include "start.yuck")
+(include "dunstparse.yuck") ; notifications take a lot of code
 
 ;; Common Widgets 
 
