@@ -167,8 +167,9 @@ $bar-gray: #4e4e4e;
         .notif-icon {
             font-size: 5rem;
             color: $kinda-gray;
-            padding-left: 15px;
-            padding-top: 15px;
+            margin: 10px;
+            margin-right: -20px;
+            // border: 3px solid $pinkish;
         }
         
         .notif-info progressbar {
@@ -191,7 +192,7 @@ $bar-gray: #4e4e4e;
         }
 
         .notif-info {
-            margin: 5px 5px 5px 0px;
+            margin: 10px;
         }
     }
 

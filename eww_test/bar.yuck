@@ -1,32 +1,12 @@
 ;; TESTING COPY OF BAR
-(deflisten cavabars
-  :initial "startup"
-"scripts/cavaiguess")
-;; Vars
-(deflisten workspaces :initial "[]" "scripts/get-workspaces") ; | jq '[.[] | if .windows == 0 then empty end]'
-(deflisten current_workspace :initial "1" "scripts/get-active-workspace")
-(deflisten window :initial "..." "scripts/get-window-title 900") ; Jank cause I don't want to remove the title length liming feature. 0 = window class always displayed
-
-(deflisten music :initial ""
-"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
-
-(defpoll dnd :interval "10s"
-"dunstctl is-paused")
-
-(defpoll bright :interval "1s"
-"brightnessctl -m g")
-
-(defpoll volume :interval "1s"
-"scripts/getvol")
-
-(defvar debug-buttons true)
-
-(defpoll speaker_raw :interval "1s"
-"pactl get-default-sink")
 
 ;; Widgets
 (defwidget bar []
-  (box :orientation "h" :space-evenly false :spacing 10 :class "mainbar" :hexpand true :halign "fill" :width 1700
+  (box :orientation "h" :space-evenly false :spacing 10
+    (box :class "debug" :orientation "h" :spacing 10 :visible {debug-buttons}
+      (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
+      (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
+        (button :onclick "${EWW_CMD} kill" "󰅜")))
     (status)
     (padding :space 20 :expand true)
     (music)
@@ -48,7 +28,7 @@
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-    (button :onclick "${EWW_CMD} o start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
+    (button :onclick "scripts/launch-start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
@@ -61,7 +41,7 @@
             (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
               (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
             ))))
-      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇 ")
+      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇") (padding :space 0)
     )))
 
 (defwidget status []
@@ -83,6 +63,7 @@
     :halign "end"
     :visible {music != ""}
     (button :onclick "playerctl previous" "󰑟" )
+    (button :onclick "playerctl play-pause" "${playing == 'Playing' ? '󰏤' : '󰐊'}")
     (button :onclick "playerctl play-pause" "${music}")
     (button :onclick "playerctl next" "󰈑")
   ))
@@ -122,7 +103,7 @@
       :value value))))
 
 (defwidget _volume [value mute low high onchange]
-  (tooltip :class "metric" (label :text { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "󰋋  ${value}" : "󰓃  ${value}"} :class "tooltip" )
+  (tooltip (label :text { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "󰋋  ${value}" : "󰓃  ${value}"} :class "tooltip" )
     (box :class "metric"
       :space-evenly false
       :spacing -7
@@ -144,48 +125,14 @@
     (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} poll dnd" { dnd == "false" ? " " : " "})
   ))
 
-;; sidecars
-(defwidget sys_sidecar []
-  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "start" :class "mainbar"
-    (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
-      (button :onclick "${EWW_CMD} kill" "󰅜"))
-    (tooltip (sys) (label :text "sys" :truncate true))
-    (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
-  ))
-
-(defwidget pow_sidecar []
-  (box :class "debug" :orientation "h" :space-evenly false :spacing 10 :halign "end" :class "mainbar"
-    (button :onclick "scripts/launch-start" "")
-    (button :onclick "${EWW_CMD} c start" "󰅜")
-    (button :onclick "zsh | hyprlock" "")
-  ))
-
 ;; Window
 (defwindow bar
   :monitor 0
   :exclusive true
   :geometry (geometry :x "0%"
     :y "5px"
-    :width "97%"
-    :height "32px"
+    :width "90%"
+    :height "10px"
   :anchor "top center")
   :focusable false
-  (centerbox :orientation "h" :space-evenly false (sys_sidecar)(bar)(pow_sidecar)))
-
-(defwindow sys_sidecar
-  :monitor 0
-  :exclusive false
-  :geometry (geometry :x "0%" :y "5px"
-    :width "5%" :height "10px"
-  :anchor "top left")
-  :focusable false
-  (sys_sidecar))
-
-(defwindow pow_sidecar
-  :monitor 0
-  :exclusive false
-  :geometry (geometry :x "0%" :y "5px"
-    :width "5%" :height "32px"
-  :anchor "top right")
-  :focusable false
-  (pow_sidecar))
+  (bar))

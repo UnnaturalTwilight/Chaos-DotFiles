@@ -66,7 +66,8 @@
   (list))
 
 (defwidget list []
-  (box :class "startPanel"))
+  (box :class "startPanel"
+  (scroll :class "scroll" (label :text dunsthist))))
 
 ; sys monitor
 (defwindow sys
@@ -109,9 +110,6 @@
         (label :text "${filesystem} ${round(EWW_DISK[mountpoint].used/1073741824,1)}/${round(EWW_DISK[mountpoint].total/1073741824,1)} GiB"
         :halign "start" :valign "end" )
       ))))
-
-(defpoll bat_time :interval "1s"
-"acpi -b | awk '{print $5 \" \" $6 \" \" $7}'")
 
 (defwidget battbox [full one two three four five six seven eight nine low charge status value]
   (eventbox :class "disk" :hexpand true
@@ -166,6 +164,3 @@
         (label :text "UP: ${round(EWW_NET.wlan0.NET_UP, 1)} Bytes")
         (label :text "DOWN: ${round(EWW_NET.wlan0.NET_DOWN, 1)} Bytes"))
     )))
-
-(defpoll wifi :interval "1s"
-"nmcli connection show | awk '/wlan0/ {print $1}'")

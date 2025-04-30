@@ -150,9 +150,6 @@
     (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} poll dnd" { dnd == "false" ? " " : " "})
   ))
 
-(defwidget padding [space ?expand]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
-
 ;; Window
 (defwindow bar
   :monitor 0

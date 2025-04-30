@@ -1,3 +1,8 @@
 (include "activate.yuck")
 
 (include "bar.yuck")
+
+;; Common Widgets 
+
+(defwidget padding [space ?expand]
+    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
