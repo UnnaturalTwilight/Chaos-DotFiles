@@ -107,7 +107,7 @@
         (label :text "${char}" :halign "start" :valign "start")
         (progress :value {EWW_DISK[mountpoint].used_perc}
         :halign "fill" :valign "center" :hexpand true )
-        (label :text "${filesystem} ${round(EWW_DISK[mountpoint].used/1073741824,1)}/${round(EWW_DISK[mountpoint].total/1073741824,1)} GiB"
+        (label :text "${filesystem} ${byteshumanreadable(EWW_DISK[mountpoint].used,1)}/${byteshumanreadable(EWW_DISK[mountpoint].total,1)}"
         :halign "start" :valign "end" )
       ))))
 
@@ -161,6 +161,6 @@
       (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
       (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width "10px" :class "startBg"
         (label :text {wifi})
-        (label :text "UP: ${round(EWW_NET.wlan0.NET_UP, 1)} Bytes")
-        (label :text "DOWN: ${round(EWW_NET.wlan0.NET_DOWN, 1)} Bytes"))
+        (label :text "UP: ${byteshumanreadable(EWW_NET.wlan0.NET_UP, 1)}")
+        (label :text "DOWN: ${byteshumanreadable(EWW_NET.wlan0.NET_DOWN, 1)}"))
     )))

@@ -184,7 +184,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%a - %s</b>\n%b"
+    format = "<b><u>%a</u>\n%s</b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -207,7 +207,7 @@
     ignore_newline = no
 
     # Stack together notifications with the same content
-    stack_duplicates = false
+    stack_duplicates = true
 
     # Hide the count of stacked notifications with the same content
     hide_duplicate_count = false
@@ -252,7 +252,7 @@
     ### Misc/Advanced ###
 
     # dmenu path.
-    dmenu = walker -p dunst:
+    dmenu = wofi -p dunst: -S dmenu
 
     # Browser for opening urls in context menu.
     browser = zen-browser
@@ -444,9 +444,10 @@
 #    msg_urgency = critical
 #    fullscreen = show
 
-#[espeak]
-#    summary = "*"
-#    script = dunst_espeak.sh
+[network]
+   appname = "NetworkManager Applet"
+   set_category = "network"
+   history_ignore = yes
 
 #[script-test]
 #    summary = "*script*"
