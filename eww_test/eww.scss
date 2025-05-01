@@ -1,5 +1,9 @@
 // vars
 $pinkish: #D35D6E;
+$bg-light: #55505A;
+$bg-dark: #414145;
+$kinda-gray: #b0b4bc;
+$bar-gray: #4e4e4e;
 
 @import 'start.scss';
 
@@ -14,6 +18,21 @@ $pinkish: #D35D6E;
   color: $kinda-gray;
   padding: 5px;
   border-radius: 5px;
+}
+
+menu {
+  padding: 3px;
+  background-color: rgba(58, 58, 58, 0.9);
+  border-radius: 3px;
+
+  menuitem {
+    border-radius: 3px;
+    padding: 3px 5px;
+  }
+  
+  menuitem:hover {
+    background-color: $pinkish;
+  }
 }
 
 .bar button:hover {

@@ -1,7 +1,3 @@
-$bg-light: rgb(85, 80, 90);
-$bg-dark: #414145;
-$kinda-gray: #b0b4bc;
-$bar-gray: #4e4e4e;
 
 .startBg {
     background: transparentize($bg-light, .2);
@@ -26,7 +22,7 @@ $bar-gray: #4e4e4e;
 .icons {
     font-size: 3rem;
     color: $kinda-gray;
-    font-family: JetBrainsMono NFM;
+    font-family: JetBrainsMono NFM; // JetBrains Mono Nerd Font Mono;
     padding: 15px;
 }
 
@@ -68,23 +64,23 @@ $bar-gray: #4e4e4e;
         color: white;
         font-weight: bold;
     }
-
-    .cal.button {
-        color: $kinda-gray;
-    }
-
+    
     .cal.highlight {
         color: white;
-        background-color: #b0b4bc;
+        background-color: $bg-light;
         font-weight: bold;
     }
-
+    
     .cal:indeterminate {
         color: $kinda-gray;
     }
 
-    .cal button:hover {
-        background-color: transparentize($pinkish, .1);
+    .cal.button {
+        color: $kinda-gray;
+    }
+    
+    .cal:hover {
+        color: $pinkish;
     }
 
 }

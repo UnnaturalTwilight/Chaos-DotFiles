@@ -51,7 +51,7 @@
     :space-evenly false
     :spacing 20
     (workspaces)
-    (systray :orientation "h" :icon-size 16 :spacing 5)
+    (systray :orientation "h" :icon-size 16 :spacing 5 :class "systray")
     (label :text "${window}" :visible {window != ""} :truncate true)
   ))
 
