@@ -7,7 +7,7 @@
           ; (label :text {items})
           (eventbox :class "notif" :hexpand true :onclick "dunstctl history-rm ${items.id.data}; ${EWW_CMD} poll dunsthist"
             (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
-              (image :path {items.icon_path.data} :class "notif-icon" :valign "start" :halign "end"
+              (image :path {items.icon_path.data} :class "notif-icon" :valign "start" :halign "start"
                 :visible {items.icon_path.data != ""})
               (box :orientation "v" :valign "center" :halign "fill" :class "notif-info" :hexpand true :space-evenly false :spacing 2
                 (label :markup "<b><u>${items.appname.data}</u></b>" 
