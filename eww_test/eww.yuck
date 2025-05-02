@@ -27,17 +27,18 @@
 (defpoll dnd :interval "10s"
 "dunstctl is-paused")
 
-(defpoll dunsthist :interval "30s"
+(defpoll dunsthist :interval "30s" 
+:initial "{\"data\":[[]]}" ; mini vertion of the data structure
 "dunstctl history")
 
 ;; system
-(defpoll bright :interval "1s"
+(defpoll bright :interval "1s" :initial 0
 "brightnessctl -m g")
 
-(defpoll volume :interval "1s"
+(defpoll volume :interval "1s" :initial 0
 "scripts/getvol")
 
-(defpoll speaker_raw :interval "1s"
+(defpoll speaker_raw :interval "1s" :initial ""
 "pactl get-default-sink")
 
 (defpoll bat_time :interval "1s"
@@ -51,8 +52,7 @@
   :initial "startup"
 "scripts/cavaiguess")
 
-
 ;; Common Widgets
 
 (defwidget padding [space ?expand]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
+  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand {expand ?: false}))

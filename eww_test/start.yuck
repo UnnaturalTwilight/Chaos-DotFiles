@@ -98,8 +98,7 @@
 
 (defvar brighthover false) (defvar cpuhover false) (defvar ramhover false)
 
-; TODO: make the numbers meaningfull and implement real string padding
-(defwidget disk [char icon ?mountpoint ?filesystem ?mountcmd]
+(defwidget disk [char icon mountpoint ?filesystem ?mountcmd]
   (eventbox :class "disk" :onclick {mountcmd} :hexpand true
     (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
       (label :text {icon} :class "disk-icon")
@@ -112,7 +111,7 @@
       ))))
 
 (defwidget battbox [full one two three four five six seven eight nine low charge status value]
-  (eventbox :class "disk" :hexpand true
+  (eventbox :class "disk" :hexpand true ; Genericize the style names
     (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
       (label :class "disk-icon"
         :text {status == 'Charging' ? charge :
@@ -130,11 +129,11 @@
         (label :text "${value}%" :halign "start" :valign "start")
         (progress :value value
         :halign "fill" :valign "center" :hexpand true )
-        (label :text {bat_time}
+        (label :text {bat_time} ; remove the hard code
         :halign "start" :valign "end" )
       ))))
 
-(defwidget circlemetric [icon percent ?colour ?label ?scrollcmd ?value ?total ?hovervar ?hover]
+(defwidget circlemetric [icon percent ?scrollcmd ?hovervar ?hover]
   (eventbox :class "circle" :width 90 :height 90 :onscroll "${scrollcmd}"
     :onhover {hovervar != "" ? "${EWW_CMD} update ${hovervar}=true" : "" }
     :onhoverlost {hovervar != "" ? "${EWW_CMD} update ${hovervar}=false" : "" }
@@ -159,7 +158,7 @@
     (overlay
       (graph :value {EWW_NET.wlan0.NET_UP} :dynamic true :time-range "20s" :thickness 3 :class "net_up")
       (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
-      (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width "10px" :class "startBg"
+      (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width 10 :class "startBg"
         (label :text {wifi})
         (label :text "UP: ${byteshumanreadable(EWW_NET.wlan0.NET_UP, 1)}")
         (label :text "DOWN: ${byteshumanreadable(EWW_NET.wlan0.NET_DOWN, 1)}"))

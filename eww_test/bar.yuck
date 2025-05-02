@@ -69,7 +69,7 @@
   ))
 
 (defwidget metric [label value onchange]
-  (tooltip (label :text {"${value}%"} :class "tooltip" )
+  (tooltip (label :text "${value}%" :class "tooltip" )
     (box :orientation "h"
       :class "metric"
       :space-evenly false
@@ -82,7 +82,7 @@
       :onchange onchange))))
 
 (defwidget _battery [status full one two three four five six seven eight nine low charge value]
-  (tooltip (label :text {"${value}%"} :class "tooltip" )
+  (tooltip (label :text "${value}%" :class "tooltip" )
     (box :class "metric"
       :space-evenly false
       :spacing -3
@@ -108,8 +108,8 @@
       :space-evenly false
       :spacing -7
       (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle"
-        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 0 \"Switched to internal speakers\""
-        : "wpctl set-default 67 && hyprctl notify 1 2000 0 \"Switched to bluetooth headphones\""}
+        :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "wpctl set-default 55 && hyprctl notify 1 2000 1 \"Switched to internal speakers\""
+        : "wpctl set-default 64 && hyprctl notify 1 2000 1 \"Switched to bluetooth headphones\""}
       {value == 0 ? mute : value < 40 ? low : high})
       (scale :min 0
         :max 101
