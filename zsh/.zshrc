@@ -48,6 +48,9 @@ alias eww='$HOME/eww/target/release/eww'
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'
 
+#this should not just be an alias but here we are
+alias music-dl='$HOME/.config/yt-dlp/musicClipboard.sh'
+
 # autoload -Uz promptinit
 # promptinit
 # prompt adam1

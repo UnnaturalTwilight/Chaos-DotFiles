@@ -35,8 +35,8 @@
     (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true
       (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
       (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
-      (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "systemctl suspend" "󰤄"))
-      (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "scripts/launch-start && zsh | hyprlock" ""))
+      (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "scripts/launch-start && systemctl suspend" "󰤄"))
+      (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "scripts/launch-start && loginctl lock-session" ""))
     )))
 
 ; Time & Date
