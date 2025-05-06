@@ -48,7 +48,9 @@ alias eww='$HOME/eww/target/release/eww'
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'
 
-alias music-dl='wl-copy "" && wl-paste -w yt-dlp -m -a -'
+alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
+
+alias uni-copy='kitten unicode-input | wl-copy -n'
 
 # autoload -Uz promptinit
 # promptinit
