@@ -15,7 +15,7 @@
                   :visible {items.appname.data != ""})
                 (label :markup "<b>${items.summary.data}</b>" 
                   :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
-                  :visible {items.summart.data != ""})
+                  :visible {items.summary.data != ""})
                 (label :markup {items.body.data} 
                   :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
                   :visible {items.body.data != ""})
