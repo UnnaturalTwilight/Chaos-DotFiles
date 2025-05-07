@@ -8,18 +8,18 @@
             (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
               (image :path {items.icon_path.data} :image-width 32
                 :class "notif-icon" :valign "start" :halign "start"
-                :visible {items.icon_path.data != ""})
+              :visible {items.icon_path.data != ""})
               (box :orientation "v" :valign "center" :halign "fill" :class "notif-info" :hexpand true :space-evenly false :spacing 2
-                (label :markup "<b><u>${items.appname.data}</u></b>" 
+                (label :markup "<b><u>${items.appname.data}</u></b>"
                   :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
-                  :visible {items.appname.data != ""})
-                (label :markup "<b>${items.summary.data}</b>" 
+                :visible {items.appname.data != ""})
+                (label :markup "<b>${items.summary.data}</b>"
                   :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
-                  :visible {items.summary.data != ""})
-                (label :markup {items.body.data} 
+                :visible {items.summary.data != ""})
+                (label :markup {items.body.data}
                   :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
-                  :visible {items.body.data != ""})
-                (box :space-evenly false 
+                :visible {items.body.data != ""})
+                (box :space-evenly false
                   (progress :value {items.progress.data} :visible {items.progress.data > -1}
                   :halign "fill" :valign "center" :hexpand true ))
               )))

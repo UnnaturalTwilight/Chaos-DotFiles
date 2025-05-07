@@ -47,6 +47,7 @@ alias eww-test='$HOME/eww/target/release/eww -c ~/.config/eww_test'
 alias eww='$HOME/eww/target/release/eww'
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'
+alias vlc='env -u DISPLAY vlc' # run vlc in wayland
 
 alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
 

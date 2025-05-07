@@ -1,4 +1,4 @@
-/Code - OSS
+/Code
 /dconf
 /pulse
 /session
@@ -22,7 +22,6 @@ discord
 google-chrome
 Slack
 GIMP
-gtk*
 cava/shaders
 menus
 qalculate/qalc.history
@@ -47,3 +46,5 @@ bluetuith
 /GitHub Desktop
 Google
 github-copilot
+gh-copilot
+gtk-2.0/gtkfilechooser.ini
