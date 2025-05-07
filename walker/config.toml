@@ -185,6 +185,7 @@ icon = "utilities-terminal"
 name = "runner"
 placeholder = "Runner"
 typeahead = true
+switcher_only = true
 history = true
 generic_entry = false
 refresh = true
