@@ -49,6 +49,8 @@ alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini
 alias vpn='windscribe-cli'
 alias vlc='env -u DISPLAY vlc' # run vlc in wayland
 
+alias bzmenu='bzmenu --launcher walker -i xdg'
+
 alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
 
 alias uni-copy='kitten unicode-input | wl-copy -n'
