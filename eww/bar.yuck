@@ -46,7 +46,8 @@
     :onchange "brightnessctl s {}% -n9600")
     (_volume :mute " "
       :low " " :high " "
-      :value {round(volume * 100, 0)}
+      :value {round(volume[0] * 100, 0)}
+      :muted {volume[1]}
     :onchange "scripts/setvol {}")
     (_battery :status {EWW_BATTERY.BAT1.status}
       :charge "󰂄" :full "󰁹" :one "󰂂" :two "󰂁" :three "󰂀" :four "󰁿"
@@ -127,7 +128,7 @@
         :active false
       :value value))))
 
-(defwidget _volume [value mute low high onchange]
+(defwidget _volume [value mute muted low high onchange]
   (tooltip (label :text { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "󰋋  ${value}" : "󰓃  ${value}"} :class "tooltip" )
     (box :class "metric"
       :space-evenly false
@@ -135,7 +136,7 @@
       (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle"
         :onrightclick { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && hyprctl notify 1 2000 1 \"Switched to internal speakers\""
         : "pactl set-default-sink bluez_output.40_72_18_AD_77_86.1 && hyprctl notify 1 2000 1 \"Switched to bluetooth headphones\""}
-      {value == 0 ? mute : value < 40 ? low : high})
+      {muted == true ? mute : value < 40 ? low : high})
       (scale :min 0
         :max 101
         :active {onchange != ""}

@@ -3,8 +3,8 @@
 MUTED=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3}')
 
 if [ -n "$MUTED" ]; then
-    echo 0
+    wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}' | jq -c '[., true]'
     exit
 else
-    wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}'
+    wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}' | jq -c '[., false]'
 fi

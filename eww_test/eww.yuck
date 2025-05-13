@@ -35,7 +35,7 @@
 (defpoll bright :interval "1s" :initial 0
 "brightnessctl -m g")
 
-(defpoll volume :interval "1s" :initial 0
+(defpoll volume :interval "1s" :initial "[0, false]"
 "scripts/getvol")
 
 (defpoll speaker_raw :interval "1s" :initial ""
@@ -44,7 +44,7 @@
 (defpoll bat_time :interval "1s"
 "acpi -b | awk '{print $5 \" \" $6 \" \" $7}'")
 
-(defpoll wifi :interval "1s"
+(defpoll wifi :interval "2s"
 "nmcli connection show | awk '/wlan0/ {print $1}'")
 
 ;; Testing only vars 
