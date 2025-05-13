@@ -1,0 +1,54 @@
+// Global styles for bar
+.bar {
+  // background-color: $navy;
+  background: linear-gradient(90deg, rgba(50, 0, 90, 0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50, 0, 90, 0.5) 80%);
+  color: $kinda-gray;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+// Systray
+menu {
+  padding: 5px;
+  background-color: transparentize($bg-dark, 0.1);
+  border-radius: 5px;
+
+  menuitem {
+    border-radius: 5px;
+    padding: 3px 5px;
+  }
+
+  menuitem:hover {
+    background-color: transparentize($pinkish, 0.25);
+  }
+}
+
+.metric {
+  scale trough highlight {
+    background-color: $pinkish;
+    border-radius: 10px;
+  }
+
+  scale trough {
+    background-color: $bar-gray;
+    border-radius: 50px;
+    min-height: 7px;
+    min-width: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .dull trough highlight {
+    background-color: transparentize($pinkish, 0.5);
+  }
+}
+
+.workspaces-widget {
+  .current {
+    color: $pinkish;
+  }
+
+  .empty {
+    color: $bar-gray;
+  }
+}

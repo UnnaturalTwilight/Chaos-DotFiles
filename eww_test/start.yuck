@@ -157,7 +157,7 @@
       :active true
       :value {volume[0] * 100}
       :onchange "scripts/setvol {}"
-      :class {volume[1] == true ? "dullslide" : "brightslide"}
+      :class {volume[1] == true ? "dull" : "vibrant"}
     :halign "fill" :valign "center" :hexpand true)
     (label :text "${volume[1] == true ? 'Muted' : '${round(volume[0] * 100, 0)}%'}" :halign "start")
   ))

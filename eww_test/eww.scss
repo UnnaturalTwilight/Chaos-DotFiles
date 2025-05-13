@@ -4,79 +4,33 @@ $bg-light: #55505A;
 $bg-dark: #414145;
 $kinda-gray: #b0b4bc;
 $bar-gray: #4e4e4e;
+$navy: #38384d;
 
 @import 'start.scss';
+@import 'bar.scss';
 
 * {
   all: unset; // Unsets everything so you can style everything from scratch
 }
 
 // Global Styles
-.bar {
-  background: #38384d;
-  // background: linear-gradient(90deg, rgba(50,0,90,0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50,0,90,0.5) 80%); 
-  color: $kinda-gray;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-menu {
-  padding: 5px;
-  background-color: transparentize($bg-dark, 0.1);
-  border-radius: 5px;
-
-  menuitem {
-    border-radius: 5px;
-    padding: 3px 5px;
-  }
-  
-  menuitem:hover {
-    background-color: $pinkish;
-  }
-}
-
-.bar button:hover {
+button:hover {
   color: $pinkish;
 }
 
-*.tooltip {
+tooltip {
   background-color: rgba(15, 20, 90, 0.9);
   padding: 3px;
   border-radius: 5px;
 }
 
-.metric scale trough highlight {
-  background-color: $pinkish;
-  color: #000000;
-  border-radius: 10px;
-}
-
-.metric scale trough {
-  background-color: #4e4e4e;
-  border-radius: 50px;
-  min-height: 7px;
-  min-width: 50px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.current {
-  color: $pinkish;
-}
-
-.empty {
-  color: $bar-gray;
-}
-
 // TEST STYLES
-
 .gap {
   background-color: rgba(250, 250, 250, 0.5);
   margin: 8px 0px 8px 0px;
   border-radius: 5px;
 }
 
-// Too funny
 .activate-linux {
     color: rgba(250, 250, 250, 0.5);
     &.background {

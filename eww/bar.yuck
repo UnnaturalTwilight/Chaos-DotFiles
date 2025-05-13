@@ -141,6 +141,7 @@
         :max 101
         :active {onchange != ""}
         :value value
+        :class {volume[1] == true ? "dullmetric" : "metric"}
       :onchange onchange))))
 
 (defwidget alertmode []

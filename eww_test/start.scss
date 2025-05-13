@@ -12,6 +12,7 @@
     border-radius: 10px;
 }
 
+// User panel
 .hostname {
     font-family: JetBrainsMono NFM;
     color: $kinda-gray;
@@ -24,15 +25,6 @@
     font-family: JetBrainsMono NFM; // JetBrains Mono Nerd Font Mono;
     padding: 15px;
 }
-
-.icons button:hover {
-    color: $pinkish;
-}
-
-.music button:hover {
-    color: $pinkish;
-}
-
 
 .calbox {
     padding: 10px;
@@ -52,6 +44,7 @@
     .cal {
         border: 2px solid $kinda-gray;
         border-radius: 10px;
+        background-color: transparentize($navy, 0.7);
     }
 
     .cal:selected {
@@ -59,12 +52,12 @@
         color: $bg-dark;
     }
 
-    .cal.header {
+    .cal .header {
         color: white;
         font-weight: bold;
     }
 
-    .cal.highlight {
+    .cal .highlight {
         color: white;
         background-color: $bg-light;
         font-weight: bold;
@@ -74,7 +67,7 @@
         color: $kinda-gray;
     }
 
-    .cal.button {
+    .cal button {
         color: $kinda-gray;
     }
 
@@ -85,7 +78,6 @@
 }
 
 .circles {
-
     .circle:hover {
         border-radius: 50px;
         background-color: transparentize($kinda-gray, 0.8);
@@ -137,7 +129,7 @@
             min-height: 12px;
         }
 
-        .stat-tile-info .dullslide trough highlight {
+        .stat-tile-info .dull trough highlight {
             background-color: transparentize($pinkish, 0.5);
         }
     }

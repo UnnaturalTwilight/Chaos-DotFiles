@@ -76,6 +76,10 @@ menu {
   margin-right: 10px;
 }
 
+.metric .dullmetric trough highlight {
+  background-color: transparentize($pinkish, 0.6);
+}
+
 .metric button:hover {
   color: $pinkish;
 }
