@@ -2,7 +2,57 @@
 
 (include "bar.yuck")
 
-;; Common Widgets 
+;;; Common Varables
+
+(defvar debug-buttons false)
+
+;; hyprland
+(deflisten workspaces :initial "[]" "scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "scripts/get-active-workspace")
+; Jank cause I don't want to remove the title length liming feature. 0 = window class always displayed
+(deflisten window :initial "..." "scripts/get-window-title 900")
+
+;; music
+(deflisten music :initial ""
+"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(deflisten playing :initial ""
+"playerctl -a --follow status")
+
+;; dunst
+(defpoll dnd :interval "10s"
+"dunstctl is-paused")
+
+(defpoll dunsthist :interval "30s" 
+:initial "{\"data\":[[]]}" ; mini vertion of the data structure
+"dunstctl history")
+
+;; system
+(defpoll bright :interval "1s" :initial 0
+"brightnessctl -m g")
+
+(defpoll volume :interval "1s" :initial "[0, false]"
+"scripts/getvol")
+
+(defpoll speaker_raw :interval "1s" :initial ""
+"pactl get-default-sink")
+
+(defpoll bat_time :interval "1s"
+"acpi -b | awk '{print $5 \" \" $6 \" \" $7}'")
+
+(defpoll wifi :interval "2s"
+"nmcli connection show | awk '/wlan0/ {print $1}'")
+
+;; Testing only vars 
+(deflisten cavabars
+  :initial "startup"
+"scripts/cavaiguess")
+
+;; Common Widgets
 
 (defwidget padding [space ?expand]
-    (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand expand))
+  (box  
+    :orientation "h" :halign "fill"
+    :width {space} 
+    :hexpand {expand ?: false}
+    :class {debug-buttons ? "gap" : "blank"}))

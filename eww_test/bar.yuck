@@ -16,9 +16,9 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-    (metric :label "󰃟"
-      :value {round((bright / 96000) * 100, 0)}
-    :onchange "brightnessctl s {}% -n9600")
+    ; (metric :label "󰃟"
+    ;   :value {round((bright / 96000) * 100, 0)}
+    ; :onchange "brightnessctl s {}% -n9600")
     (_volume :mute " "
       :low " " :high " "
       :value {round(volume[0] * 100, 0)}
