@@ -36,6 +36,17 @@ else
 fi
 # pip zsh completion end
 
+# help function
+autoload -Uz run-help
+(( ${+aliases[run-help]} )) && unalias run-help
+autoload -Uz run-help-git run-help-ip run-help-openssl run-help-p4 run-help-sudo run-help-svk run-help-svn
+alias help=run-help
+
+# reload completions on pacman update
+TRAPUSR1() { 
+  rehash 
+}
+
 alias cd='z'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'

@@ -5,6 +5,8 @@ $bg-dark: #414145;
 $kinda-gray: #b0b4bc;
 $bar-gray: #4e4e4e;
 $navy: #38384d;
+$gradient: linear-gradient(90deg, rgba(50, 0, 90, 0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50, 0, 90, 0.5) 80%);
+$not-gradient: rgba(15, 20, 90, 0.9);
 
 @import 'start.scss';
 @import 'bar.scss';
@@ -19,7 +21,7 @@ button:hover {
 }
 
 tooltip {
-  background-color: rgba(15, 20, 90, 0.9);
+  background-color: $not-gradient;
   padding: 3px;
   border-radius: 5px;
 }
