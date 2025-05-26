@@ -99,7 +99,7 @@
 (defvar brighthover false) (defvar cpuhover false) (defvar ramhover false)
 
 (defwidget tile [?Rclickcmd]
-  (eventbox :class "stat-tile" :onrightclick {Rclickcmd} :hexpand true
+  (eventbox :class "stat-tile" :onrightclick {Rclickcmd} :hexpand true :timeout 10000
     (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
       (children :nth 0)
       (box :orientation "v" :valign "center" :halign "fill" :class "stat-tile-info" :hexpand true

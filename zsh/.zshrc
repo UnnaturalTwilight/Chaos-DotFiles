@@ -5,6 +5,9 @@ SAVEHIST=1000
 setopt autocd
 bindkey -e
 # End of lines configured by zsh-newuser-install
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/cal/.zshrc'
 
@@ -66,13 +69,18 @@ alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
 
 alias uni-copy='kitten unicode-input | wl-copy -n'
 
-# autoload -Uz promptinit
-# promptinit
-# prompt adam1
-
 # not sure if this is a good idea on how to do this but it works for now
 eval "$(eww shell-completions --shell zsh)"
 
+autoload -Uz promptinit
+promptinit
+
+PROMPT='%n@%m %~ %F{white}%B%#%b%f '
+RPROMPT='[%F{yellow}%?%f]'
+
+# load starship if on tty1 (hyprland) or tty2 (sddm)
+if [[ $XDG_VTNR -le 2 ]]; then
 eval "$(starship init zsh)"
+fi
 
 eval "$(zoxide init zsh)"

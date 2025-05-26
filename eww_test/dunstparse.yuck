@@ -23,7 +23,7 @@
           :visible {items.appname.data != ""})
           (label :markup "<b>${items.summary.data}</b>"
             :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
-          :visible {items.summary.data != ""})
+          :visible {items.summary.data != "" && items.summary.data != " "}) ; fix zen notifications
           (label :markup {items.body.data}
             :halign "start" :valign "start" :wrap true :wrap-mode "wordchar"
           :visible {items.body.data != ""})

@@ -25,6 +25,6 @@ if [[ ! -f "$FILE" ]]; then
 	touch "$FILE"
 	${EWW} --config "$CFG" open-many $PANELS
 else
-	${EWW} -c "$CFG" close $PANELS
+	${EWW} --config "$CFG" close $PANELS
 	rm "$FILE"
 fi
