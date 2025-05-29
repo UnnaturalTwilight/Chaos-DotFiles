@@ -8,7 +8,7 @@
 
 ;;; Common Varables
 
-(defvar debug-buttons true)
+(defvar debug-buttons false)
 
 ;; hyprland
 (deflisten workspaces :initial "[]" "scripts/get-workspaces")
