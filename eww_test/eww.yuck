@@ -8,7 +8,7 @@
 
 ;;; Common Varables
 
-(defvar debug-buttons false)
+(defvar debug-buttons true)
 
 ;; hyprland
 (deflisten workspaces :initial "[]" "scripts/get-workspaces")
@@ -46,6 +46,9 @@
 
 (defpoll wifi :interval "2s"
 "nmcli connection show | awk '/wlan0/ {print $1}'")
+
+(defpoll mntpoints :interval "30s" :initial "[\"/\",\"/mnt/c\"]"
+"findmnt --real -o TARGET -J | jq '[.. | .target?] | del(.[0])'")
 
 ;; Testing only vars 
 (deflisten cavabars

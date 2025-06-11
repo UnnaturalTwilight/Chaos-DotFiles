@@ -5,11 +5,13 @@ format = """
 $os\
 $sudo\
 $username\
+$hostname\
 [](fg:zero bg:one)\
 $directory\
 [](fg:one bg:two)\
 $git_branch\
 $git_status\
+$git_commit\
 [](fg:two bg:four)\
 $c\
 $elixir\
@@ -32,7 +34,7 @@ $time\
 # Disable the blank line at the start of the prompt
 # add_newline = false
 
-# colours, why isn't this a part of the preset
+# colours, why isn't thidefaults a part of the preset
 palette = 'default'
 
 [palettes.default]
@@ -80,21 +82,73 @@ style_root = "bg:zero"
 format = '[$user ]($style)'
 disabled = false
 
+[hostname]
+ssh_only = true
+ssh_symbol = " "
+format = '[$ssh_symbol]($style)[$hostname ]($style)'
+style = "bg:zero"
+
 [sudo]
 format = '[$symbol]($style)'
 symbol = ' '
 style = "bg:zero"
 disabled = false
 
-# hard coded because why not
 [os]
-format = '[󰣇 ]($style)' 
 style = "bg:zero"
-disabled = false # Disabled by default
+disabled = false
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = "󰣇 "
+Artix = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
 
 [directory]
 style = "bg:one"
-format = "[ $path ]($style)"
+format = "[ $path ]($style)[$read_only]($style)"
+read_only = ''
 truncation_length = 3
 truncation_symbol = "…/"
 
@@ -105,21 +159,30 @@ truncation_symbol = "…/"
 "Downloads" = ""
 "Music" = ""
 "Pictures" = ""
+"/mnt/c" = "C:"
 # Keep in mind that the order matters. For example:
 # "Important Documents" = " 󰈙 "
 # will not be replaced, because "Documents" was already substituted before.
 # So either put "Important Documents" before "Documents" or use the substituted version:
 # "Important 󰈙 " = " 󰈙 "
 
+[git_branch]
+symbol = ""
+style = "bg:two"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:two"
+format = '[$all_status$ahead_behind ]($style)'
+
+[git_commit]
+tag_symbol = '  '
+style = "bg:two"
+
 [c]
 symbol = " "
 style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
-
-[docker_context]
-symbol = " "
-style = "bg:five"
-format = '[ $symbol $context ]($style)'
 
 [elixir]
 symbol = " "
@@ -130,15 +193,6 @@ format = '[ $symbol ($version) ]($style)'
 symbol = " "
 style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
-
-[git_branch]
-symbol = ""
-style = "bg:two"
-format = '[ $symbol $branch ]($style)'
-
-[git_status]
-style = "bg:two"
-format = '[$all_status$ahead_behind ]($style)'
 
 [golang]
 symbol = " "
@@ -183,6 +237,11 @@ format = '[ $symbol ($version) ]($style)'
 symbol = " "
 style = "bg:four"
 format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:five"
+format = '[ $symbol $context ]($style)'
 
 [time]
 disabled = true
