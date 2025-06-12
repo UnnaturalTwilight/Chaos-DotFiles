@@ -48,7 +48,7 @@ TRAPUSR1() {
 }
 
 alias cd='z'
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --hyperlink=auto'
 alias grep='grep --color=auto'
 alias lock='hyprlock'
 alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'
@@ -79,6 +79,7 @@ RPROMPT='[%F{yellow}%?%f]'
 
 # load starship if on tty1 (hyprland) or tty2 (sddm)
 if [[ $XDG_VTNR -le 2 ]]; then
+# Transient prompt for starship: https://github.com/starship/starship/issues/888#issuecomment-2246272386
 eval "$(starship init zsh)"
 fi
 

@@ -13,6 +13,7 @@ $git_branch\
 $git_status\
 $git_commit\
 [](fg:two bg:four)\
+[(\
 $c\
 $elixir\
 $elm\
@@ -24,17 +25,16 @@ $julia\
 $nodejs\
 $nim\
 $rust\
-$scala\
+$scala )](fg:two bg:four)\
 [](fg:four bg:five)\
 $docker_context\ 
-$time\
-[ ](fg:five)\
+[ ](fg:five)$all\
 """
 
 # Disable the blank line at the start of the prompt
 # add_newline = false
 
-# colours, why isn't thidefaults a part of the preset
+# colours, why isn't this a part of the preset
 palette = 'default'
 
 [palettes.default]
@@ -84,71 +84,72 @@ disabled = false
 
 [hostname]
 ssh_only = true
-ssh_symbol = " "
-format = '[$ssh_symbol]($style)[$hostname ]($style)'
+ssh_symbol = ""
+format = '([$ssh_symbol ]($style))[$hostname ]($style)'
 style = "bg:zero"
 
 [sudo]
-format = '[$symbol]($style)'
-symbol = ' '
+format = '[$symbol ]($style)'
+symbol = ""
 style = "bg:zero"
 disabled = false
 
 [os]
+format = '[$symbol ]($style)'
 style = "bg:zero"
 disabled = false
 
 [os.symbols]
-Alpaquita = " "
-Alpine = " "
-AlmaLinux = " "
-Amazon = " "
-Android = " "
-Arch = "󰣇 "
-Artix = " "
-CachyOS = " "
-CentOS = " "
-Debian = " "
-DragonFly = " "
-Emscripten = " "
-EndeavourOS = " "
-Fedora = " "
-FreeBSD = " "
-Garuda = "󰛓 "
-Gentoo = " "
-HardenedBSD = "󰞌 "
-Illumos = "󰈸 "
-Kali = " "
-Linux = " "
-Mabox = " "
-Macos = " "
-Manjaro = " "
-Mariner = " "
-MidnightBSD = " "
-Mint = " "
-NetBSD = " "
-NixOS = " "
-Nobara = " "
-OpenBSD = "󰈺 "
-openSUSE = " "
-OracleLinux = "󰌷 "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-RockyLinux = " "
-Redox = "󰀘 "
-Solus = "󰠳 "
-SUSE = " "
-Ubuntu = " "
-Unknown = " "
-Void = " "
-Windows = "󰍲 "
+Alpaquita = ""
+Alpine = ""
+AlmaLinux = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = ""
+CachyOS = ""
+CentOS = ""
+Debian = ""
+DragonFly = ""
+Emscripten = ""
+EndeavourOS = ""
+Fedora = ""
+FreeBSD = ""
+Garuda = "󰛓"
+Gentoo = ""
+HardenedBSD = "󰞌"
+Illumos = "󰈸"
+Kali = ""
+Linux = ""
+Mabox = ""
+Macos = ""
+Manjaro = ""
+Mariner = ""
+MidnightBSD = ""
+Mint = ""
+NetBSD = ""
+NixOS = ""
+Nobara = ""
+OpenBSD = "󰈺"
+openSUSE = ""
+OracleLinux = "󰌷"
+Pop = ""
+Raspbian = ""
+Redhat = ""
+RedHatEnterprise = ""
+RockyLinux = ""
+Redox = "󰀘"
+Solus = "󰠳"
+SUSE = ""
+Ubuntu = ""
+Unknown = ""
+Void = ""
+Windows = "󰍲"
 
 [directory]
 style = "bg:one"
-format = "[ $path ]($style)[$read_only]($style)"
-read_only = ''
+format = "[ $path ]($style)([$read_only ]($style))"
+read_only = ""
 truncation_length = 3
 truncation_symbol = "…/"
 
@@ -173,78 +174,85 @@ format = '[ $symbol $branch ]($style)'
 
 [git_status]
 style = "bg:two"
-format = '[$all_status$ahead_behind ]($style)'
+format = '([$all_status$ahead_behind ]($style))'
 
 [git_commit]
 tag_symbol = '  '
 style = "bg:two"
 
 [c]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [elixir]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [elm]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [golang]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [gradle]
+symbol = "🅶"
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [haskell]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [java]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [julia]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [nodejs]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [nim]
-symbol = "󰆥 "
+symbol = "󰆥"
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [rust]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [scala]
-symbol = " "
+symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version) ]($style)'
+format = '[ $symbol ($version)]($style)'
 
 [docker_context]
-symbol = " "
+symbol = ""
 style = "bg:five"
 format = '[ $symbol $context ]($style)'
 
 [time]
 disabled = true
 time_format = "%l:%M %P" 
-style = "bg:five"
-format = '[ ♥ $time ]($style)'
+style = "fg:bright-black"
+format = '[ $time ]($style)'
+
+[character]
+disabled = true
+
+[line_break]
+disabled = true
