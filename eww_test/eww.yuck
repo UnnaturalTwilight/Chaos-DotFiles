@@ -45,7 +45,7 @@
 "acpi -b | awk '{print $5 \" \" $6 \" \" $7}'")
 
 (defpoll wifi :interval "2s"
-"nmcli connection show | awk '/wlan0/ {print $1}'")
+"nmcli -get-values NAME connection show --active | awk '!/lo/ {print}'")
 
 (defpoll mntpoints :interval "30s" :initial "[\"/\",\"/mnt/c\"]"
 "findmnt --real -o TARGET -J | jq '[.. | .target?] | del(.[0])'")

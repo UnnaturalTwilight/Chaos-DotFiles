@@ -47,6 +47,9 @@ TRAPUSR1() {
   rehash 
 }
 
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
+
 alias cd='z'
 alias ls='ls --color=auto --hyperlink=auto'
 alias grep='grep --color=auto'
