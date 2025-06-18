@@ -1,0 +1,7 @@
+#! /bin/sh
+
+findmnt --real -o TARGET,SOURCE,FSTYPE,LABEL -J |
+ jq -c '.[] | [.. | {mount: .target? // empty, dev: .source?, fs: .fstype?} + (if .label? then {name: .label} else null end)] | 
+    map(del(select(.mount == "/boot")) // empty)' |
+ sed 's/fuseblk/ntfs/g' | sed 's/Windows/C\:\//g' |
+ jq -c '[.[] | . + (.mount | if . == "/" then {icon:"󰣇", sort:0} elif . == "/mnt/c" then {icon:"", sort:1} else {icon:"", sort:9} end)] | sort_by(.sort)' 

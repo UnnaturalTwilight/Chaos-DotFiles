@@ -24,7 +24,7 @@
 "playerctl -a --follow status")
 
 ;; dunst
-(defpoll dnd :interval "10s"
+(defpoll dnd :interval "30s"
 "dunstctl is-paused")
 
 (defpoll dunsthist :interval "30s" 
@@ -47,8 +47,8 @@
 (defpoll wifi :interval "2s"
 "nmcli -get-values NAME connection show --active | awk '!/lo/ {print}'")
 
-(defpoll mntpoints :interval "30s" :initial "[\"/\",\"/mnt/c\"]"
-"findmnt --real -o TARGET -J | jq '[.. | .target?] | del(.[0])'")
+(defpoll mntpoints :interval "30s" :initial "[]"
+"scripts/get-mounts")
 
 ;; Testing only vars 
 (deflisten cavabars

@@ -24,7 +24,7 @@
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "40px" :y "40px"
-    :width "360px" :height "400px"
+    :width "360px" :height "395px"
   :anchor "top right")
   (profile))
 
@@ -44,7 +44,7 @@
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "40px" :y "40px"
-    :width "360px" :height "730px"
+    :width "360px" :height "740px"
   :anchor "bottom right")
   (month))
 
@@ -74,42 +74,45 @@
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "420px" :y "40px"
-    :width "380px" :height "560px"
+    :width "380px" :height "575px"
   :anchor "bottom right")
   (stats))
 
 (defwidget stats []
   (box :class "startPanel" :orientation "v" :space-evenly false :spacing -10 :valign "fill" :vexpand true
     (box :class "circles" :valign "end" :halign "center"
-      (circlemetric :icon "" :percent {EWW_RAM.used_mem_perc}
-      :hovervar `ramhover` :hover {ramhover})
       (circlemetric :icon "" :percent {EWW_CPU.avg}
       :hovervar `cpuhover` :hover {cpuhover})
+      (circlemetric :icon "" :percent {EWW_RAM.used_mem_perc}
+      :hovervar `ramhover` :hover {ramhover})
       (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
         :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} poll bright"
       :hovervar `brighthover` :hover {brighthover}))
-    (box :orientation "v" :space-evenly true :valign "end" :class "stat-tiles" :spacing 10
-      (tile_volume)
-      (tile_batt :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity}
-      :icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
-      (tile_disk :char "/  " :icon "󰣇" :filesystem "ext4" :mountpoint "/")
-      (tile_disk :char "C:/" :icon "" :filesystem "ntfs" :mountpoint "/mnt/c")
+    (scroll :vscroll {arraylength(mntpoints) > 2} :hscroll false :vexpand true :class {arraylength(mntpoints) > 2 ? "scroll" : "static"}
+      (box :orientation "v" :space-evenly true :valign "end" :class "stat-tiles" :spacing 10
+        (tile_volume)
+        (tile_batt :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity}
+        :icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
+        ; (tile_disk :char "/  " :icon "󰣇" :filesystem "ext4" :mountpoint "/")
+        (for disk in {mntpoints}
+          (tile_disk :char {disk.name ?: disk.mount} :icon {disk.icon} :filesystem {disk.fs} :mountpoint {disk.mount} :device {disk.dev})
+        ))
     )))
 
 (defvar brighthover false) (defvar cpuhover false) (defvar ramhover false)
 
 (defwidget tile [?Rclickcmd]
   (eventbox :class "stat-tile" :onrightclick {Rclickcmd} :hexpand true :timeout 10000
-    (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
-      (children :nth 0)
+    (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true :width 350
+      (children :nth 0) ; icon
       (box :orientation "v" :valign "center" :halign "fill" :class "stat-tile-info" :hexpand true
-        (children :nth 1)
-        (children :nth 2)
-        (children :nth 3)
+        (children :nth 1) ; top text
+        (children :nth 2) ; middle text / progress bar
+        (children :nth 3) ; bottom text
       ))))
 
-(defwidget tile_disk [char icon mountpoint ?filesystem ?mountcmd]
-  (tile :Rclickcmd {mountcmd}
+(defwidget tile_disk [char icon mountpoint ?filesystem ?device]
+  (tile :Rclickcmd {matches(device, "\/dev\/sd..") ? "umount ${device} && ${EWW_CMD} poll mntpoints" : "hyprctl notify 0 2000 1 'This is not a removable device.'"}
     (label :class "stat-tile-icon" :text {icon})
     (label :text {char} :halign "start")
     (scale :min 0
@@ -181,8 +184,8 @@
 (defwindow connections
   :monitor 0
   :stacking "fg"
-  :geometry (geometry :x "420px" :y "620px"
-    :width "380px" :height "150px"
+  :geometry (geometry :x "420px" :y "640px"
+    :width "380px" :height "140px"
   :anchor "bottom right")
   (wireless))
 
