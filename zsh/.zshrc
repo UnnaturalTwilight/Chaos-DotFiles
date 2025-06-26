@@ -59,8 +59,8 @@ alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'
 alias shutdown='shutdown now'
 alias logout='hyprctl dispatch exit'
 
-alias eww-test='$HOME/eww/target/release/eww -c ~/.config/eww_test'
-alias eww='$HOME/eww/target/release/eww'
+alias eww-test='$HOME/programs/eww/target/release/eww -c ~/.config/eww_test'
+alias eww='$HOME/programs/eww/target/release/eww'
 
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'

@@ -4,7 +4,7 @@
 
 ## Files and cmd
 FILE="$HOME/.cache/eww_launch.start"
-EWW="$HOME/eww/target/release/eww"
+EWW="$HOME/programs/eww/target/release/eww"
 CFG="$HOME/.config/eww_test"
 PANELS=" \
         user \

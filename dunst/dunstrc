@@ -444,10 +444,10 @@
 #    msg_urgency = critical
 #    fullscreen = show
 
-# [network]
-#    appname = "NetworkManager Applet"
-#    set_category = "network"
-#    history_ignore = yes
+[thunderbird]
+    appname = "Thunderbird"
+    set_category = "email"
+    new_icon = thunderbird
 
 #[script-test]
 #    summary = "*script*"
