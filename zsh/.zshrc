@@ -51,8 +51,9 @@ TRAPUSR1() {
 source <(fzf --zsh)
 
 alias cd='z'
-alias ls='ls --color=auto --hyperlink=auto'
+alias ls='ls --color=auto --hyperlink=auto --group-directories-first --format=horizontal'
 alias grep='grep --color=auto'
+alias run='hyprctl dispatch exec'
 alias lock='hyprlock'
 alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'
 alias shutdown='shutdown now'

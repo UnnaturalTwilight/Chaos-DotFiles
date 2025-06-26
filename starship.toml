@@ -15,9 +15,12 @@ $git_commit\
 [](fg:two bg:four)\
 [(\
 $c\
+$cmake\
 $elixir\
 $elm\
 $golang\
+$python\
+$lua\
 $gradle\
 $haskell\
 $java\
@@ -27,7 +30,8 @@ $nim\
 $rust\
 $scala )](fg:two bg:four)\
 [](fg:four bg:five)\
-$docker_context\ 
+$docker_context\
+$package\ 
 [ ](fg:five)$all\
 """
 
@@ -160,6 +164,8 @@ truncation_symbol = "…/"
 "Downloads" = ""
 "Music" = ""
 "Pictures" = ""
+"Images" = ""
+"Videos" = ""
 "/mnt/c" = "C:"
 # Keep in mind that the order matters. For example:
 # "Important Documents" = " 󰈙 "
@@ -185,6 +191,16 @@ symbol = ""
 style = "bg:four"
 format = '[ $symbol ($version)]($style)'
 
+[cpp]
+symbol = "󰙲"
+style = "bg:four"
+format = '[ $symbol ($version)]($style)'
+
+[cmake]
+symbol = ""
+style = "bg:four"
+format = '[ $symbol ($version)]($style)'
+
 [elixir]
 symbol = ""
 style = "bg:four"
@@ -197,6 +213,16 @@ format = '[ $symbol ($version)]($style)'
 
 [golang]
 symbol = ""
+style = "bg:four"
+format = '[ $symbol ($version)]($style)'
+
+[python]
+symbol = "󰌠"
+style = "bg:four"
+format = '[ $symbol ($version)]($style)'
+
+[lua]
+symbol = "󰢱"
 style = "bg:four"
 format = '[ $symbol ($version)]($style)'
 
@@ -245,6 +271,11 @@ symbol = ""
 style = "bg:five"
 format = '[ $symbol $context ]($style)'
 
+[package]
+symbol = ""
+style = "bg:five"
+format = '([ $symbol $version ]($style))'
+
 [time]
 disabled = true
 time_format = "%l:%M %P" 
@@ -252,6 +283,8 @@ style = "fg:bright-black"
 format = '[ $time ]($style)'
 
 [character]
+success_symbol = "[➤](bold bright-black)"
+error_symbol = "[➤](bold bright-black)"
 disabled = true
 
 [line_break]

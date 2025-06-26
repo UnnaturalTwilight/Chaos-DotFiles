@@ -8,8 +8,6 @@
 
 ;;; Common Varables
 
-(defvar debug-buttons true)
-
 ;; hyprland
 (deflisten workspaces :initial "[]" "scripts/get-workspaces")
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
@@ -50,12 +48,15 @@
 (defpoll mntpoints :interval "30s" :initial "[]"
 "scripts/get-mounts")
 
-;; Testing only vars 
+;; Testing only vars
 (deflisten cavabars
   :initial "startup"
 "scripts/cavaiguess")
 
+(defvar debug false)
+
 ;; Common Widgets
 
 (defwidget padding [space ?expand]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand {expand ?: false}))
+  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand {expand ?: false}
+    :css {debug ? ".gap {background-color: transparentize(#b0b4bc, 0.5); margin: 8px 0px 8px 0px; border-radius: 5px;}" : ""}))

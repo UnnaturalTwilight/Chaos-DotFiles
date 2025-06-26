@@ -4,12 +4,18 @@ memoryDecay=0.6
 showTray=false
 telemetry=true
 
+[application]
+enabled=true
+
 [applications]
 enabled=true
 fuzzy=true
 use_exec=true
 use_generic_name=true
 use_keywords=true
+
+[caffeine]
+enabled=false
 
 [calculator_qalculate]
 angle_unit=0
@@ -31,6 +37,9 @@ enabled=true
 fuzzy=true
 paths=@Invalid()
 
+[github]
+enabled=false
+
 [mediaremote]
 enabled=true
 
@@ -48,7 +57,7 @@ enabled=true
 trigger="arch "
 
 [python.aur]
-enabled=true
+enabled=false
 
 [python.color]
 enabled=true
@@ -57,7 +66,13 @@ enabled=true
 enabled=false
 use_derived=false
 
+[python.locate]
+enabled=false
+
 [python.pacman]
+enabled=false
+
+[python.pass]
 enabled=false
 
 [python.tex_to_unicode]
@@ -75,8 +90,14 @@ enabled=false
 
 [system]
 command_lock=hyprlock
+command_logout=hyprctl dispatch exit
+command_poweroff=systemctl poweroff
+command_reboot=systemctl reboot
 enabled=true
 title_lock=Lock
+title_logout=Logout
+title_poweroff=Shut Down
+title_reboot=Reboot
 
 [urlhandler]
 enabled=true

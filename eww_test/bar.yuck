@@ -3,7 +3,7 @@
 ;; Widgets
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
-    (box :class "debug" :orientation "h" :spacing 10 :visible {debug-buttons}
+    (box :class "debug" :orientation "h" :spacing 10 :visible {debug}
       (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
       (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
         (button :onclick "${EWW_CMD} kill" "󰅜")))
