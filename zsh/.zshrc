@@ -14,6 +14,8 @@ zstyle :compinstall filename '/home/cal/.zshrc'
 autoload -Uz compinit
 
 fpath+=~/.config/zsh/func
+fpath+=~/programs/framework-system/completions/zsh
+
 compinit
 # End of lines added by compinstall
 
