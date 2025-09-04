@@ -121,7 +121,7 @@
       :value {EWW_DISK?.[mountpoint]?.used_perc ?: 0}
     :halign "fill" :hexpand true)
     (label :text {"${filesystem}" + " " +
-      "${byteshumanreadable((EWW_DISK?.[mountpoint]?.used ?: 0),1)}/${byteshumanreadable((EWW_DISK?.[mountpoint]?.total ?: 0),1)}"}
+      "${formatbytes((EWW_DISK?.[mountpoint]?.used ?: 0), false, "si")}/${formatbytes((EWW_DISK?.[mountpoint]?.total ?: 0), false, "si")}"}
       :visible {(EWW_DISK?.[mountpoint]?.used ?: 0) > 0}
     :halign "start")
   ))
@@ -146,7 +146,7 @@
       :active false
       :value {value}
     :halign "fill" :hexpand true)
-    (label :text {bat_time == "100%  " ? "Fully Charged" : bat_time} :halign "start")
+    (label :text {bat_time == "100%  " ? "Fully Charged" : bat_time} :halign "start" :lines 0 :limit-width 25)
   ))
 
 (defwidget tile_volume [] ; hard coded for now, will pull from global var shared with bar later
@@ -196,6 +196,6 @@
       (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
       (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width 10 :class "startBg"
         (label :text {wifi})
-        (label :text "UP: ${byteshumanreadable(EWW_NET.wlan0.NET_UP, 1)}")
-        (label :text "DOWN: ${byteshumanreadable(EWW_NET.wlan0.NET_DOWN, 1)}"))
-    )))
+        (label :text "UP: ${formatbytes(round(EWW_NET.wlan0.NET_UP, 0))}")
+        (label :text "DOWN: ${formatbytes(round(EWW_NET.wlan0.NET_DOWN, 0))}")
+    ))))
