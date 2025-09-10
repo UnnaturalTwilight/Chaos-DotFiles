@@ -1,0 +1,8 @@
+name = "bluetooth"
+name_pretty = "Bluetooth"
+icon = "bluetooth"
+global_serch = true
+
+[[entries]]
+text = "bzmenu"
+action = "bzmenu --launcher walker -i xdg"

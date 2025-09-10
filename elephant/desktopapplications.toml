@@ -1,0 +1,4 @@
+history_when_empty = true
+
+[[aliases]]
+code = "code.desktop"
