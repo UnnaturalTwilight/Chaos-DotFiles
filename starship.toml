@@ -276,6 +276,10 @@ symbol = ""
 style = "bg:five"
 format = '([ $symbol $version ]($style))'
 
+[cmd_duration]
+format = "[$duration]($style) "
+style = "bold yellow"
+
 [time]
 disabled = true
 time_format = "%l:%M %P" 

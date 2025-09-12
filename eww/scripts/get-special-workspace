@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+space (){
+  hyprctl workspaces -j | jq 'map({key: .name | tostring, value: .windows}) | from_entries | .["special:magic"]? // 0'
+}
+
+space
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | while read -r line; do
+  space
+done

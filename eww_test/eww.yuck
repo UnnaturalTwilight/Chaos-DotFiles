@@ -13,6 +13,8 @@
 (deflisten current_workspace :initial "1" "scripts/get-active-workspace")
 ; Jank cause I don't want to remove the title length liming feature. 0 = window class always displayed
 (deflisten window :initial "..." "scripts/get-window-title 900")
+(deflisten special_workspace :initial 1 "scripts/get-special-workspace")
+(deflisten special_active :initial false "scripts/get-special-active")
 
 ;; music
 (deflisten music :initial ""

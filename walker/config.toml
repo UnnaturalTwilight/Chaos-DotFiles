@@ -22,13 +22,12 @@ next = "Down"
 previous = "Up"
 toggle_exact = "ctrl e"
 resume_last_query = "ctrl r"
-quick_activate = ["F1", "F2", "F3", "F4"]
+quick_activate = ["F1", "F2", "F3", "F4", "F5"]
 
 [providers]
 default = [
   "desktopapplications",
   "calc",
-  "runner",
   "menus",
   "websearch",
 ] # providers to be queried by default

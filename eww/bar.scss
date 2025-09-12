@@ -49,11 +49,24 @@ menu {
 }
 
 .workspaces-widget {
+  .empty {
+    color: $bar-gray;
+  }
+
   .current {
     color: $pinkish;
   }
 
-  .empty {
-    color: $bar-gray;
+  .workspace-entry:hover {
+    color: transparentize($pinkish, 0.3);
+  }
+
+  .special-entry {
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+
+  .special-entry:hover {
+    color: transparentize($pinkish, 0.3);
   }
 }

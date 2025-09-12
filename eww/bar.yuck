@@ -35,11 +35,15 @@
       (label :text "${workspaces} ${current_workspace}" :visible false)
       (for workspace in workspaces
         (tooltip (label :text "${workspace.id}" :class "tooltip" )
-          (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-            (box :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+          (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}" 
+            :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
+            (box 
               (label :text "" :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
             ))))
-      (button :onclick "hyprctl dispatch togglespecialworkspace magic -q" "󱊇") (padding :space 0)
+      (button 
+        :class "special-entry ${special_active ? "current" : ""} ${special_workspace > 0 ? "occupied" : "empty"}"
+        :onclick "hyprctl dispatch togglespecialworkspace magic -q" "${special_active ? "󱊆" : "󱊇"}"
+        )
     )))
 
 (defwidget status []
