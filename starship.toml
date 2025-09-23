@@ -28,6 +28,7 @@ $julia\
 $nodejs\
 $nim\
 $rust\
+$perl\
 $scala )](fg:two bg:four)\
 [](fg:four bg:five)\
 $docker_context\
@@ -263,6 +264,11 @@ format = '[ $symbol ($version)]($style)'
 
 [scala]
 symbol = ""
+style = "bg:four"
+format = '[ $symbol ($version)]($style)'
+
+[perl]
+symbol = ""
 style = "bg:four"
 format = '[ $symbol ($version)]($style)'
 

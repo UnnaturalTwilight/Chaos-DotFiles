@@ -32,7 +32,7 @@
 "dunstctl history")
 
 ;; system
-(defpoll bright :interval "1s" :initial 0
+(defpoll bright :interval "120s" :initial 0
 "brightnessctl -m g")
 
 (defpoll volume :interval "1s" :initial "[0, false]"
@@ -42,18 +42,18 @@
 "pactl get-default-sink")
 
 (defpoll bat_time :interval "1s"
-"acpi -b | awk 'END{print $5 \" \" $6 \" \" $7}'")
+"acpi -b | awk 'END {print $5 \" \" $6 \" \" $7}'")
 
 (defpoll wifi :interval "2s"
-"nmcli -get-values NAME connection show --active | awk '!/lo/ {print}'")
+"nmcli -get-values NAME connection show --active | awk 'BEGIN {ORS=\"\"}; !/lo/ {print \"   \" $0}' | sed s/\"tun0\"/\"󰒃\"/")
 
 (defpoll mntpoints :interval "30s" :initial "[]"
 "scripts/get-mounts")
 
 ;; Testing only vars
-(deflisten cavabars
-  :initial "startup"
-"scripts/cavaiguess")
+; (deflisten cavabars
+;   :initial "startup"
+; "scripts/cavaiguess")
 
 (defvar debug false)
 
@@ -62,3 +62,16 @@
 (defwidget padding [space ?expand]
   (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand {expand ?: false}
     :css {debug ? ".gap {background-color: transparentize(#b0b4bc, 0.5); margin: 8px 0px 8px 0px; border-radius: 5px;}" : ""}))
+
+(defwidget bg-clock []
+    (box
+      :orientation "v"
+      :halign "end"
+      :valign "start"
+      (label :xalign 0 :text {formattime(EWW_TIME, "%H:%M" )})))
+
+(defwindow bg-clock
+  :monitor 1
+  :stacking "bg"
+  :geometry (geometry :x "40px" :y "20px" :width "25px" :anchor "top right")
+  (bg-clock))

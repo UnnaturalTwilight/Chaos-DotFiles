@@ -195,7 +195,8 @@
       (graph :value {EWW_NET.wlan0.NET_UP} :dynamic true :time-range "20s" :thickness 3 :class "net_up")
       (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
       (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width 10 :class "startBg"
-        (label :text {wifi})
-        (label :text "UP: ${formatbytes(round(EWW_NET.wlan0.NET_UP, 0))}")
-        (label :text "DOWN: ${formatbytes(round(EWW_NET.wlan0.NET_DOWN, 0))}")
-    ))))
+        (label :text {wifi} :unindent true)
+        (box 
+          (label :text "󰕒 ${formatbytes(round(EWW_NET.wlan0.NET_UP, 0))}" :xalign 0.5)
+          (label :text "󰇚 ${formatbytes(round(EWW_NET.wlan0.NET_DOWN, 0))}" :xalign 0.5)
+    )))))
