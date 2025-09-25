@@ -1,4 +1,4 @@
-# /bin/sh
+#! /usr/bin/env bash
 # Script to throw a couple of notifications if the system is not booted in a certain state.
 
 # check mount state of windows partition

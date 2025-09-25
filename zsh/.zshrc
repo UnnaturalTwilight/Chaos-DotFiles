@@ -6,8 +6,6 @@ setopt autocd
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/cal/.zshrc'
 
@@ -18,9 +16,6 @@ fpath+=~/programs/framework-system/completions/zsh
 
 compinit
 # End of lines added by compinstall
-
-autoload -Uz promptinit
-promptinit
 
 # pip zsh completion start
 #compdef -P pip[0-9.]#
@@ -75,6 +70,8 @@ alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
 
 alias uni-copy='kitten unicode-input | wl-copy -n'
 
+alias colour-ls='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
+
 # not sure if this is a good idea on how to do this but it works for now
 eval "$(eww shell-completions --shell zsh)"
 
@@ -84,10 +81,33 @@ promptinit
 PROMPT='%n@%m %~ %F{white}%B%#%b%f '
 RPROMPT='[%F{yellow}%?%f]'
 
-# load starship if on tty1 (hyprland) or tty2 (sddm)
-if [[ $XDG_VTNR -le 2 ]]; then
+# load starship if on tty1 (hyprland)
+if [[ $XDG_VTNR -eq 1 ]]; then
 # Transient prompt for starship: https://github.com/starship/starship/issues/888#issuecomment-2246272386
 eval "$(starship init zsh)"
 fi
+
+# Load plugins
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS+=(main brackets)
+
+# Define styles for zsh-syntax-highlighting
+# default styles can be found at: https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red'
+ZSH_HIGHLIGHT_STYLES[command]='fg=183'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=213'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=177'
+ZSH_HIGHLIGHT_STYLES[function]='fg=176'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=199'
+ZSH_HIGHLIGHT_STYLES[path]='fg=blue'
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=blue,underline'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=37'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=209'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=209'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=209'
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 eval "$(zoxide init zsh)"
