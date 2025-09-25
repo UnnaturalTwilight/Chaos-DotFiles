@@ -48,7 +48,12 @@ TRAPUSR1() {
 source <(fzf --zsh)
 
 alias cd='z'
-alias ls='ls --color=auto --hyperlink=auto --group-directories-first --format=horizontal'
+# alias ls='ls --color=auto --hyperlink=auto --group-directories-first --format=horizontal'
+alias ls='eza -x --hyperlink --group-directories-first --icons=always'
+alias ll='eza -l --hyperlink --group-directories-first --icons=always'
+alias la='eza -la --hyperlink --group-directories-first --icons=always'
+alias tree='eza -lT --hyperlink --group-directories-first --icons=always'
+
 alias grep='grep --color=auto'
 alias run='hyprctl dispatch exec'
 alias lock='hyprlock'
