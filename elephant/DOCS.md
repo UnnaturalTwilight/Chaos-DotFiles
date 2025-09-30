@@ -3,12 +3,13 @@ A service providing various datasources which can be triggered to perform action
 
 Run `elephant -h` to get an overview of the available commandline flags and actions.
 ## Elephant Configuration
-`~/.config/elephant/Elephant.toml`
+`~/.config/elephant/elephant.toml`
 #### ElephantConfig
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
-|argument_delimited|string|#|global delimiter for arguments|
+|argument_delimiter|string|#|global delimiter for arguments|
 |auto_detect_launch_prefix|bool|true|automatically detects uwsm, app2unit or systemd-run|
+|overload_local_env|bool|false|overloads the local env|
 
 ## Provider Configuration
 ### Elephant Calc
@@ -40,6 +41,7 @@ Refer to the official [libqalculate docs](https://github.com/Qalculate/libqalcul
 |placeholder|string|calculating...|placeholder to display for async update|
 |require_number|bool|true|don't perform if query does not contain a number|
 |min_chars|int|3|don't perform if query is shorter than min_chars|
+|command|string|wl-copy|default command to be executed. supports %RESULT%.|
 
 ### Elephant Clipboard
 
@@ -65,6 +67,7 @@ Store clipboard history.
 |max_items|int|100|max amount of clipboard history items|
 |image_editor_cmd|string||editor to use for images. use '%FILE%' as placeholder for file path.|
 |text_editor_cmd|string||editor to use for text, otherwise default for mimetype. use '%FILE%' as placeholder for file path.|
+|command|string|wl-copy|default command to be executed|
 
 ### Elephant Desktop Applications
 
@@ -86,13 +89,16 @@ Run installed desktop applications.
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
 |locale|string||to override systems locale|
+|action_min_score|int|20|min score for actions to be shown|
 |show_actions|bool|false|include application actions, f.e. 'New Private Window' for Firefox|
-|show_generic|bool|false|include generic info when show_actions is true|
+|show_generic|bool|true|include generic info when show_actions is true|
 |show_actions_without_query|bool|false|show application actions, if the search query is empty|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
+|only_search_title|bool|false|ignore keywords, comments etc from desktop file when searching|
 |icon_placeholder|string|applications-other|placeholder icon for apps without icon|
 |aliases|map[string]string||setup aliases for applications. Matched aliases will always be placed on top of the list. Example: 'ffp' => '<identifier>'. Check elephant log output when activating an item to get its identifier.|
+|blacklist|[]string|<empty>|blacklist desktop files from being parsed. Regexp.|
 
 ### Elephant Files
 
@@ -292,6 +298,7 @@ af,ak,am,ar,ar_SA,as,ast,az,be,bew,bg,bgn,blo,bn,br,bs,ca,ca_ES,ca_ES_VALENCIA,c
 |locale|string|en|locale to use for symbols|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
+|command|string|wl-copy|default command to be executed. supports %RESULT%.|
 
 ### Elephant Unicode
 
@@ -311,6 +318,7 @@ Search for unicode symbols
 |locale|string|en|locale to use for symbols|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
+|command|string|wl-copy|default command to be executed. supports %RESULT%.|
 
 ### Elephant Websearch
 

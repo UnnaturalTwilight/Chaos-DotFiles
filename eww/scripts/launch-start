@@ -23,8 +23,8 @@ fi
 ## Launch or close widgets accordingly
 if [[ ! -f "$FILE" ]]; then
 	touch "$FILE"
-	${EWW} --config "$CFG" open-many $PANELS
+	${EWW} --config "$CFG" open-many $PANELS --no-daemonize
 else
-	${EWW} --config "$CFG" close $PANELS
+	${EWW} --config "$CFG" close $PANELS --no-daemonize
 	rm "$FILE"
 fi

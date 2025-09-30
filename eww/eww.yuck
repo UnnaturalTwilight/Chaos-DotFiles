@@ -16,10 +16,10 @@
 
 ;; music
 (deflisten music :initial ""
-"playerctl -a --follow metadata --format '{{ artist }} - {{ title }}' || true")
+"playerctl -p mpd --follow metadata --format '{{ title }}' || true")
 
 (deflisten playing :initial ""
-"playerctl -a --follow status")
+"playerctl -p mpd --follow status")
 
 ;; dunst
 (defpoll dnd :interval "10s"

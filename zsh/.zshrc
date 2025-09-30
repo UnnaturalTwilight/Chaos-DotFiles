@@ -7,7 +7,7 @@ bindkey -e
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/cal/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
 
@@ -72,9 +72,13 @@ alias bzmenu='bzmenu --launcher walker -i xdg'
 
 alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
 
-alias uni-copy='kitten unicode-input | wl-copy -n'
-
 alias colour-ls='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
+
+# Kitten aliases
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh='kitten ssh'
+  alias uni-copy='kitten unicode-input | wl-copy -n'
+fi
 
 # not sure if this is a good idea on how to do this but it works for now
 eval "$(eww shell-completions --shell zsh)"
@@ -111,7 +115,10 @@ ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=209'
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=209'
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=209'
 
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [[ "$HOST" == "underkill" ]]; then
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 eval "$(zoxide init zsh)"

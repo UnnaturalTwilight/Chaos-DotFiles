@@ -64,10 +64,10 @@
     :spacing 10
     :halign "end"
     :visible {music != ""}
-    (button :onclick "playerctl previous" "󰑟" )
-    (button :onclick "playerctl play-pause" "${playing == 'Playing' ? '󰏤' : '󰐊'}")
-    (button :onclick "playerctl play-pause" "${music}")
-    (button :onclick "playerctl next" "󰈑")
+    (button :onclick "playerctl -p mpd previous" "󰑟" )
+    (button :onclick "playerctl -p mpd play-pause" "${playing == 'Playing' ? '󰏤' : '󰐊'}")
+    (button :onclick "playerctl -p mpd play-pause" "${music}")
+    (button :onclick "playerctl -p mpd next" "󰈑")
   ))
 
 (defwidget metric [label value onchange]
