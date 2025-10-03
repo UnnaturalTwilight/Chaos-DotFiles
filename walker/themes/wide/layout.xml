@@ -17,6 +17,8 @@
         <property name="margin-top">300</property>
         <property name="valign">start</property>
         <property name="halign">center</property>
+        <property name="width-request">700</property>
+        <property name="height-request">50</property>
         <child>
           <object class="GtkBox" id="Box">
             <style>
@@ -44,7 +46,6 @@
                     <property name="halign">fill</property>
                     <property name="hexpand-set">true</property>
                     <property name="hexpand">true</property>
-                    <property name="width-request">700</property>
                   </object>
                 </child>
               </object>
@@ -62,8 +63,9 @@
                       <class name="elephant-hint"></class>
                     </style>
                     <property name="label">Waiting for elephant...</property>
-                    <property name="height-request">100</property>
-                    <property name="width-request">700</property>
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">true</property>
+                    <property name="valign">0.5</property>
                   </object>
                 </child>
                 <child>
@@ -72,8 +74,9 @@
                       <class name="placeholder"></class>
                     </style>
                     <property name="label">No Results</property>
-                    <property name="height-request">100</property>
-                    <property name="width-request">700</property>
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">true</property>
+                    <property name="valign">0.5</property>
                   </object>
                 </child>
                 <child>
@@ -83,12 +86,12 @@
                     </style>
                     <property name="can_focus">false</property>
                     <property name="overlay-scrolling">true</property>
-                    <property name="max-content-width">700</property>
-                    <property name="min-content-width">700</property>
+                    <property name="hexpand">true</property>
+                    <property name="vexpand">false</property>
                     <property name="max-content-height">300</property>
-                    <property name="min-content-height">10</property>
+                    <property name="min-content-width">500</property>
                     <property name="propagate-natural-height">true</property>
-                    <property name="propagate-natural-width">true</property>
+                    <property name="propagate-natural-width">false</property>
                     <property name="hscrollbar-policy">automatic</property>
                     <property name="vscrollbar-policy">automatic</property>
                     <child>

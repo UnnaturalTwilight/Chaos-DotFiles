@@ -19,13 +19,12 @@ scrollbar {
 }
 
 .box-wrapper {
-  box-shadow:
+  /* box-shadow:
     0 19px 38px rgba(0, 0, 0, 0.3),
-    0 15px 12px rgba(0, 0, 0, 0.22);
-  background: @window_bg_color;
-  padding: 20px;
+    0 15px 12px rgba(0, 0, 0, 0.22); */
+  /* background: alpha(@window_bg_color, 0.5); */
+  padding: 10px;
   border-radius: 20px;
-  border: 3px solid darker(@accent_bg_color);
 }
 
 .preview-box,
@@ -38,7 +37,9 @@ scrollbar {
 }
 
 .search-container {
-  border-radius: 10px;
+  background: alpha(@window_bg_color, 0.9);
+  padding: 10px;
+  border-radius: 20px;
 }
 
 .input placeholder {
@@ -50,6 +51,7 @@ scrollbar {
   background: lighter(@window_bg_color);
   padding: 10px;
   color: @theme_fg_color;
+  border-radius: 10px;
 }
 
 .input:focus,
@@ -57,6 +59,9 @@ scrollbar {
 }
 
 .content-container {
+  background: alpha(@window_bg_color, 0.9);
+  padding: 10px;
+  border-radius: 20px;
 }
 
 .placeholder {
@@ -66,7 +71,7 @@ scrollbar {
 }
 
 .list {
-  color: #D35D6E;
+  color: @theme_fg_color;
 }
 
 child {
@@ -79,21 +84,21 @@ child {
 
 .item-quick-activation {
   margin-left: 10px;
-  background: alpha(@accent_bg_color, 0.25);
+  background: alpha(@accent_bg_color, 0.75);
   border-radius: 5px;
   padding: 10px;
 }
 
 child:hover .item-box,
 child:selected .item-box {
-  background: alpha(@accent_bg_color, 0.25);
+  background: alpha(@accent_bg_color, 0.75);
 }
 
 .item-text-box {
 }
 
 .item-text {
-  color: #D35D6E;
+
 }
 
 .item-subtext {
@@ -119,7 +124,7 @@ child:selected .item-box {
 }
 
 .calc .item-text {
-  font-size: 24px;
+  /* font-size: 24px; */
 }
 
 .calc .item-subtext {
