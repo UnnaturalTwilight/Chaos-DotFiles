@@ -61,8 +61,7 @@ alias shutdown='shutdown now'
 alias soft-reboot='systemctl soft-reboot'
 alias logout='hyprctl dispatch exit'
 
-alias eww='$HOME/programs/eww/target/release/eww'
-alias eww-test='$HOME/programs/eww/target/release/eww -c ~/.config/eww_test'
+alias eww-test='eww -c ~/.config/eww_test'
 
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'
@@ -80,9 +79,6 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
   alias uni-copy='kitten unicode-input | wl-copy -n'
 fi
 
-# not sure if this is a good idea on how to do this but it works for now
-eval "$(eww shell-completions --shell zsh)"
-
 autoload -Uz promptinit
 promptinit
 
@@ -90,7 +86,7 @@ PROMPT='%n@%m %~ %F{white}%B%#%b%f '
 RPROMPT='[%F{yellow}%?%f]'
 
 # load starship if on tty1 (hyprland)
-if [[ $XDG_VTNR -eq 1 ]]; then
+if [[ "$COLORTERM" == "truecolor" ]]; then
 # Transient prompt for starship: https://github.com/starship/starship/issues/888#issuecomment-2246272386
 eval "$(starship init zsh)"
 fi

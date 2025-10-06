@@ -25,6 +25,7 @@ scrollbar {
   /* background: alpha(@window_bg_color, 0.5); */
   padding: 10px;
   border-radius: 20px;
+  /* border: 1px solid darker(@accent_bg_color); */
 }
 
 .preview-box,
@@ -98,7 +99,6 @@ child:selected .item-box {
 }
 
 .item-text {
-
 }
 
 .item-subtext {
@@ -108,12 +108,6 @@ child:selected .item-box {
 
 .item-image {
   margin-right: 10px;
-}
-
-.keybind-hints {
-  font-size: 12px;
-  opacity: 0.5;
-  color: @theme_fg_color;
 }
 
 .preview {
@@ -146,6 +140,35 @@ child:selected .item-box {
   font-weight: bold;
 }
 
+.bluetooth.disconnected {
+  opacity: 0.5;
+}
+
 .preview .large-icons {
   -gtk-icon-size: 64px;
+}
+
+.keybinds-wrapper {
+  /* border-top: 1px solid lighter(@window_bg_color); */
+  background: alpha(@window_bg_color, 0.9);
+  padding: 10px;
+  border-radius: 20px;
+  
+  font-size: 12px;
+  opacity: 0.5;
+  color: @theme_fg_color;
+}
+
+.keybinds {
+}
+
+.keybind {
+}
+
+.keybind-bind {
+  /* color: lighter(@window_bg_color); */
+  font-weight: bold;
+}
+
+.keybind-label {
 }

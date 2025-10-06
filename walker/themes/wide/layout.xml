@@ -87,7 +87,7 @@
                     <property name="can_focus">false</property>
                     <property name="overlay-scrolling">true</property>
                     <property name="hexpand">true</property>
-                    <property name="vexpand">false</property>
+                    <property name="vexpand">true</property>
                     <property name="max-content-height">300</property>
                     <property name="min-content-width">500</property>
                     <property name="propagate-natural-height">true</property>
@@ -115,11 +115,22 @@
               </object>
             </child>
             <child>
-              <object class="GtkLabel" id="Keybinds">
+              <object class="GtkBox" id="KeybindsWrapper">
+                <property name="hexpand">true</property>
                 <style>
-                  <class name="keybind-hints"></class>
+                  <class name="keybinds-wrapper"></class>
                 </style>
-                <property name="xalign">1</property>
+                <child>
+                  <object class="GtkBox" id="Keybinds">
+                    <property name="hexpand">true</property>
+                    <property name="halign">end</property>
+                    <property name="spacing">10</property>
+                    <property name="margin-top">0</property>
+                    <style>
+                      <class name="keybinds"></class>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
