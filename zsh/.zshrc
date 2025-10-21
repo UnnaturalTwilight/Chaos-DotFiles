@@ -7,7 +7,7 @@ bindkey -e
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '$HOME/.zshrc'
+zstyle :compinstall filename '$ZDOTDIR/.zshrc'
 
 autoload -Uz compinit
 
@@ -15,22 +15,6 @@ fpath+=~/.config/zsh/func
 
 compinit
 # End of lines added by compinstall
-
-# pip zsh completion start
-#compdef -P pip[0-9.]#
-__pip() {
-  compadd $( COMP_WORDS="$words[*]" \
-             COMP_CWORD=$((CURRENT-1)) \
-             PIP_AUTO_COMPLETE=1 $words[1] 2>/dev/null )
-}
-if [[ $zsh_eval_context[-1] == loadautofunc ]]; then
-  # autoload from fpath, call function directly
-  __pip "$@"
-else
-  # eval/source/. command, register function for later
-  compdef __pip -P 'pip[0-9.]#'
-fi
-# pip zsh completion end
 
 # help function
 autoload -Uz run-help
@@ -46,12 +30,21 @@ TRAPUSR1() {
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
+function yazi-cwd() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# Aliases
 alias cd='z'
 # alias ls='ls --color=auto --hyperlink=auto --group-directories-first --format=horizontal'
-alias ls='eza -x --hyperlink --group-directories-first --icons=always'
-alias ll='eza -l --hyperlink --group-directories-first --icons=always'
-alias la='eza -la --hyperlink --group-directories-first --icons=always'
-alias tree='eza -lT --hyperlink --group-directories-first --icons=always'
+alias ls='eza -x --hyperlink --group-directories-first --icons=auto'
+alias ll='eza -l --hyperlink --group-directories-first --icons=auto'
+alias la='eza -la --hyperlink --group-directories-first --icons=auto'
+alias tree='eza -lT --hyperlink --group-directories-first --icons=auto'
 
 alias grep='grep --color=auto'
 alias run='hyprctl dispatch exec'
@@ -66,10 +59,11 @@ alias eww-test='eww -c ~/.config/eww_test'
 alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
 alias vpn='windscribe-cli'
 alias vlc='env -u DISPLAY vlc' # run vlc in wayland
+alias yazi='yazi-cwd'
 
-alias bzmenu='bzmenu --launcher walker -i xdg'
+alias bzmenu='bzmenu --launcher walker'
 
-alias music-dl='wl-copy -c && wl-paste -w yt-dlp -m -a -'
+alias music-dl='wl-copy -c && wl-paste -w $HOME/.config/scripts/music-dl-echo.sh'
 
 alias colour-ls='for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
 

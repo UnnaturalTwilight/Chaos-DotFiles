@@ -7,7 +7,6 @@ Run `elephant -h` to get an overview of the available commandline flags and acti
 #### ElephantConfig
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
-|argument_delimiter|string|#|global delimiter for arguments|
 |auto_detect_launch_prefix|bool|true|automatically detects uwsm, app2unit or systemd-run|
 |overload_local_env|bool|false|overloads the local env|
 
@@ -37,11 +36,13 @@ Refer to the official [libqalculate docs](https://github.com/Qalculate/libqalcul
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |max_items|int|100|max amount of calculation history items|
 |placeholder|string|calculating...|placeholder to display for async update|
 |require_number|bool|true|don't perform if query does not contain a number|
 |min_chars|int|3|don't perform if query is shorter than min_chars|
-|command|string|wl-copy|default command to be executed. supports %RESULT%.|
+|command|string|wl-copy|default command to be executed. supports %VALUE%.|
+|async|bool|true|calculation will be send async|
 
 ### Elephant Clipboard
 
@@ -64,10 +65,12 @@ Store clipboard history.
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |max_items|int|100|max amount of clipboard history items|
 |image_editor_cmd|string||editor to use for images. use '%FILE%' as placeholder for file path.|
 |text_editor_cmd|string||editor to use for text, otherwise default for mimetype. use '%FILE%' as placeholder for file path.|
 |command|string|wl-copy|default command to be executed|
+|recopy|bool|true|recopy content to make it persistent after closing a window|
 
 ### Elephant Desktop Applications
 
@@ -87,6 +90,7 @@ Run installed desktop applications.
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
 |locale|string||to override systems locale|
 |action_min_score|int|20|min score for actions to be shown|
@@ -122,6 +126,7 @@ Find files/folders.
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
 
 ### Elephant Menus
@@ -131,13 +136,16 @@ Create custom menus.
 #### Features
 
 - seamless menus
-- use dmenu's as submenus
-- drag&drop files into other programs
-- copy file/path
+- create submenus
+- define multiple actions per entry
 
 #### How to create a menu
 
 Default location for menu definitions is `~/.config/elephant/menus/`. Simply place a file in there, see examples below.
+
+#### Actions for submenus/dmenus
+
+Submenus/Dmenus will automatically get an action `open`.
 
 #### Examples
 
@@ -148,22 +156,58 @@ icon = "applications-other"
 global_search = true
 
 [[entries]]
+text = "Color Picker"
+keywords = ["color", "picker", "hypr"]
+actions = { "cp_use" = "wl-copy $(hyprpicker)" }
+icon = "color-picker"
+
+[[entries]]
+icon = "zoom-in"
+text = "Zoom Toggle"
+actions = { "zoom_use" = "hyprctl -q keyword cursor:zoom_factor $(hyprctl getoption cursor:zoom_factor -j | jq '(.float) | if . > 1 then 1 else 1.5 end')" }
+
+[[entries]]
 text = "Volume"
 async = "echo $(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 icon = "audio-volume-high"
-action = "wpctl set-volume @DEFAULT_AUDIO_SINK@ %RESULT%"
+
+[entries.actions]
+"volume_raise" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"
+"volume_lower" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"
+"volume_mute" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0"
+"volume_unmute" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1"
+"volume_set" = "wpctl set-volume @DEFAULT_AUDIO_SINK@ %VALUE%"
+
+[[entries]]
+keywords = ["disk", "drive", "space"]
+text = "Disk"
+actions = { "disk_copy" = "wl-copy '%VALUE%'" }
+async = """echo $(df -h / | tail -1 | awk '{print "Used: " $3 " - Available: " $4 " - Total: " $2}')"""
+icon = "drive-harddisk"
+
+[[entries]]
+text = "Mic"
+async = "echo $(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)"
+icon = "audio-input-microphone"
+actions = { "mic_set" = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ %VALUE%" }
 
 [[entries]]
 text = "System"
 async = """echo $(echo "Memory: $(free -h | awk '/^Mem:/ {printf "%s/%s", $3, $2}') | CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{printf "%.1f%%", 100 - $8}')")"""
 icon = "computer"
-action = ""
 
 [[entries]]
 text = "Today"
+keywords = ["date", "today", "calendar"]
 async = """echo $(date "+%H:%M - %d.%m. %A - KW %V")"""
 icon = "clock"
-action = ""
+actions = { "open_cal" = "xdg-open https://calendar.google.com" }
+
+[[entries]]
+text = "uuctl"
+keywords = ["uuctl"]
+icon = "applications-system"
+submenu = "dmenu:uuctl"
 ```
 
 ```toml
@@ -174,27 +218,56 @@ global_search = true
 
 [[entries]]
 text = "View"
-action = "vimiv ~/Pictures/"
+actions = { "view" = "vimiv ~/Pictures/" }
 
 [[entries]]
 text = "Annotate"
-action = "wl-paste | satty -f -"
+actions = { "annotate" = "wl-paste | satty -f -" }
 
 [[entries]]
 text = "Toggle Record"
-action = "record"
+actions = { "record" = "record" }
+
+[[entries]]
+text = "OCR"
+keywords = ["ocr", "text recognition", "OCR"]
+actions = { "ocr" = "wayfreeze --hide-cursor --after-freeze-cmd 'grim -g \"$(slurp)\" - | tesseract stdin stdout -l deu+eng | wl-copy; killall wayfreeze'" }
 
 [[entries]]
 text = "Screenshot Region"
-action = "wayfreeze --after-freeze-cmd 'IMG=~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" $IMG && wl-copy < $IMG; killall wayfreeze'"
+actions = { "region" = "wayfreeze --hide-cursor --after-freeze-cmd 'IMG=~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && grim -g \"$(slurp)\" $IMG && wl-copy < $IMG; killall wayfreeze'" }
 
 [[entries]]
 text = "Screenshot Window"
-action = "wayfreeze --after-freeze-cmd 'IMG=~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && grim $IMG && wl-copy < $IMG; killall wayfreeze'"
+actions = { "window" = "wayfreeze --after-freeze-cmd 'IMG=~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && grim $IMG && wl-copy < $IMG; killall wayfreeze'" }
 
 [[entries]]
 text = "other menu"
 submenu = "other"
+```
+
+```toml
+name = "bookmarks"
+name_pretty = "Bookmarks"
+icon = "bookmark"
+global_search = true
+action = "xdg-open %VALUE%"
+
+[[entries]]
+text = "Walker"
+value = "https://github.com/abenz1267/walker"
+
+[[entries]]
+text = "Elephant"
+value = "https://github.com/abenz1267/elephant"
+
+[[entries]]
+text = "Drive"
+value = "https://drive.google.com"
+
+[[entries]]
+text = "Prime"
+value = "https://www.amazon.de/gp/video/storefront/"
 ```
 
 
@@ -204,18 +277,19 @@ submenu = "other"
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |paths|[]string||additional paths to check for menu definitions.|
 
 `~/.config/elephant/menus.toml`
 #### Menu
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |name|string||name of the menu|
 |name_pretty|string||prettier name you usually want to display to the user.|
 |description|string||used as a subtext|
 |icon|string||default icon|
-|action|string||default action|
-|global_search|bool||sets if entries in this menu should be searchable globally without being in the menu|
+|action|string||default menu action to use|
 |entries|[]common.Entry||menu items|
 |terminal|bool||execute action in terminal or not|
 |keywords|[]string||searchable keywords|
@@ -223,14 +297,15 @@ submenu = "other"
 |history|bool||make use of history for sorting|
 |history_when_empty|bool||consider history when query is empty|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|parent|string||defines the parent menu|
 #### Entry
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |text|string||text for entry|
 |async|string||if the text should be updated asynchronously based on the action|
 |subtext|string||sub text for entry|
-|value|string||value to be used for the action, defaults to the text if empty|
-|action|string||action to run|
+|value|string||value to be used for the action.|
+|actions|map[string]string||actions items can use|
 |terminal|bool||runs action in terminal if true|
 |icon|string||icon for entry|
 |submenu|string||submenu to open, if has prefix 'dmenu:' it'll launch that dmenu|
@@ -249,6 +324,7 @@ Lists all installed providers and configured menus.
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |hidden|[]string|<empty>|hidden providers|
 
 ### Elephant Runner
@@ -267,8 +343,10 @@ Execute everything installed in your $PATH.
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
+|generic_text|string|run: |text prefix for generic run-anything entry|
 |explicits|[]main.ExplicitItem||use this explicit list, instead of searching $PATH|
 #### ExplicitItem
 | Field | Type | Default | Description |
@@ -295,10 +373,11 @@ af,ak,am,ar,ar_SA,as,ast,az,be,bew,bg,bgn,blo,bn,br,bs,ca,ca_ES,ca_ES_VALENCIA,c
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |locale|string|en|locale to use for symbols|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
-|command|string|wl-copy|default command to be executed. supports %RESULT%.|
+|command|string|wl-copy|default command to be executed. supports %VALUE%.|
 
 ### Elephant Unicode
 
@@ -315,10 +394,11 @@ Search for unicode symbols
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |locale|string|en|locale to use for symbols|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
-|command|string|wl-copy|default command to be executed. supports %RESULT%.|
+|command|string|wl-copy|default command to be executed. supports %VALUE%.|
 
 ### Elephant Websearch
 
@@ -340,11 +420,14 @@ url = "https://www.google.com/search?q=%TERM%"
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
-|entries|[]main.Entry||entries|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|entries|[]main.Engine|google|entries|
 |max_global_items_to_display|int|1|will only show the global websearch entry if there are at most X results.|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
-#### Entry
+|engines_as_actions|bool|true|run engines as actions|
+|text_prefix|string|Search: |prefix for the entry text|
+#### Engine
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |name|string||name of the entry|

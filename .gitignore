@@ -46,3 +46,6 @@
 /.mozilla
 /kicad
 /mpd/playlists
+/zsh/.zcompdump
+/yazi/plugins
+/yazi/flavors

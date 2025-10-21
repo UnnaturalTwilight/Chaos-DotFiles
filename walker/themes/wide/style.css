@@ -1,6 +1,8 @@
 @define-color window_bg_color #1f1f28;
 @define-color accent_bg_color #54546d;
 @define-color theme_fg_color #f2ecbc;
+@define-color error_bg_color #C34043;
+@define-color error_fg_color #DCD7BA;
 
 * {
   all: unset;
@@ -22,10 +24,10 @@ scrollbar {
   /* box-shadow:
     0 19px 38px rgba(0, 0, 0, 0.3),
     0 15px 12px rgba(0, 0, 0, 0.22); */
-  /* background: alpha(@window_bg_color, 0.5); */
+  background: alpha(@window_bg_color, 0.5);
   padding: 10px;
   border-radius: 20px;
-  /* border: 1px solid darker(@accent_bg_color); */
+  border: 1px solid darker(@accent_bg_color);
 }
 
 .preview-box,
@@ -38,9 +40,9 @@ scrollbar {
 }
 
 .search-container {
-  background: alpha(@window_bg_color, 0.9);
-  padding: 10px;
-  border-radius: 20px;
+  /* background: alpha(@window_bg_color, 0.9); */
+  /* padding: 10px; */
+  /* border-radius: 20px; */
 }
 
 .input placeholder {
@@ -61,7 +63,7 @@ scrollbar {
 
 .content-container {
   background: alpha(@window_bg_color, 0.9);
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 20px;
 }
 
@@ -85,14 +87,14 @@ child {
 
 .item-quick-activation {
   margin-left: 10px;
-  background: alpha(@accent_bg_color, 0.75);
+  background: alpha(@accent_bg_color, 0.25);
   border-radius: 5px;
   padding: 10px;
 }
 
 child:hover .item-box,
 child:selected .item-box {
-  background: alpha(@accent_bg_color, 0.75);
+  background: alpha(@accent_bg_color, 0.25);
 }
 
 .item-text-box {
@@ -106,8 +108,13 @@ child:selected .item-box {
   opacity: 0.5;
 }
 
-.item-image {
+.item-image,
+.item-image-text {
   margin-right: 10px;
+}
+
+.item-image-text {
+  font-size: 28px;
 }
 
 .preview {
@@ -150,12 +157,11 @@ child:selected .item-box {
 
 .keybinds-wrapper {
   /* border-top: 1px solid lighter(@window_bg_color); */
-  background: alpha(@window_bg_color, 0.9);
-  padding: 10px;
-  border-radius: 20px;
+  /* background: alpha(@window_bg_color, 0.6); */
+  /* padding: 10px; */
+  /* border-radius: 20px; */
   
   font-size: 12px;
-  opacity: 0.5;
   color: @theme_fg_color;
 }
 
@@ -171,4 +177,10 @@ child:selected .item-box {
 }
 
 .keybind-label {
+}
+
+.error {
+  padding: 10px;
+  background: @error_bg_color;
+  color: @error_fg_color;
 }

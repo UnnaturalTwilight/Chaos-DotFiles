@@ -1,0 +1,19 @@
+[[plugin.deps]]
+use = "yazi-rs/plugins:smart-enter"
+rev = "9a52857"
+hash = "56fdabc96fc1f4d53c96eb884b02a5be"
+
+[[plugin.deps]]
+use = "Rolv-Apneseth/starship"
+rev = "a63550b"
+hash = "c2021386289a0cbb3e152a052f67c177"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:dracula"
+rev = "f9ae9f2"
+hash = "332a585ed99a41ba2cda58cc87ad2138"
+
+[[flavor.deps]]
+use = "yazi-rs/flavors:catppuccin-mocha"
+rev = "f9ae9f2"
+hash = "5dda92e60fca4f206874ee187b3dfb67"
