@@ -9,3 +9,6 @@
 # best quality
 --audio-quality 0 
 --embed-square-thumbnail
+
+#fix yt
+--extractor-args "youtube:player_js_version=actual"
