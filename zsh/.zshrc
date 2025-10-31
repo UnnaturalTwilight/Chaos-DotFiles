@@ -47,16 +47,17 @@ alias la='eza -la --hyperlink --group-directories-first --icons=auto'
 alias tree='eza -lT --hyperlink --group-directories-first --icons=auto'
 
 alias grep='grep --color=auto'
-alias run='hyprctl dispatch exec'
+alias run='hyprctl dispatch exec --'
 alias lock='hyprlock'
-alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'
 alias shutdown='shutdown now'
 alias soft-reboot='systemctl soft-reboot'
 alias logout='hyprctl dispatch exit'
 
 alias eww-test='eww -c ~/.config/eww_test'
 
-alias fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
+alias mini-fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
+alias fetch='fastfetch --kitty-icat ~/Images/GendyFluidMoon.png --logo-width 39'
+
 alias vpn='windscribe-cli'
 alias vlc='env -u DISPLAY vlc' # run vlc in wayland
 alias yazi='yazi-cwd'
@@ -66,12 +67,16 @@ alias bzmenu='bzmenu --launcher walker'
 alias music-dl='wl-copy -c && wl-paste -w $HOME/.config/scripts/music-dl-echo.sh'
 
 alias colour-ls='for i in {0..15}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+"\n"}; done;
-				 for i in {16..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
+		   echo; for i in {16..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
+
+if [[ "$HOST" == "underkill" ]]; then
+	alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'
+fi
 
 # Kitten aliases
 if [[ "$TERM" == "xterm-kitty" ]]; then
-  alias ssh='kitten ssh'
-  alias uni-copy='kitten unicode-input | wl-copy -n'
+	alias ssh='kitten ssh'
+	alias uni-copy='kitten unicode-input | wl-copy -n'
 fi
 
 autoload -Uz promptinit
@@ -94,14 +99,14 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS+=(main brackets)
 # default styles can be found at: https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/highlighters/main/main-highlighter.zsh
 typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red'
-ZSH_HIGHLIGHT_STYLES[command]='fg=183'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=213'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=177'
-ZSH_HIGHLIGHT_STYLES[function]='fg=176'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=199'
+ZSH_HIGHLIGHT_STYLES[command]='fg=magenta' #183
+ZSH_HIGHLIGHT_STYLES[alias]='fg=magenta' #213
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=magenta' #177
+ZSH_HIGHLIGHT_STYLES[function]='fg=magenta' #176
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=013,bold' #199
 ZSH_HIGHLIGHT_STYLES[path]='fg=blue'
 ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=blue,underline'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=37'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=037'
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=209'
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=209'
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=209'

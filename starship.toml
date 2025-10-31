@@ -6,6 +6,7 @@ $os\
 $sudo\
 $username\
 $hostname\
+[ ](bg:zero)\
 [](fg:zero bg:one)\
 $directory\
 [](fg:one bg:two)\
@@ -29,7 +30,7 @@ $nodejs\
 $nim\
 $rust\
 $perl\
-$scala )](fg:two bg:four)\
+$scala )](bg:four)\
 [](fg:four bg:five)\
 $docker_context\
 $package\ 
@@ -84,13 +85,13 @@ six = '#ffffff'
 show_always = true
 style_user = "bg:zero"
 style_root = "bg:zero"
-format = '[$user ]($style)'
+format = '[$user]($style)'
 disabled = false
 
 [hostname]
 ssh_only = true
-ssh_symbol = ""
-format = '([$ssh_symbol ]($style))[$hostname ]($style)'
+ssh_symbol = "@"
+format = '([$ssh_symbol]($style))[$hostname]($style)'
 style = "bg:zero"
 
 [sudo]
@@ -293,8 +294,8 @@ style = "fg:bright-black"
 format = '[ $time ]($style)'
 
 [character]
-success_symbol = "[➤](bold bright-black)"
-error_symbol = "[➤](bold bright-black)"
+success_symbol = "[➤ ](bold bright-black)"
+error_symbol = "[➤ ](bold bright-black)"
 disabled = true
 
 [line_break]

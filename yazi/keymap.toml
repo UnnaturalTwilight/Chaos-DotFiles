@@ -15,3 +15,8 @@ desc = "yank and copy file paths to clipboard"
 on   = "<Esc>"
 run  = "close"
 desc = "Cancel input"
+
+[[input.prepend_keymap]]
+on   = "<C-q>"
+run  = "quit --no-cwd-file"
+desc = "Quit without outputting cwd-file"
