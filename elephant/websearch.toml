@@ -1,4 +1,4 @@
-max_global_items_to_display = 20
+max_global_items_to_display = 5
 
 [[entries]]
 default = true

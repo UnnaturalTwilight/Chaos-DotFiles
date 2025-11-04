@@ -146,7 +146,7 @@
       :active false
       :value {value}
     :halign "fill" :hexpand true)
-    (label :text {bat_time == "100%  " ? "Fully Charged" : bat_time} :halign "start" :lines 0 :limit-width 25)
+    (label :text {bat_time == "100%  " ? "Fully Charged" : "${bat_time} ${bat_time_short}"} :halign "start" :lines 0 :limit-width 25)
   ))
 
 (defwidget tile_volume [] ; hard coded for now, will pull from global var shared with bar later

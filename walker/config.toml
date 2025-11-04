@@ -42,12 +42,16 @@ prefix = ";"
 provider = "providerlist"
 
 [[providers.prefixes]]
-prefix = "/"
+prefix = "~"
 provider = "files"
 
 [[providers.prefixes]]
 prefix = "."
 provider = "symbols"
+
+[[providers.prefixes]]
+prefix = "\\"
+provider = "unicode"
 
 # [[providers.prefixes]]
 # prefix = "!"

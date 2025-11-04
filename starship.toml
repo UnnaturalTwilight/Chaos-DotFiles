@@ -1,7 +1,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](zero)\
+[](fg:zero)\
 $os\
 $sudo\
 $username\
@@ -44,47 +44,31 @@ $package\
 palette = 'default'
 
 [palettes.default]
-zero = '#9A348E'
-one = '#DA627D'
-two = '#FCA17D'
-three = '#86BBD8'
-four = '#06969A'
-five = '#33658A'
-six = '#ffffff'
+zero      = '#9A348E'
+one       = '#DA627D'
+two       = '#FCA17D'
+three     = '#86BBD8'
+four      = '#06969A'
+five      = '#33658A'
+bright    = '#e5e5e5'
+dark      = 'bright-black'
 
 [palettes.test]
-zero = '#ff0000'
-one = '#00ff00'
-two = '#0000ff'
-three = '#ffff00'
-four = '#00ffff'
-five = '#000000'
-six = '#ffffff'
-
-[palettes.trans]
-zero = '#5bcefa'
-one = '#f5a9b8'
-two = '#ffffff'
-three = '#f5a9b8'
-four = '#f5a9b8'
-five = '#5bcefa'
-six = '#ffffff'
-
-[palettes.gendy]
-zero = '#ff76a4'
-one = '#ffffff'
-two = '#c011d7'
-three = '#000000'
-four = '#000000'
-five = '#2f3cb9'
-six = '#ffffff'
+zero      = '#ff0000'
+one       = '#00ff00'
+two       = '#0000ff'
+three     = '#ffff00'
+four      = '#00ffff'
+five      = '#ff00ff'
+bright    = '#e5e5e5'
+dark      = 'bright-black'
 
 # You can also replace your username with a neat symbol like   or disable this
 # and use the os module below
 [username]
 show_always = true
 style_user = "bg:zero"
-style_root = "bg:zero"
+style_root = "bg:zero italic"
 format = '[$user]($style)'
 disabled = false
 
@@ -92,7 +76,7 @@ disabled = false
 ssh_only = true
 ssh_symbol = "@"
 format = '([$ssh_symbol]($style))[$hostname]($style)'
-style = "bg:zero"
+style = "bg:zero fg:textlight"
 
 [sudo]
 format = '[$symbol ]($style)'
@@ -177,16 +161,16 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:two"
+style = "bg:two fg:bright"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:two"
+style = "bg:two fg:bright"
 format = '([$all_status$ahead_behind ]($style))'
 
 [git_commit]
 tag_symbol = '  '
-style = "bg:two"
+style = "bg:two fg:bright"
 
 [c]
 symbol = ""
@@ -290,12 +274,12 @@ style = "bold yellow"
 [time]
 disabled = true
 time_format = "%l:%M %P" 
-style = "fg:bright-black"
+style = "fg:dark"
 format = '[ $time ]($style)'
 
 [character]
-success_symbol = "[➤ ](bold bright-black)"
-error_symbol = "[➤ ](bold bright-black)"
+success_symbol = "[➤ ](fg:dark bold)"
+error_symbol = "[➤ ](fg:dark bold)"
 disabled = true
 
 [line_break]

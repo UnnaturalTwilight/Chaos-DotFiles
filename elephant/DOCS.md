@@ -9,8 +9,58 @@ Run `elephant -h` to get an overview of the available commandline flags and acti
 | --- | ---- | ---- | --- |
 |auto_detect_launch_prefix|bool|true|automatically detects uwsm, app2unit or systemd-run|
 |overload_local_env|bool|false|overloads the local env|
+|ignored_providers|[]string|<empty>|providers to ignore|
 
 ## Provider Configuration
+### Elephant Archlinux Packages
+
+Find, install and delete packages. Including AUR.
+
+#### Features
+
+- find official packages
+- find AUR packages
+- install packages
+- list all exclusively installed packages
+- remove packages
+- clear all done items
+
+#### Requirements
+
+- `yay` or `paru` for AUR
+
+#### Usage
+
+In order to only display installed packages, prefix your query with `i:` (default).
+
+
+`~/.config/elephant/archlinuxpkgs.toml`
+#### Config
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|icon|string|depends on provider|icon for provider|
+|min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|refresh_interval|int|60|refresh database every X minutes. 0 disables the automatic refresh and refreshing requires an elephant restart.|
+|installed_prefix|string|i:|prefix to use to show only explicitly installed packages|
+
+### Elephant Bluetooth
+
+Simple bluetooth management. Connect/Disconnect. Pair/Remove. Trust/Untrust.
+
+#### Requirements
+
+- `bluetoothctl`
+
+
+`~/.config/elephant/bluetooth.toml`
+#### Config
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|icon|string|depends on provider|icon for provider|
+|min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+
 ### Elephant Calc
 
 Perform calculation and unit-conversions.
@@ -41,7 +91,7 @@ Refer to the official [libqalculate docs](https://github.com/Qalculate/libqalcul
 |placeholder|string|calculating...|placeholder to display for async update|
 |require_number|bool|true|don't perform if query does not contain a number|
 |min_chars|int|3|don't perform if query is shorter than min_chars|
-|command|string|wl-copy|default command to be executed. supports %VALUE%.|
+|command|string|wl-copy -n %VALUE%|default command to be executed. supports %VALUE%.|
 |async|bool|true|calculation will be send async|
 
 ### Elephant Clipboard
@@ -57,6 +107,7 @@ Store clipboard history.
 #### Requirements
 
 - `wl-clipboard`
+- `imagemagick`
 
 
 `~/.config/elephant/clipboard.toml`
@@ -71,6 +122,8 @@ Store clipboard history.
 |text_editor_cmd|string||editor to use for text, otherwise default for mimetype. use '%FILE%' as placeholder for file path.|
 |command|string|wl-copy|default command to be executed|
 |recopy|bool|true|recopy content to make it persistent after closing a window|
+|ignore_symbols|bool|true|ignores symbols/unicode|
+|auto_cleanup|int|0|will automatically cleanup entries entries older than X minutes|
 
 ### Elephant Desktop Applications
 
@@ -103,6 +156,9 @@ Run installed desktop applications.
 |icon_placeholder|string|applications-other|placeholder icon for apps without icon|
 |aliases|map[string]string||setup aliases for applications. Matched aliases will always be placed on top of the list. Example: 'ffp' => '<identifier>'. Check elephant log output when activating an item to get its identifier.|
 |blacklist|[]string|<empty>|blacklist desktop files from being parsed. Regexp.|
+|window_integration|bool|false|will enable window integration, meaning focusing an open app instead of opening a new instance|
+|window_integration_ignore_actions|bool|true|will ignore the window integration for actions|
+|wm_integration|bool|false|Moves apps to the workspace where they were launched at automatically. Currently Niri only.|
 
 ### Elephant Files
 
@@ -114,6 +170,12 @@ Find files/folders.
 - open files, folders
 - drag&drop files into other programs
 - copy file/path
+
+#### Example `ignored_dirs`
+
+```toml
+ignored_dirs = ["/home/andrej/Documents/", "/home/andrej/Videos"]
+```
 
 #### Requirements
 
@@ -128,6 +190,8 @@ Find files/folders.
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
+|ignored_dirs|[]string||ignore these directories|
+|fd_flags|string|--ignore-vcs --type file --type directory|flags for fd|
 
 ### Elephant Menus
 
@@ -138,6 +202,7 @@ Create custom menus.
 - seamless menus
 - create submenus
 - define multiple actions per entry
+- dynamic menus with Lua
 
 #### How to create a menu
 
@@ -270,6 +335,65 @@ text = "Prime"
 value = "https://www.amazon.de/gp/video/storefront/"
 ```
 
+#### Lua Example
+
+By default, the Lua script will be called on every empty query. If you don't want this behaviour, but instead want to cache the query once, you can set `Cache=true` in the menu's config.
+
+```lua
+Name = "luatest"
+NamePretty = "Lua Test"
+Icon = "applications-other"
+Cache = true
+Action = "notify-send %VALUE%"
+HideFromProviderlist = false
+Description = "lua test menu"
+SearchName = true
+
+function GetEntries()
+    local entries = {}
+    local wallpaper_dir = "/home/andrej/Documents/ArchInstall/wallpapers"
+
+    local handle = io.popen("find '" ..
+        wallpaper_dir ..
+        "' -maxdepth 1 -type f -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' -o -name '*.gif' -o -name '*.bmp' -o -name '*.webp' 2>/dev/null")
+    if handle then
+        for line in handle:lines() do
+            local filename = line:match("([^/]+)$")
+            if filename then
+                table.insert(entries, {
+                    Text = filename,
+                    Subtext = "wallpaper",
+                    Value = line,
+                    Actions = {
+                        up = "notify-send up",
+                        down = "notify-send down",
+                    },
+                    -- Preview = line,
+                    -- PreviewType = "file",
+                    -- Icon = line
+                })
+            end
+        end
+        handle:close()
+    end
+
+    return entries
+end
+```
+
+You can call Lua functions as actions as well:
+
+```Lua
+Actions = {
+    test = "lua:Test",
+}
+
+function Test(value, args)
+    os.execute("notify-send '" .. value .. "'")
+    os.execute("notify-send '" .. args .. "'")
+end
+```
+
 
 `~/.config/elephant/menus.toml`
 #### MenuConfig
@@ -290,6 +414,9 @@ value = "https://www.amazon.de/gp/video/storefront/"
 |description|string||used as a subtext|
 |icon|string||default icon|
 |action|string||default menu action to use|
+|actions|map[string]string||global actions|
+|search_name|bool|false|wether to search for the menu name as well when searching globally|
+|cache|bool||will cache the results of the lua script on startup|
 |entries|[]common.Entry||menu items|
 |terminal|bool||execute action in terminal or not|
 |keywords|[]string||searchable keywords|
@@ -298,6 +425,7 @@ value = "https://www.amazon.de/gp/video/storefront/"
 |history_when_empty|bool||consider history when query is empty|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |parent|string||defines the parent menu|
+||string|||
 #### Entry
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
@@ -310,7 +438,9 @@ value = "https://www.amazon.de/gp/video/storefront/"
 |icon|string||icon for entry|
 |submenu|string||submenu to open, if has prefix 'dmenu:' it'll launch that dmenu|
 |preview|string||filepath for the preview|
+|preview_type|string||type of the preview: text, file [default], command|
 |keywords|[]string||searchable keywords|
+|state|[]string||state of an item, can be used to f.e. mark it as current|
 
 
 ### Elephant Providerlist
@@ -355,6 +485,47 @@ Execute everything installed in your $PATH.
 |alias|string||alias|
 
 
+### Elephant Snippets
+
+Create and access text snippets.
+
+#### Features
+
+- multiple keywords per snippet
+- define command for pasting yourself
+
+#### Requirements
+
+- `wtype`
+
+#### Example snippets
+
+```toml
+[[snippets]]
+keywords = ["search", "this"]
+name = "example snippet"
+content = "this will be pasted"
+```
+
+
+`~/.config/elephant/snippets.toml`
+#### Config
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|icon|string|depends on provider|icon for provider|
+|min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|command|string|wtype %CONTENT%|default command to be executed. supports %VALUE%.|
+|snippets|[]main.Snippet||available snippets|
+|delay|int|100|delay in ms before executing command to avoid potential focus issues|
+#### Snippet
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|keywords|[]string||searchable keywords|
+|name|string||displayed name|
+|content|string||content to paste|
+
+
 ### Elephant Symbols
 
 Search for emojis and symbols
@@ -378,6 +549,55 @@ af,ak,am,ar,ar_SA,as,ast,az,be,bew,bg,bgn,blo,bn,br,bs,ca,ca_ES,ca_ES_VALENCIA,c
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
 |command|string|wl-copy|default command to be executed. supports %VALUE%.|
+
+### Elephant Todo
+
+Basic Todolist
+
+#### Features
+
+- basic time tracking
+- create new scheduled items
+- notifications for scheduled items
+- mark items as: done, active
+- urgent items
+- clear all done items
+
+#### Requirements
+
+- `notify-send` for notifications
+
+#### Usage
+
+##### Creating a new item
+
+By default, you can create a new item whenever no items matches the configured `min_score` threshold. If you want to, you can also configure `create_prefix`, f.e. `add`. In that case you can do `add:new item`.
+
+If you want to create a schuduled task, you can prefix your item with either `in 5m` or `at 1500`. Possible units are `s`, `m` and `h`.
+
+Adding a `!` suffix will mark an item as urgent.
+
+
+`~/.config/elephant/todo.toml`
+#### Config
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|icon|string|depends on provider|icon for provider|
+|min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|create_prefix|string||prefix used in order to create a new item. will otherwise be based on matches (min_score).|
+|urgent_time_frame|int|10|items that have a due time within this period will be marked as urgent|
+|duck_player_volumes|bool|true|lowers volume of players when notifying, slowly raises volumes again|
+|categories|[]main.Category||categories|
+|location|string|elephant cache dir|location of the CSV file|
+|title|string|Task Due|title of the notification|
+|body|string|%TASK%|body of the notification|
+#### Category
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|name|string||name for category|
+|prefix|string||prefix to store item in category|
+
 
 ### Elephant Unicode
 
@@ -427,6 +647,7 @@ url = "https://www.google.com/search?q=%TERM%"
 |history_when_empty|bool|false|consider history when query is empty|
 |engines_as_actions|bool|true|run engines as actions|
 |text_prefix|string|Search: |prefix for the entry text|
+|command|string|xdg-open|default command to be executed. supports %VALUE%.|
 #### Engine
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
@@ -436,4 +657,18 @@ url = "https://www.google.com/search?q=%TERM%"
 |url|string||url, example: 'https://www.google.com/search?q=%TERM%'|
 |icon|string||icon to display, fallsback to global|
 
+
+### Elephant Windows
+
+Find and focus opened windows.
+
+
+`~/.config/elephant/windows.toml`
+#### Config
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|icon|string|depends on provider|icon for provider|
+|min_score|int32|depends on provider|minimum score for items to be displayed|
+|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|delay|int|100|delay in ms before focusing to avoid potential focus issues|
 
