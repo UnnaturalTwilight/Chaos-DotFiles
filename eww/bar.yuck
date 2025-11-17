@@ -3,7 +3,7 @@
 ;; Widgets
 (defwidget bar []
   (box :orientation "h" :space-evenly false :spacing 10
-    (box :class "debug" :orientation "h" :spacing 10 :visible {debug-buttons}
+    (box :class "debug" :orientation "h" :spacing 10 :visible {debug}
       (button :onclick "${EWW_CMD} o activate-linux --duration 90s" "󰡃")
       (tooltip (label :class "tooltip" :text {"Kill: ${EWW_CMD}"})
         (button :onclick "${EWW_CMD} kill" "󰅜")))
@@ -26,7 +26,7 @@
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-    (button :onclick "scripts/launch-start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
+    (button :onclick "launch-start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"

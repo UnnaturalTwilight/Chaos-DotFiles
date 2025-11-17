@@ -1,0 +1,36 @@
+
+(defwidget notifcenter []
+  (box :class "notifcenter" :orientation "v" :space-evenly false :spacing 10 :valign "fill" :vexpand true
+    (box :class "header" :orientation "h" :space-evenly false :valign "start" :hexpand true
+      (label :text "Notifications" :hexpand true :halign "start")
+      (tooltip (label :text "Pause" :class "tooltip")
+        (button :onclick "dunstctl set-paused toggle; ${EWW_CMD} poll dnd" { dnd == "false" ? "󰂚" : "󰪑"}))
+      (tooltip (label :text "Refresh" :class "tooltip")
+        (button :onclick "${EWW_CMD} poll dunsthist" "󰑐"))
+      (tooltip (label :text "Clear All" :class "tooltip")
+        (button :onclick "dunstctl history-clear; ${EWW_CMD} poll dunsthist" "󰅖")))
+    (scroll :vscroll true :vexpand true :class "scroll"
+      (box :orientation "v" :class "notifs" :space-evenly false :spacing 10 :vexpand true
+        (for items in {dunsthist.data[0]}
+          (notif :items items))))))
+
+(defwidget notif [items]
+  (box :space-evenly false :spacing 10 :orientation "v"
+    (eventbox :class "notif" :hexpand true :onrightclick "dunstctl history-rm ${items.id.data}; ${EWW_CMD} poll dunsthist"
+      (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
+        (image :path {items.icon_path.data ?: "/usr/share/icons/Nordzy/apps/scalable/org.xfce.notification.svg"}
+        :image-width 32 :class "notif-icon" :valign "start" :halign "start")
+        (box :orientation "v" :valign "center" :halign "fill" :class "notif-info" :hexpand true :space-evenly false :spacing 2
+          (label :markup "<b><u>${items.appname.data}</u></b>"
+            :halign "start" :valign "start" :wrap true :wrap-mode "wordchar" :xalign 0.0
+          :visible {items.appname.data != ""})
+          (label :markup "<b>${items.summary.data}</b>"
+            :halign "fill" :valign "start" :wrap true :wrap-mode "wordchar" :xalign 0.0
+          :visible {items.summary.data != "" && items.summary.data != " "}) ; fix zen notifications
+          (label :markup {items.body.data}
+            :halign "fill" :valign "start" :wrap true :wrap-mode "wordchar" :xalign 0.0
+          :visible {items.body.data != ""})
+          (box :space-evenly false
+            (progress :value {items.progress.data} :visible {items.progress.data > -1}
+            :halign "fill" :valign "center" :hexpand true ))
+        )))))

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Based on https://github.com/adi1090x/widgets/blob/main/eww/dashboard/launch_dashboard
+
+## Files and cmd
+FILE="$XDG_CACHE_HOME/eww_start_test.lock"
+EWW="$HOME/programs/eww/target/release/eww"
+CFG="$XDG_CONFIG_HOME/eww_test"
+PANELS=" \
+        user \
+        date \
+        sys \
+		connections \
+    "
+# start apps
+
+# parse close command from args (if provided)
+if test "$1" = "close" 
+then
+	touch "$FILE"
+fi
+
+## Launch or close widgets accordingly
+if [[ ! -f "$FILE" ]]; then
+	touch "$FILE"
+	${EWW} --config "$CFG" open-many $PANELS --no-daemonize
+else
+	${EWW} --config "$CFG" close $PANELS --no-daemonize
+	rm "$FILE"
+fi

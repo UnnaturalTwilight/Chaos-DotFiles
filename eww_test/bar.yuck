@@ -29,7 +29,7 @@
       :five "󰁾" :six "󰁽" :seven "󰁼" :eight "󰁻" :nine "󰁺" :low "󰂎"
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)
-    (button :onclick "scripts/launch-start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
+    (button :onclick "launch-start" (label :text {formattime(EWW_TIME, "%l:%M %b %d, %Y")}))))
 
 (defwidget workspaces []
   (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"

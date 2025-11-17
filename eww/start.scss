@@ -1,0 +1,219 @@
+.startBg {
+    background: transparentize($bg-light, .2);
+    border-radius: 10px;
+}
+
+.startBg:hover {
+    background: transparentize($bg-light, .1);
+}
+
+.startPanel {
+    background: $bg-dark;
+    border-radius: 10px;
+}
+
+// User panel
+.hostname {
+    font-family: JetBrainsMono NFM;
+    color: $kinda-gray;
+    margin-top: -25px;
+}
+
+.icons {
+    font-size: 3rem;
+    color: $kinda-gray;
+    font-family: JetBrainsMono NFM; // JetBrains Mono Nerd Font Mono;
+    padding: 15px;
+}
+
+.calbox {
+    padding: 10px;
+
+    .clock {
+        font-size: 3rem;
+        font-family: JetBrainsMono NFM;
+    }
+
+    .local {
+        font-size: 1.5rem;
+        color: $kinda-gray;
+        margin: -5px;
+        padding-bottom: 25px;
+    }
+
+    .cal {
+        border: 2px solid $kinda-gray;
+        border-radius: 10px;
+        background-color: transparentize($navy, 0.7);
+    }
+
+    .cal:selected {
+        background-color: $kinda-gray;
+        color: $bg-dark;
+    }
+
+    .cal .header {
+        color: white;
+        font-weight: bold;
+    }
+
+    .cal .highlight {
+        color: white;
+        background-color: $bg-light;
+        font-weight: bold;
+    }
+
+    .cal:indeterminate {
+        color: $kinda-gray;
+    }
+
+    .cal button {
+        color: $kinda-gray;
+    }
+
+    .cal:hover {
+        color: $pinkish;
+    }
+
+}
+
+.circles {
+    .circle:hover {
+        border-radius: 50px;
+        background-color: transparentize($kinda-gray, 0.8);
+    }
+
+    .circle_stat {
+        color: $pinkish;
+        background-color: #38384d;
+        border-radius: 10px;
+        margin: 5px;
+    }
+}
+
+.stat-tiles {
+    font-family: JetBrainsMono NFM;
+    padding: 15px;
+
+    .stat-tile {
+        border-radius: 10px;
+        border: 3px solid $kinda-gray;
+        padding: 3px;
+
+        .stat-tile-icon {
+            font-size: 5rem;
+            color: $kinda-gray;
+            padding-left: 15px;
+        }
+
+        .stat-tile-icon:hover {
+            color: $pinkish;
+        }
+
+        .stat-tile-info scale {
+            color: #000000;
+            border-radius: 10px;
+            margin-right: 15px;
+        }
+
+        .stat-tile-info scale trough {
+            background-color: $bar-gray;
+            border-radius: 50px;
+            min-height: 12px;
+        }
+
+        .stat-tile-info scale trough highlight {
+            background-color: $pinkish;
+            color: #000000;
+            border-radius: 10px;
+            min-height: 12px;
+        }
+
+        .stat-tile-info .dull trough highlight {
+            background-color: transparentize($pinkish, 0.5);
+        }
+    }
+
+    .stat-tile:hover {
+        background-color: transparentize($kinda-gray, 0.8);
+        border: 3px solid $pinkish;
+    }
+}
+
+.net_down {
+    color: orange;
+    background-color: transparentize(orange, .5);
+    margin: 10px;
+}
+
+.net_up {
+    color: greenyellow;
+    background-color: transparentize(greenyellow, .5);
+    margin: 10px;
+}
+
+.notifcenter {
+    .header {
+        font-family: sans-serif;
+        font-size: 18px;
+        color: $kinda-gray;
+        // padding: 10px;
+        margin: 0px 20px -10px 20px;
+    }
+
+    .header button {
+        font-family: JetBrainsMono NFM;
+        margin: 5px;
+    }
+
+    .header button:hover {
+        color: $pinkish;
+    }
+
+    .scroll .notifs {
+        // font-family: JetBrainsMono NFM;
+        padding: 15px;
+
+        .notif {
+            border-radius: 10px;
+            border: 3px solid $kinda-gray;
+            padding: 3px;
+
+            .notif-icon {
+                font-size: 5rem;
+                color: $kinda-gray;
+                margin: 10px;
+                margin-right: -20px;
+                // border: 3px solid $pinkish;
+            }
+
+            .notif-info progressbar {
+                color: #000000;
+                border-radius: 10px;
+                margin-right: 15px;
+            }
+
+            .notif-info progressbar trough {
+                background-color: $bar-gray;
+                border-radius: 50px;
+                min-height: 12px;
+            }
+
+            .notif-info progressbar trough progress {
+                background-color: $pinkish;
+                color: #000000;
+                border-radius: 10px;
+                min-height: 12px;
+            }
+
+            .notif-info {
+                margin: 10px;
+            }
+        }
+
+        .notif:hover {
+            background-color: transparentize($kinda-gray, 0.8);
+            border: 3px solid $pinkish;
+        }
+    }
+}

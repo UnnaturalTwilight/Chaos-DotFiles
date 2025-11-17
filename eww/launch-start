@@ -3,9 +3,9 @@
 # Based on https://github.com/adi1090x/widgets/blob/main/eww/dashboard/launch_dashboard
 
 ## Files and cmd
-FILE="$HOME/.cache/eww_launch.start"
+FILE="$XDG_CACHE_HOME/eww_start.lock"
 EWW="$HOME/programs/eww/target/release/eww"
-CFG="$HOME/.config/eww_test"
+CFG="$XDG_CONFIG_HOME/eww"
 PANELS=" \
         user \
         date \
@@ -14,7 +14,7 @@ PANELS=" \
     "
 # start apps
 
-# will always try and close the start screen if close is the first argument
+# parse close command from args (if provided)
 if test "$1" = "close" 
 then
 	touch "$FILE"

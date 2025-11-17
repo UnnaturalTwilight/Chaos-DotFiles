@@ -1,7 +1,7 @@
 // Global styles for bar
 .bar {
   // background-color: $navy;
-  background: linear-gradient(90deg, rgba(50, 0, 90, 0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50, 0, 90, 0.5) 80%);
+  background: $gradient;
   color: $kinda-gray;
   padding: 5px;
   border-radius: 5px;
