@@ -16,7 +16,7 @@
     current_item_style: (fg: "015", bg: "061", modifiers: "Bold"),
     borders_style: (fg: "008", modifiers: "Bold"),
     highlight_border_style: (fg: "015"),
-    symbols: (song: "󰝚 ", dir: " ", marker: "⯈", ellipsis: "..."),
+    symbols: (song: "󰝚 ", dir: " ", playlist: "󰲸", marker: "⯈", ellipsis: "..."),
     progress_bar: (
         symbols: ["█", "┃", "█"],
         track_style: (fg: "000"),
@@ -47,14 +47,17 @@
             ),
             width: "30%",
         ),
+        (
+            prop: (kind: Property(Duration),
+                default: (kind: Text("-"))
+            ),
+            width: "5",
+            alignment: Right,
+        ),
     ],
     layout: Split(
         direction: Vertical,
         panes: [
-            (
-                size: "3",
-                pane: Pane(Tabs),
-            ),
             (
                 size: "4",
                 pane: Split(
@@ -75,6 +78,10 @@
                         ),
                     ]
                 ),
+            ),
+            (
+                size: "3",
+                pane: Pane(Tabs),
             ),
             (
                 size: "100%",

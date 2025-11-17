@@ -4,7 +4,7 @@
 (
     address: "127.0.0.1:6600",
     password: None,
-    theme: "unnatural",
+    theme: None,
     cache_dir: None,
     on_song_change: None,
     volume_step: 5,
@@ -14,10 +14,11 @@
     enable_mouse: true,
     enable_config_hot_reload: true,
     status_update_interval_ms: 1000,
-    rewind_to_start_sec: 5,
+    rewind_to_start_sec: None,
     keep_state_on_song_change: true,
     reflect_changes_to_playlist: false,
     select_current_song_on_change: false,
+    ignore_leading_the: false,
     browser_song_sort: [Disc, Track, Artist, Title],
     directories_sort: SortFormat(group_by_type: true, reverse: false),
     album_art: (
@@ -35,13 +36,13 @@
             ".":       VolumeUp,
             "<Tab>":   NextTab,
             "<S-Tab>": PreviousTab,
-            "1":       SwitchToTab("Cava"),
-            "2":       SwitchToTab("Queue"),
-            "3":       SwitchToTab("Folders"),
-            "4":       SwitchToTab("Playlists"),
-            "5":       SwitchToTab("Search"),
-//            "6":       SwitchToTab(""),
-//            "7":       SwitchToTab(""),
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Artists"),
+            "4":       SwitchToTab("Album Artists"),
+            "5":       SwitchToTab("Albums"),
+            "6":       SwitchToTab("Playlists"),
+            "7":       SwitchToTab("Search"),
             "q":       Quit,
             ">":       NextTrack,
             "p":       TogglePause,
@@ -112,11 +113,11 @@
         mode: Contains,
         tags: [
             (value: "any",         label: "Any Tag"),
-            (value: "title",       label: "Title"),
-            (value: "filename",    label: "Filename"),
             (value: "artist",      label: "Artist"),
             (value: "album",       label: "Album"),
             (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
             (value: "genre",       label: "Genre"),
         ],
     ),
@@ -127,28 +128,48 @@
     ),
     tabs: [
         (
-            name: "Cava",
-            pane: Split(
-                direction: Horizontal,
-                panes: [
-                    (size: "35%", pane: Pane(AlbumArt)),
-                    (size: "65%", pane: Pane(Cava)),
-                ]
-            )
-        ),
-        (
             name: "Queue",
             pane: Split(
                 direction: Horizontal,
                 panes: [
-                    (size: "35%", pane: Pane(AlbumArt)),
-                    (size: "65%", pane: Pane(Queue))
-                ]
+                    (
+                        size: "40%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "3",
+                                    pane: Pane(Lyrics)
+                                ),
+                                (
+                                    size: "100%",
+                                    pane: Pane(AlbumArt)
+                                ),
+                            ],
+                        ),
+                    ), 
+                    (
+                        size: "60%",
+                        pane: Pane(Queue)
+                    ),
+                ],
             ),
         ),
         (
-            name: "Folders",
+            name: "Directories",
             pane: Pane(Directories),
+        ),
+        (
+            name: "Artists",
+            pane: Pane(Artists),
+        ),
+        (
+            name: "Album Artists",
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Albums",
+            pane: Pane(Albums),
         ),
         (
             name: "Playlists",

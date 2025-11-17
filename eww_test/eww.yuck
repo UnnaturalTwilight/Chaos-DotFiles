@@ -75,7 +75,7 @@
       (label :xalign 0 :text {formattime(EWW_TIME, "%H:%M" )})))
 
 (defwindow bg-clock
-  :monitor 1
+  :monitor 0
   :stacking "bg"
   :geometry (geometry :x "40px" :y "20px" :width "25px" :anchor "top right")
   (bg-clock))
