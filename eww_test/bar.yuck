@@ -55,7 +55,7 @@
     :space-evenly false
     :spacing 20
     (workspaces)
-    (systray :orientation "h" :icon-size 16 :spacing 5)
+    ; (systray :orientation "h" :icon-size 16 :spacing 5)
     (label :text "${window}" :visible {window != ""} :truncate true)
   ))
 
@@ -127,7 +127,7 @@
 
 ;; Window
 (defwindow bar
-  :monitor 1
+  :monitor 0
   :exclusive true
   :geometry (geometry :x "0%"
     :y "5px"

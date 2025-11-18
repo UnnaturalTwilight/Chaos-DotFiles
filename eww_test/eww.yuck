@@ -4,6 +4,8 @@
 
 (include "start.yuck")
 
+(include "tiles.yuck")
+
 (include "dunstparse.yuck") ; notifications take a lot of code
 
 ;;; Common Varables

@@ -10,56 +10,118 @@ Run `elephant -h` to get an overview of the available commandline flags and acti
 |auto_detect_launch_prefix|bool|true|automatically detects uwsm, app2unit or systemd-run|
 |overload_local_env|bool|false|overloads the local env|
 |ignored_providers|[]string|<empty>|providers to ignore|
+|git_on_demand|bool|true|sets up git repositories on first query instead of on start|
+|before_load|[]common.Command||commands to run before starting to load the providers|
+#### Command
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|must_succeed|bool|false|will try running this command until it completes successfully|
+|command|string||command to execute|
+
 
 ## Provider Configuration
-### Elephant Archlinux Packages
+### Elephant Bookmarks
 
-Find, install and delete packages. Including AUR.
+URL bookmark manager
 
 #### Features
 
-- find official packages
-- find AUR packages
-- install packages
-- list all exclusively installed packages
-- remove packages
-- clear all done items
+- create / remove bookmarks
+- import bookmarks from installed browsers
+- cycle through categories
+- customize browsers and set per-bookmark browser
+- git integration (requires ssh access)
 
 #### Requirements
 
-- `yay` or `paru` for AUR
+- `jq` for importing from chromium based browsers
+- `sqlite3` for importing from firefox based browsers
+
+#### Git Integration
+
+You can set
+
+```toml
+location = "https://github.com/abenz1267/elephantbookmarks"
+```
+
+This will automatically try to clone/pull the repo. It will also automatically comimt and push on changes.
 
 #### Usage
 
-In order to only display installed packages, prefix your query with `i:` (default).
+##### Adding a new bookmark
+
+By default, you can create a new bookmark whenever no items match the configured `min_score` threshold. If you want to, you can also configure `create_prefix`, f.e. `add`. In that case you can do `add:bookmark`.
+
+URLs without `http://` or `https://` will automatically get `https://` prepended.
+
+Examples:
+
+```
+example.com                       -> https://example.com
+github.com GitHub                 -> https://github.com (with title "Github")
+add reddit.com Reddit             -> https://reddit.com (with title "Reddit")
+w:work-site.com                   -> https://work-site.com (in "work" category)
+```
+
+##### Categories
+
+You can organize bookmarks into categories using prefixes:
+
+```toml
+[[categories]]
+name = "work"
+prefix = "w:"
+
+[[categories]]
+name = "personal"
+prefix = "p:"
+```
+
+##### Browsers
+
+You can customize browsers used for opening bookmarks like this:
+
+```toml
+[[browsers]]
+name = "Zen"
+command = "zen-browser"
+
+[[browsers]]
+name = "Chromium"
+command = "chromium"
+
+[[browsers]]
+name = "Chromium App"
+command = "chromium --app %VALUE%"
+```
 
 
-`~/.config/elephant/archlinuxpkgs.toml`
+`~/.config/elephant/bookmarks.toml`
 #### Config
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
-|refresh_interval|int|60|refresh database every X minutes. 0 disables the automatic refresh and refreshing requires an elephant restart.|
-|installed_prefix|string|i:|prefix to use to show only explicitly installed packages|
-
-### Elephant Bluetooth
-
-Simple bluetooth management. Connect/Disconnect. Pair/Remove. Trust/Untrust.
-
-#### Requirements
-
-- `bluetoothctl`
-
-
-`~/.config/elephant/bluetooth.toml`
-#### Config
+|location|string|elephant cache dir|location of the CSV file|
+|categories|[]main.Category||categories|
+|browsers|[]main.Browser||browsers for opening bookmarks|
+|set_browser_on_import|bool|false|set browser name on imported bookmarks|
+#### Category
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
-|icon|string|depends on provider|icon for provider|
-|min_score|int32|depends on provider|minimum score for items to be displayed|
-|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
+|name|string||name for category|
+|prefix|string||prefix to store item in category|
+
+#### Browser
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|name|string||name of the browser|
+|command|string||command to launch the browser|
+|icon|string||icon to use|
+
 
 ### Elephant Calc
 
@@ -85,6 +147,7 @@ Refer to the official [libqalculate docs](https://github.com/Qalculate/libqalcul
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |max_items|int|100|max amount of calculation history items|
@@ -115,13 +178,13 @@ Store clipboard history.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |max_items|int|100|max amount of clipboard history items|
 |image_editor_cmd|string||editor to use for images. use '%FILE%' as placeholder for file path.|
 |text_editor_cmd|string||editor to use for text, otherwise default for mimetype. use '%FILE%' as placeholder for file path.|
 |command|string|wl-copy|default command to be executed|
-|recopy|bool|true|recopy content to make it persistent after closing a window|
 |ignore_symbols|bool|true|ignores symbols/unicode|
 |auto_cleanup|int|0|will automatically cleanup entries entries older than X minutes|
 
@@ -142,6 +205,7 @@ Run installed desktop applications.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
@@ -159,6 +223,8 @@ Run installed desktop applications.
 |window_integration|bool|false|will enable window integration, meaning focusing an open app instead of opening a new instance|
 |window_integration_ignore_actions|bool|true|will ignore the window integration for actions|
 |wm_integration|bool|false|Moves apps to the workspace where they were launched at automatically. Currently Niri only.|
+|score_open_windows|bool|true|Apps that have open windows, get their score halved. Requires window_integration.|
+|single_instance_apps|[]string|["discord"]|application IDs that don't ever spawn a new window. |
 
 ### Elephant Files
 
@@ -187,11 +253,21 @@ ignored_dirs = ["/home/andrej/Documents/", "/home/andrej/Videos"]
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |launch_prefix|string||overrides the default app2unit or uwsm prefix, if set.|
-|ignored_dirs|[]string||ignore these directories|
+|ignored_dirs|[]string||ignore these directories. regexp based.|
+|ignore_previews|[]main.IgnoredPreview||paths will not have a preview|
+|ignore_watching|[]string||paths will not be watched|
+|search_dirs|[]string|$HOME|directories to search for files|
 |fd_flags|string|--ignore-vcs --type file --type directory|flags for fd|
+#### IgnoredPreview
+| Field | Type | Default | Description |
+| --- | ---- | ---- | --- |
+|path|string||path to ignore preview for|
+|placeholder|string||text to display instead|
+
 
 ### Elephant Menus
 
@@ -218,7 +294,6 @@ Submenus/Dmenus will automatically get an action `open`.
 name = "other"
 name_pretty = "Other"
 icon = "applications-other"
-global_search = true
 
 [[entries]]
 text = "Color Picker"
@@ -279,7 +354,6 @@ submenu = "dmenu:uuctl"
 name = "screenshots"
 name_pretty = "Screenshots"
 icon = "camera-photo"
-global_search = true
 
 [[entries]]
 text = "View"
@@ -315,7 +389,6 @@ submenu = "other"
 name = "bookmarks"
 name_pretty = "Bookmarks"
 icon = "bookmark"
-global_search = true
 action = "xdg-open %VALUE%"
 
 [[entries]]
@@ -338,6 +411,14 @@ value = "https://www.amazon.de/gp/video/storefront/"
 #### Lua Example
 
 By default, the Lua script will be called on every empty query. If you don't want this behaviour, but instead want to cache the query once, you can set `Cache=true` in the menu's config.
+
+Following global functions will be set:
+
+- `lastMenuValue(<menuname>)` => gets the last used value of a menu
+- `state()` => retrieves the state for this menu (string array/table)
+- `setState(state)` => sets the state for this menu (string array/table)
+- `jsonEncode` => encodes to json
+- `jsonDecodes` => decodes from json
 
 ```lua
 Name = "luatest"
@@ -400,6 +481,7 @@ end
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |paths|[]string||additional paths to check for menu definitions.|
@@ -415,6 +497,7 @@ end
 |icon|string||default icon|
 |action|string||default menu action to use|
 |actions|map[string]string||global actions|
+|async_actions|[]string||set which actions should update the item on the client asynchronously|
 |search_name|bool|false|wether to search for the menu name as well when searching globally|
 |cache|bool||will cache the results of the lua script on startup|
 |entries|[]common.Entry||menu items|
@@ -425,6 +508,7 @@ end
 |history_when_empty|bool||consider history when query is empty|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |parent|string||defines the parent menu|
+|submenu|string||defines submenu to trigger on activation|
 ||string|||
 #### Entry
 | Field | Type | Default | Description |
@@ -453,6 +537,7 @@ Lists all installed providers and configured menus.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |hidden|[]string|<empty>|hidden providers|
@@ -472,6 +557,7 @@ Execute everything installed in your $PATH.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |history|bool|true|make use of history for sorting|
@@ -483,47 +569,6 @@ Execute everything installed in your $PATH.
 | --- | ---- | ---- | --- |
 |exec|string||executable/command to run|
 |alias|string||alias|
-
-
-### Elephant Snippets
-
-Create and access text snippets.
-
-#### Features
-
-- multiple keywords per snippet
-- define command for pasting yourself
-
-#### Requirements
-
-- `wtype`
-
-#### Example snippets
-
-```toml
-[[snippets]]
-keywords = ["search", "this"]
-name = "example snippet"
-content = "this will be pasted"
-```
-
-
-`~/.config/elephant/snippets.toml`
-#### Config
-| Field | Type | Default | Description |
-| --- | ---- | ---- | --- |
-|icon|string|depends on provider|icon for provider|
-|min_score|int32|depends on provider|minimum score for items to be displayed|
-|hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
-|command|string|wtype %CONTENT%|default command to be executed. supports %VALUE%.|
-|snippets|[]main.Snippet||available snippets|
-|delay|int|100|delay in ms before executing command to avoid potential focus issues|
-#### Snippet
-| Field | Type | Default | Description |
-| --- | ---- | ---- | --- |
-|keywords|[]string||searchable keywords|
-|name|string||displayed name|
-|content|string||content to paste|
 
 
 ### Elephant Symbols
@@ -543,6 +588,7 @@ af,ak,am,ar,ar_SA,as,ast,az,be,bew,bg,bgn,blo,bn,br,bs,ca,ca_ES,ca_ES_VALENCIA,c
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |locale|string|en|locale to use for symbols|
@@ -562,10 +608,21 @@ Basic Todolist
 - mark items as: done, active
 - urgent items
 - clear all done items
+- git integration (requires ssh access)
 
 #### Requirements
 
 - `notify-send` for notifications
+
+#### Git Integration
+
+You can set
+
+```toml
+location = "https://github.com/abenz1267/elephanttodo"
+```
+
+This will automatically try to clone/pull the repo. It will also automatically comimt and push on changes.
 
 #### Usage
 
@@ -573,9 +630,22 @@ Basic Todolist
 
 By default, you can create a new item whenever no items matches the configured `min_score` threshold. If you want to, you can also configure `create_prefix`, f.e. `add`. In that case you can do `add:new item`.
 
-If you want to create a schuduled task, you can prefix your item with either `in 5m` or `at 1500`. Possible units are `s`, `m` and `h`.
+If you want to create a scheduled task, you can prefix your item with f.e.:
+
+```
++5d my task
+in 10m my task
+in 5d at 15:00 my task
+jan 1 at 13:00 my task
+january 1 at 13:00 my task
+1 jan at 13:00 my task
+```
 
 Adding a `!` suffix will mark an item as urgent.
+
+##### Time-based searching
+
+Similar to creating, you can simply search for like `today` to get all items for today.
 
 
 `~/.config/elephant/todo.toml`
@@ -583,13 +653,14 @@ Adding a `!` suffix will mark an item as urgent.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
-|create_prefix|string||prefix used in order to create a new item. will otherwise be based on matches (min_score).|
 |urgent_time_frame|int|10|items that have a due time within this period will be marked as urgent|
 |duck_player_volumes|bool|true|lowers volume of players when notifying, slowly raises volumes again|
 |categories|[]main.Category||categories|
 |location|string|elephant cache dir|location of the CSV file|
+|time_format|string|02-Jan 15:04|format of the time. Look at https://go.dev/src/time/format.go for the layout.|
 |title|string|Task Due|title of the notification|
 |body|string|%TASK%|body of the notification|
 #### Category
@@ -613,6 +684,7 @@ Search for unicode symbols
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |locale|string|en|locale to use for symbols|
@@ -639,10 +711,10 @@ url = "https://www.google.com/search?q=%TERM%"
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |entries|[]main.Engine|google|entries|
-|max_global_items_to_display|int|1|will only show the global websearch entry if there are at most X results.|
 |history|bool|true|make use of history for sorting|
 |history_when_empty|bool|false|consider history when query is empty|
 |engines_as_actions|bool|true|run engines as actions|
@@ -668,6 +740,7 @@ Find and focus opened windows.
 | Field | Type | Default | Description |
 | --- | ---- | ---- | --- |
 |icon|string|depends on provider|icon for provider|
+|name_pretty|string|depends on provider|displayed name for the provider|
 |min_score|int32|depends on provider|minimum score for items to be displayed|
 |hide_from_providerlist|bool|false|hides a provider from the providerlist provider. provider provider.|
 |delay|int|100|delay in ms before focusing to avoid potential focus issues|
