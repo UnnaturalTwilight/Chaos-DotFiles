@@ -45,7 +45,7 @@
 "acpi -b | awk 'END {print $5 \" \" $6 \" \" $7}'")
 
 (defpoll wifi :interval "2s"
-"nmcli -get-values NAME connection show --active | awk 'BEGIN {ORS=\"\"}; !/lo/ {print \"   \" $0}' | sed s/\"tun.\"/\"󰒃\"/g | sed s/\"tailscale0\"/\"🖧\"/")
+"nmcli -get-values NAME connection show --active | awk 'BEGIN {ORS=\"\"}; !/lo/ {print \"   \" $0}' | sed s/\".tun.*\"/\"󰒃\"/g | sed s/\"tailscale0\"/\"🖧\"/")
 ; should do the substitutions in eww so I can use the unsubstituted name in the tooltip
 
 (defpoll mntpoints :interval "30s" :initial "[]"

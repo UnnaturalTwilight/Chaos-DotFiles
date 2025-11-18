@@ -42,13 +42,13 @@
 "pactl get-default-sink")
 
 (defpoll bat_time :interval "1s"
-"acpi -b | awk 'END {print $5 \" \" $6 \" \" $7}'")
+; "acpi -b | awk 'END {print $5 \" \" $6 \" \" $7}'")
 
 ; (defpoll bat_time_short :interval "2s"
-; "upower -b | grep time | cut -f2 -d: | awk '{printf \"%d:%02d\", ($1 * 60 / 60), ($1 * 60 % 60)}'")
+"upower -b | grep time | cut -f2 -d: | awk '{print $1 \" \" $2}'")
 
 (defpoll wifi :interval "2s"
-"nmcli -get-values NAME connection show --active | awk 'BEGIN {ORS=\"\"}; !/lo/ {print \"   \" $0}' | sed s/\"tun.\"/\"󰒃\"/g | sed s/\"tailscale0\"/\"🖧\"/")
+"nmcli -get-values NAME connection show --active | awk 'BEGIN {ORS=\":\"}; !/lo/ {print $0}'")
 ; should do the substitutions in eww so I can use the unsubstituted name in the tooltip
 
 (defpoll mntpoints :interval "30s" :initial "[]"
@@ -59,13 +59,32 @@
 ;   :initial "startup"
 ; "scripts/cavaiguess")
 
-(defvar debug true)
+(defvar debug false)
+
+(defvar HOVER '{}')
+
+(defvar batt_icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
 
 ;; Common Widgets
 
-(defwidget padding [space ?expand]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :hexpand {expand ?: false}
-    :css {debug ? ".gap {background-color: transparentize(#b0b4bc, 0.5); margin: 8px 0px 8px 0px; border-radius: 5px;}" : ""}))
+(defwidget padding [space ?expand ?vspace ?vexpand ?visible]
+  (box :class "gap" :orientation "h" :halign "fill" :width space :height {vspace ?: 6} 
+    :hexpand {expand ?: false} :vexpand {vexpand ?: false} :visible {visible ?: true}
+    :css {debug ? ".gap {background-color: transparentize(#b0b4bc, 0.5); margin: 2px; border-radius: 5px;}" : ""}))
+
+(defwidget slider [value ?min ?max ?active ?onchange ?class ?visible]
+  (scale :min {min ?: 0}
+      :max {max ?: 101}
+      :active {active ?: false}
+      :value {value}
+      :onchange {onchange}
+      :class {class ?: "slider"}
+      :visible {visible ?: true}
+    :halign "fill" :valign "center" :hexpand true))
+
+(defwidget leftpad-label [text chars]
+  (label :text {substring("${substring('                                                                                                                                ',
+   0, chars)}${text}", strlength("${text}"), chars)} :halign "start" :unindent false))
 
 (defwidget bg-clock []
     (box
