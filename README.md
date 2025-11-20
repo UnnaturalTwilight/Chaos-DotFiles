@@ -14,6 +14,7 @@ Couldn't have done this without all the example configs on the Hypr wiki, Arch w
 - [Nordzy-cursors](https://github.com/guillaumeboehm/Nordzy-cursors)
 - Bash is configured to be much more frendly on the TTY (No Starship, etc)
 - My scripts related to keeping thunderbird running in the background are a little too jank right now but will be moved in here when they get some polish
+- Custom desktop files
 
 ## Credits
 Where i have copied others' configs I have tryed to include where it is from in a coment.
