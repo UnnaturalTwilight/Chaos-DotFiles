@@ -3,6 +3,7 @@
 format = """
 [](fg:zero)\
 $os\
+$shell\
 $sudo\
 $username\
 $hostname\
@@ -90,51 +91,23 @@ style = "bg:zero"
 disabled = false
 
 [os.symbols]
-Alpaquita = ""
-Alpine = ""
-AlmaLinux = ""
-Amazon = ""
 Android = ""
 Arch = "󰣇"
-Artix = ""
-CachyOS = ""
-CentOS = ""
 Debian = ""
-DragonFly = ""
-Emscripten = ""
-EndeavourOS = ""
-Fedora = ""
-FreeBSD = ""
-Garuda = "󰛓"
-Gentoo = ""
-HardenedBSD = "󰞌"
-Illumos = "󰈸"
-Kali = ""
 Linux = ""
-Mabox = ""
-Macos = ""
-Manjaro = ""
-Mariner = ""
-MidnightBSD = ""
-Mint = ""
-NetBSD = ""
 NixOS = ""
-Nobara = ""
-OpenBSD = "󰈺"
-openSUSE = ""
-OracleLinux = "󰌷"
-Pop = ""
 Raspbian = ""
-Redhat = ""
-RedHatEnterprise = ""
-RockyLinux = ""
-Redox = "󰀘"
-Solus = "󰠳"
-SUSE = ""
-Ubuntu = ""
-Unknown = ""
-Void = ""
 Windows = "󰍲"
+
+[shell]
+format = '[$indicator]($style)'
+style = "bg:zero"
+disabled = true
+zsh_indicator = ""
+bash_indicator = ""
+powershell_indicator = "󰨊"
+pwsh_indicator = ""
+
 
 [directory]
 style = "bg:one"
@@ -175,87 +148,87 @@ style = "bg:two fg:bright"
 [c]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [cpp]
 symbol = "󰙲"
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [cmake]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [elixir]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [elm]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [golang]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [python]
 symbol = "󰌠"
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [lua]
 symbol = "󰢱"
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [gradle]
 symbol = "🅶"
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [haskell]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [java]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [julia]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [nodejs]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [nim]
 symbol = "󰆥"
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [rust]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [scala]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [perl]
 symbol = ""
 style = "bg:four"
-format = '[ $symbol ($version)]($style)'
+format = '[ $symbol( $version)]($style)'
 
 [docker_context]
 symbol = ""

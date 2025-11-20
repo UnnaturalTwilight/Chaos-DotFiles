@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+ID=$1
+APP_NAME=$2
+
+case $APP_NAME in
+  "Thunderbird")
+    hyprctl dispatch workspace special:thunderbird
+    ;;
+  *)
+    ;;
+esac

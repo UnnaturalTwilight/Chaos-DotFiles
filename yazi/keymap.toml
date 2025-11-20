@@ -5,18 +5,17 @@ on   = "<Enter>"
 run  = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
 
-# put files on clipboard
-[[mgr.prepend_keymap]]
-on  = "y"
-run = [ 'shell -- for path in "$@"; do echo "file://$path"; done | wl-copy -t text/uri-list', "yank" ]
-desc = "yank and copy file paths to clipboard"
-
 [[input.prepend_keymap]]
 on   = "<Esc>"
 run  = "close"
 desc = "Cancel input"
 
-[[input.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on   = "<C-q>"
 run  = "quit --no-cwd-file"
 desc = "Quit without outputting cwd-file"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "w" ]
+run  = "cd /mnt/c"
+desc = "Cd to Windows C: drive"

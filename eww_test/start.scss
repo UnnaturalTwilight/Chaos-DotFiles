@@ -31,6 +31,16 @@
     border-radius: 10px;
     padding: 5px;
     border: 3px solid transparentize($kinda-gray, 0.5);
+
+    .trayicon {
+        font-size: 17px;
+        color: #d8dee9;
+        font-family: JetBrainsMono NF;
+
+        &:hover {
+            color: $pinkish;
+        }
+    }
 }
 
 .calbox {

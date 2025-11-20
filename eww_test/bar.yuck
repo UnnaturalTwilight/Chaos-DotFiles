@@ -38,7 +38,7 @@
           (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}" 
             :class "workspace-entry ${workspace.windows > 0 ? "occupied" : "empty"}"
             (box 
-              (label :text "${workspace.id == 10 && workspace.windows > 0 ? "" : "" }" 
+              (label :text "" 
                 :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""}" )
             ))))
       (tooltip (label :text "Magic" :class "tooltip" )

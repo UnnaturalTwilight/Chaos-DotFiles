@@ -16,7 +16,10 @@
 
 (defwidget notif [items]
   (box :space-evenly false :spacing 10 :orientation "v"
-    (eventbox :class "notif" :hexpand true :onrightclick "dunstctl history-rm ${items.id.data}; ${EWW_CMD} poll dunsthist"
+    (eventbox :class "notif" :hexpand true 
+      :onrightclick "scripts/launch-notif ${items.id.data} ${items.appname.data}; dunstctl history-rm ${items.id.data}; ${EWW_CMD} poll dunsthist"
+      :onmiddleclick "dunstctl history-rm ${items.id.data}; ${EWW_CMD} poll dunsthist"
+      :onclick "scripts/launch-notif ${items.id.data} ${items.appname.data}"
       (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true
         (image :path {items.icon_path.data ?: "/usr/share/icons/Nordzy/apps/scalable/org.xfce.notification.svg"}
         :image-width 32 :class "notif-icon" :valign "start" :halign "start")
