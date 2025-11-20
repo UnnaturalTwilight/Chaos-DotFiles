@@ -1,5 +1,5 @@
 # Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
+HISTFILE=$XDG_STATE_HOME/zsh/histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt autocd
