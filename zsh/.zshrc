@@ -63,11 +63,12 @@ alias vlc='env -u DISPLAY vlc' # run vlc in wayland
 alias yazi='yazi-cwd'
 
 alias bzmenu='bzmenu --launcher walker'
+alias compose='docker compose'
 
 alias music-dl='wl-copy -c && wl-paste -w $HOME/.config/scripts/music-dl-echo.sh'
-
 alias colour-ls='for i in {0..15}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+"\n"}; done;
 		   echo; for i in {16..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+"\n"}; done'
+alias path-ls='printenv PATH | sed "s/:/\n/g" | bat --style grid,numbers'
 
 if [[ "$HOST" == "underkill" ]]; then
 	alias mnt-win='sudo ntfs-3g -o windows_names /dev/nvme0n1p3 /mnt/c'

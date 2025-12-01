@@ -1,5 +1,5 @@
 typeset -U path PATH
-path=(. ~/.local/bin ~/.cargo/bin ~/.cargo/env ~/programs/eww/target/release $path)
+path=(. ~/.local/bin $path)
 export PATH
 
 export XDG_CONFIG_HOME=$HOME/.config

@@ -2,15 +2,17 @@
 ;; Tiles
 
 ;; General tile widgets
-(defwidget tile [?Rclickcmd ?hovervar ?hover]
-  (eventbox :class "stat-tile" :onrightclick {Rclickcmd} :hexpand true :timeout 10000
+(defwidget tile [?Lclickcmd ?Rclickcmd ?Mclickcmd ?hovervar ?hover ?lines]
+  (eventbox :class "stat-tile" :hexpand true :timeout 10000
+    :onclick {Lclickcmd} :onrightclick {Rclickcmd} :onmiddleclick {Mclickcmd}
     :onhover {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[] |= false | .[$var] |= true')}'" : "" }
     :onhoverlost {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[$var] |= false')}'" : "" }
     (box :orientation "h" :space-evenly false :valign "center" :halign "fill" :spacing 5 :hexpand true
       (children :nth 0) ; icon
       (box :orientation "v" :valign "center" :halign "fill" :class "stat-tile-info" :hexpand true
-        (children :nth 1)
-        (children :nth 2)
+        (children :nth 1) 
+        (box :visible {(lines ?: 2) >= 2} (children :nth 2))
+        ; (box :visible {(lines ?: 2) >= 3} (children :nth 3))
       ))))
 
 (defwidget circlemetric [icon percent ?scrollcmd ?lclickcmd ?rclickcmd ?hovervar ?hover]
@@ -30,21 +32,22 @@
 
 ;; Tile implementations
 
-(defwidget tile_disk [char icon mountpoint ?filesystem device]
-  (tile :hovervar {device} :hover {HOVER?.[device] ?: false}
-    :Rclickcmd {matches(device, "\/dev\/sd..") ? "umount ${device} && ${EWW_CMD} poll mntpoints" : "hyprctl notify 0 2000 1 'This is not a removable device.'"}
-    (label :class "stat-tile-icon" :text {icon})
+(defwidget tile_disk [char icon mountpoint filesystem device ?thin]
+  (tile :hovervar {device} :hover {HOVER?.[device] ?: false} :lines {!(thin ?: (EWW_DISK?.[mountpoint]?.used_perc ?: 0) > 0) ? 1 : 2}
+    :Lclickcmd "kitty --detach kitten run-shell --cwd ${mountpoint} yazi ${mountpoint}"
+    :Mclickcmd {matches(device, "\/dev\/sd..?") ? "umount ${device} && ${EWW_CMD} poll mntpoints" : "hyprctl notify 0 2000 1 'This is not a removable device.'"}
+    (label :class {!(thin ?: (EWW_DISK?.[mountpoint]?.used_perc ?: 0) > 0) ? "thin-tile-icon" : "stat-tile-icon"} :text {icon})
     (box :halign "fill" :hexpand true :space-evenly false
-      (label :text {char} :halign "start")
+      (label :text {char} :halign "start" :truncate true)
       (padding :space 10 :expand true)
-      (label :text "${filesystem}" :halign "end"))
+      (label :text {filesystem} :halign "end"))
     (box :halign "fill" :hexpand true :space-evenly false
       (slider :value {EWW_DISK?.[mountpoint]?.used_perc ?: 0} :visible {HOVER?.[device] != 'null' ? !(HOVER?.[device]) : true })
       (label :text "${formatbytes((EWW_DISK?.[mountpoint]?.used ?: 0), false, 'si')}/${formatbytes((EWW_DISK?.[mountpoint]?.total ?: 0), false, 'si')}"
         :visible {HOVER?.[device] != 'null' ? HOVER?.[device] : false }
       :halign "start")
       (padding :space 0 :expand {HOVER?.[device] != 'null' ? HOVER?.[device] : false })
-      (leftpad-label :text {round(EWW_DISK?.[mountpoint]?.used_perc, 0)+"%" ?: "N/A"} :chars 4))
+      (leftpad-label :text {round((EWW_DISK?.[mountpoint]?.used_perc  ?: 0), 0)+"%" ?: "N/A"} :chars 4 ))
   ))
 
 (defwidget tile_batt [status value]
@@ -90,7 +93,7 @@
   ))
 
 (defwidget tile_combo []
-  (tile :hovervar "combo" :hover {HOVER?.["combo"] ?: false}
+  (tile :hovervar "combo" :hover {HOVER?.["combo"] ?: false} :lines 2
     (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
       :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} poll bright"
     :hovervar `bright` :hover {HOVER?.bright ?: false})

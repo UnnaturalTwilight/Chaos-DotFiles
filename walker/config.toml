@@ -28,7 +28,6 @@ quick_activate = []
 default = [
   "desktopapplications",
   "calc",
-  "menus",
   "websearch",
 ] # providers to be queried by default
 empty = ["desktopapplications"] # providers to be queried when query is empty

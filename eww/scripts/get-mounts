@@ -1,7 +1,14 @@
-#! /bin/sh
+#! /usr/bin/env bash
 
 findmnt --real -o TARGET,SOURCE,FSTYPE,LABEL -J |
  jq -c '.[] | [.. | {mount: .target? // empty, dev: .source?, fs: .fstype?} + (if .label? then {name: .label} else null end)] | 
     map(del(select(.mount == "/boot")) // empty)' |
  sed 's/fuseblk/ntfs/g' | sed 's/Windows/C\:\//g' |
- jq -c '[.[] | . + (.mount | if . == "/" then {icon:"󰣇", sort:0} elif . == "/mnt/c" then {icon:"", sort:1} else {icon:"", sort:9} end)] | sort_by(.sort)' 
+ jq -c '[.[] | . + (. | 
+   if .mount == "/" then {icon:"󰣇", remote:false, sort:0} 
+   elif .mount == "/mnt/c" then {icon:"", remote:false, sort:1} 
+   elif .name == "KOBOeReader" then {icon:"", remote:false, sort:6} 
+   elif .fs == "cifs" then {icon:"󰡰", remote:true, sort:9} 
+   else {icon:"", remote:false, sort:7} end) + 
+   ( . | if .mount == "/mnt/nas-immich" then {name:"Archives"} end)] | 
+   sort_by(.sort)' 

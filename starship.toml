@@ -7,6 +7,7 @@ $shell\
 $sudo\
 $username\
 $hostname\
+$container\
 [ ](bg:zero)\
 [](fg:zero bg:one)\
 $directory\
@@ -107,7 +108,6 @@ zsh_indicator = ""
 bash_indicator = ""
 powershell_indicator = "󰨊"
 pwsh_indicator = ""
-
 
 [directory]
 style = "bg:one"
