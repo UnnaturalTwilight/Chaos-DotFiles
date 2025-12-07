@@ -43,7 +43,7 @@ alias cd='z'
 # alias ls='ls --color=auto --hyperlink=auto --group-directories-first --format=horizontal'
 alias ls='eza -x --hyperlink --group-directories-first --icons=auto'
 alias ll='eza -l --hyperlink --group-directories-first --icons=auto'
-alias la='eza -la --hyperlink --group-directories-first --icons=auto'
+alias la='eza -la --hyperlink --group-directories-first --icons=auto --mounts'
 alias tree='eza -lT --hyperlink --group-directories-first --icons=auto'
 
 alias grep='grep --color=auto'
@@ -86,7 +86,12 @@ promptinit
 PROMPT='%n@%m %~ %F{white}%B%#%b%f '
 RPROMPT='[%F{yellow}%?%f]'
 
-# load starship if on tty1 (hyprland)
+# function set_win_title(){
+#     echo -ne "\033]0;zsh\007"
+# }
+# precmd_functions+=(set_win_title)
+
+# load starship if it can render
 if [[ "$COLORTERM" == "truecolor" ]]; then
 # Transient prompt for starship: https://github.com/starship/starship/issues/888#issuecomment-2246272386
 eval "$(starship init zsh)"
