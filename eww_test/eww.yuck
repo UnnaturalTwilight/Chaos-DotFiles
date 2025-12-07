@@ -61,7 +61,7 @@
 ;   :initial "startup"
 ; "scripts/cavaiguess")
 
-(defvar debug false)
+(defvar debug true)
 
 (defvar HOVER '{}')
 

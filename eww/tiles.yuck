@@ -1,0 +1,109 @@
+
+;; Tiles
+
+;; General tile widgets
+(defwidget tile [?Lclickcmd ?Rclickcmd ?Mclickcmd ?hovervar ?hover ?lines]
+  (eventbox :class "stat-tile" :hexpand true :timeout 10000
+    :onclick {Lclickcmd} :onrightclick {Rclickcmd} :onmiddleclick {Mclickcmd}
+    :onhover {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[] |= false | .[$var] |= true')}'" : "" }
+    :onhoverlost {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[$var] |= false')}'" : "" }
+    (box :orientation "h" :space-evenly false :valign "center" :halign "fill" :spacing 5 :hexpand true
+      (children :nth 0) ; icon
+      (box :orientation "v" :valign "center" :halign "fill" :class "stat-tile-info" :hexpand true
+        (children :nth 1) 
+        (box :visible {(lines ?: 2) >= 2} (children :nth 2))
+        ; (box :visible {(lines ?: 2) >= 3} (children :nth 3))
+      ))))
+
+(defwidget circlemetric [icon percent ?scrollcmd ?lclickcmd ?rclickcmd ?hovervar ?hover]
+(box :class "circlemetric" :halign "center" :valign "center"
+  (eventbox :class "circle" :width 76 :height 76 :onscroll {scrollcmd}
+    :onhover {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[] |= false | .[$var] |= true')}'" : "" }
+    :onhoverlost {hovervar != "" ? "${EWW_CMD} update HOVER='${jq([HOVER, hovervar], '.[1] as $var | .[0] | fromjson | .[$var] |= false')}'" : "" }
+    :onclick {lclickcmd} :onrightclick {rclickcmd}
+    (overlay
+      (circular-progress :start-at {(37.5)-(percent/2) > -1 ? (37.5)-(percent/2) : 100+(37.5)-(percent/2)} :value {percent}
+        :class "circle_stat"
+        ; :style ".circle_stat {color: transparentize(#D35D6E, ${((100 - percent )/ 100) * 0.2});}" ; tint the color depending on percent
+      :thickness 12)
+      (label :text {icon} :class "icons" :visible {hovervar != "" ? !hover : true }) ; replace with svg
+      (label :text "${round(percent,0)}%" :visible {hovervar != "" ? hover : false })
+    ))))
+
+;; Tile implementations
+
+(defwidget tile_disk [char icon mountpoint filesystem device ?thin]
+  (tile :hovervar {device} :hover {HOVER?.[device] ?: false} :lines {!(thin ?: (EWW_DISK?.[mountpoint]?.used_perc ?: 0) > 0) ? 1 : 2}
+    :Lclickcmd "kitty --detach kitten run-shell --cwd ${mountpoint} yazi ${mountpoint}"
+    :Mclickcmd {matches(device, "\/dev\/sd..?") ? "umount ${device} && ${EWW_CMD} poll mntpoints" : "hyprctl notify 0 2000 1 'This is not a removable device.'"}
+    (label :class {!(thin ?: (EWW_DISK?.[mountpoint]?.used_perc ?: 0) > 0) ? "thin-tile-icon" : "stat-tile-icon"} :text {icon})
+    (box :halign "fill" :hexpand true :space-evenly false
+      (label :text {char} :halign "start" :truncate true)
+      (padding :space 10 :expand true)
+      (label :text {filesystem} :halign "end"))
+    (box :halign "fill" :hexpand true :space-evenly false
+      (slider :value {EWW_DISK?.[mountpoint]?.used_perc ?: 0} :visible {HOVER?.[device] != 'null' ? !(HOVER?.[device]) : true })
+      (label :text "${formatbytes((EWW_DISK?.[mountpoint]?.used ?: 0), false, 'si')}/${formatbytes((EWW_DISK?.[mountpoint]?.total ?: 0), false, 'si')}"
+        :visible {HOVER?.[device] != 'null' ? HOVER?.[device] : false }
+      :halign "start")
+      (padding :space 0 :expand {HOVER?.[device] != 'null' ? HOVER?.[device] : false })
+      (leftpad-label :text {round((EWW_DISK?.[mountpoint]?.used_perc  ?: 0), 0)+"%" ?: "N/A"} :chars 4 ))
+  ))
+
+(defwidget tile_batt [status value]
+  (tile
+    (label :class "stat-tile-icon" :text {status == 'Charging' ? batt_icons[11] :
+      value < 5 ? batt_icons[10] :
+      value < 15 ? batt_icons[9] :
+      value < 25 ? batt_icons[8] :
+      value < 35 ? batt_icons[7] :
+      value < 45 ? batt_icons[6] :
+      value < 55 ? batt_icons[5] :
+      value < 65 ? batt_icons[4] :
+      value < 75 ? batt_icons[3] :
+      value < 85 ? batt_icons[2] :
+      value < 95 ? batt_icons[1] :
+    batt_icons[0]})
+    (label
+      :halign "start" :lines 0 :limit-width 25
+      :text {value == 100 ? "Fully Charged" : '${bat_time == '' ? '' : "${replace(bat_time, "minutes", "min")} ${status == 'Charging' ? 'until charged' : 'remaining'}"}'}
+    )
+    (box :halign "fill" :hexpand true :space-evenly false
+      (slider :value {value})
+      (leftpad-label :text "${value}%" :chars 5))
+  ))
+
+(defwidget tile_volume [] ; hard coded for now, will pull from global var shared with bar later
+  (tile
+    :Rclickcmd { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ?
+    "pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && hyprctl notify 1 2000 1 \"Switched to internal speakers\""
+    : "pactl set-default-sink bluez_output.40_72_18_AD_77_86.1 && hyprctl notify 1 2000 1 \"Switched to bluetooth headphones\""}
+    (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" :class "stat-tile-icon" "${speaker_raw == 'bluez_output.40_72_18_AD_77_86.1' ? '󰋋' : '󰓃'}")
+    (box :halign "fill" :hexpand true :space-evenly false
+      (label :text {speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "JBL TUNE770NC" : "Internal Speakers"} :halign "start")
+      (padding :space 10 :expand true)
+      (label :text {volume[1] == true ? " " : playing == 'Playing' ? " " : ""} :unindent false :halign "start"))
+    (box :halign "fill" :hexpand true :space-evenly false
+      (slider
+        :active true
+        :value {volume[0] * 100}
+        :onchange "scripts/setvol {}"
+      :class {volume[1] == true ? "dull" : "vibrant"})
+      (leftpad-label :text "${round(volume[0] * 100, 0)}%" :chars 5))
+  ))
+
+(defwidget tile_combo []
+  (tile :hovervar "combo" :hover {HOVER?.["combo"] ?: false} :lines 2
+    (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
+      :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} poll bright"
+    :hovervar `bright` :hover {HOVER?.bright ?: false})
+    (box :halign "fill" :hexpand true :space-evenly false
+      (label :text "  " :halign "start")
+      (slider :value {EWW_CPU.avg})
+      (leftpad-label :text "${round(EWW_CPU.avg, 0)}%" :chars 5))
+    (box :halign "fill" :hexpand true :space-evenly false
+      (label :text "  " :halign "start")
+      (slider :value {EWW_RAM.used_mem_perc})
+      (leftpad-label :text "${round(EWW_RAM.used_mem_perc, 0)}%" :chars 5)
+    )
+  ))

@@ -8,9 +8,7 @@ EWW="$HOME/programs/eww/target/release/eww"
 CFG="$XDG_CONFIG_HOME/eww"
 PANELS=" \
         user \
-        date \
-        sys \
-		connections \
+        system 
     "
 # start apps
 

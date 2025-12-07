@@ -60,24 +60,8 @@
         panes: [
             (
                 size: "4",
-                pane: Split(
-                    direction: Horizontal,
-                    panes: [
-                        (
-                            size: "100%",
-                            pane: Split(
-                                direction: Vertical,
-                                panes: [
-                                    (
-                                        size: "4",
-                                        borders: "ALL",
-                                        pane: Pane(Header),
-                                    ),
-                                ]
-                            )
-                        ),
-                    ]
-                ),
+                borders: "ALL",
+                pane: Pane(Header),
             ),
             (
                 size: "3",

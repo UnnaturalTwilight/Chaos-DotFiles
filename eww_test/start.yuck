@@ -9,7 +9,7 @@
   :anchor "top right")
   (profile))
 
-(defwindow date
+(defwindow system
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "40px" :y "40px"

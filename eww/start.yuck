@@ -1,202 +1,67 @@
 
-(defwindow start
-  :monitor 0
-  :stacking "fg"
-  :geometry (geometry :x "0%"
-    :y "20px"
-    :width "1880px"
-    :height "1203px"
-  :anchor "top center")
-  (fullscreen))
-
-(defwidget fullscreen []
-  (overlay
-    (eventbox
-      :hexpand true
-      :vexpand true
-      :onclick "launch-start close"
-    :class "startBg")))
-
 ;; Panels
 
-; User & Power
 (defwindow user
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "40px" :y "40px"
-    :width "360px" :height "395px"
+    :width "360px" :height "400px"
   :anchor "top right")
   (profile))
 
-(defwidget profile []
-  (box :class "startPanel" :orientation "v" :space-evenly false
-    (image :path "../profilepic.png" :image-width 300)
-    (label :text "${get_env('USER')}@underkill" :class "hostname") ;Hard coded cause why not
-    (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true
-      (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" ""))
-      (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
-      (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "launch-start close && systemctl suspend" "󰤄"))
-      (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "launch-start close && loginctl lock-session" ""))
-    )))
-
-; Time & Date
-(defwindow date
+(defwindow system
   :monitor 0
   :stacking "fg"
   :geometry (geometry :x "40px" :y "40px"
-    :width "360px" :height "740px"
+    :width "360px" :height "725px"
   :anchor "bottom right")
   (month))
 
+(defwidget profile []
+  (box :class "startPanel" :orientation "v" :space-evenly false :spacing -10
+    (box :class "picbox" :halign "fill" :valign "start" :space-evenly false :hexpand true :spacing 10
+      (image :path "../profilepic.png" :image-width 150)
+      (box :orientation "v" :space-evenly false :valign "center" :halign "fill" :spacing 10 :hexpand true :class "hostname"
+        (padding :space 10 :vspace 10 :expand true)
+        (label :text "${get_env('USER')}@${debug ? "--debug--" : "underkill"}" :halign "start") ;Hard coded cause why not
+        (box :hexpand false :space-evenly false
+          (label :text {replace(replace(wifi, ":.*",""), "Wired connection", "Ethernet")} :halign "start" :hexpand true :truncate true)
+          ;; replace with better code later
+          (box :halign "end" :hexpand false :space-evenly false :spacing 10
+            (tooltip (label :text "Tunnel" :class "tooltip")
+              (label :text {replace(wifi, ".*:.?tun.*","󰒃")} :visible {matches(wifi, ".*:.?tun.*")}))
+            (tooltip (label :text "Wifi" :class "tooltip")
+              (label :text " "))))
+        (box :hexpand false :space-evenly false :class "systray" :halign "end" :spacing 10
+          (systray :orientation "h" :icon-size 20 :spacing 10 :space-evenly false :halign "end")
+          (button :onclick "$HOME/Monolith/birdmanager/launch-or-summon.sh" :class "trayicon" " "))))
+    (box :orientation "h" :space-evenly true :class "icons" :halign "center" :valign "end" :spacing 40 :hexpand true :vexpand true
+      (tooltip (label :text "Shutdown" :class "tooltip") (button :onrightclick "systemctl poweroff" :onmiddleclick "systemctl poweroff -i" ""))
+      (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
+      (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "launch-start close && systemctl suspend" "󰤄"))
+      (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "launch-start close && loginctl lock-session" ""))
+    )
+    (box :class "stat-tiles" :orientation "v" :space-evenly true :valign "end" :class "stat-tiles" :spacing 10 :vexpand true
+      (tile_batt :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity})
+      (tile_volume)
+    )))
+
 (defwidget month []
-  (box :class "startPanel" :orientation "v" :space-evenly false :vexpand true
-    (box :class "calbox" :orientation "v" :space-evenly false :valign "start" :vexpand false
-      (label :text {formattime(EWW_TIME, "%H:%M:%S" )} :class "clock")
-      (label :text {formattime(EWW_TIME, "%B %d, %Y" )} :class "local")
-      (calendar :class "cal"))
-    (notifcenter)))
-
-; App launcher
-(defwindow apps
-  :monitor 0
-  :stacking "fg"
-  :geometry (geometry :x "40px" :y "40px"
-    :width "600px" :height "1163px"
-  :anchor "top left")
-  (list))
-
-(defwidget list []
-  (box :class "startPanel"
-    (scroll :class "scroll" (label :text dunsthist))))
-
-; sys monitor
-(defwindow sys
-  :monitor 0
-  :stacking "fg"
-  :geometry (geometry :x "420px" :y "40px"
-    :width "380px" :height "575px"
-  :anchor "bottom right")
-  (stats))
+  (box :class "startPanel" :orientation "v" :space-evenly false :vexpand true :valign "fill"
+    ; (box :class "calbox" :orientation "v" :space-evenly false :valign "start" :vexpand false
+      ; (label :text {formattime(EWW_TIME, "%H:%M:%S" )} :class "clock")
+      ; (label :text {formattime(EWW_TIME, "%B %d, %Y" )} :class "local")
+      ; (calendar :class "cal"))
+    (notifcenter)
+    (stats)))
 
 (defwidget stats []
-  (box :class "startPanel" :orientation "v" :space-evenly false :spacing -10 :valign "fill" :vexpand true
-    (box :class "circles" :valign "end" :halign "center"
-      (circlemetric :icon "" :percent {EWW_CPU.avg}
-      :hovervar `cpuhover` :hover {cpuhover})
-      (circlemetric :icon "" :percent {EWW_RAM.used_mem_perc}
-      :hovervar `ramhover` :hover {ramhover})
-      (circlemetric :icon "󰃟" :percent {round((bright / 96000) * 100, 0)}
-        :scrollcmd "scripts/scrollbright {}; ${EWW_CMD} poll bright"
-      :hovervar `brighthover` :hover {brighthover}))
-    (scroll :vscroll {arraylength(mntpoints) > 2} :hscroll false :vexpand true :class {arraylength(mntpoints) > 2 ? "scroll" : "static"}
-      (box :orientation "v" :space-evenly true :valign "end" :class "stat-tiles" :spacing 10
-        (tile_volume)
-        (tile_batt :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity}
-        :icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
-        ; (tile_disk :char "/  " :icon "󰣇" :filesystem "ext4" :mountpoint "/")
-        (for disk in {mntpoints}
-          (tile_disk :char {disk.name ?: disk.mount} :icon {disk.icon} :filesystem {disk.fs} :mountpoint {disk.mount} :device {disk.dev})
-        ))
-    )))
-
-(defvar brighthover false) (defvar cpuhover false) (defvar ramhover false)
-
-(defwidget tile [?Rclickcmd]
-  (eventbox :class "stat-tile" :onrightclick {Rclickcmd} :hexpand true :timeout 10000
-    (box :orientation "h" :space-evenly false :valign "center" :spacing 20 :hexpand true :width 350
-      (children :nth 0) ; icon
-      (box :orientation "v" :valign "center" :halign "fill" :class "stat-tile-info" :hexpand true
-        (children :nth 1) ; top text
-        (children :nth 2) ; middle text / progress bar
-        (children :nth 3) ; bottom text
-      ))))
-
-(defwidget tile_disk [char icon mountpoint ?filesystem ?device]
-  (tile :Rclickcmd {matches(device, "\/dev\/sd..") ? "umount ${device} && ${EWW_CMD} poll mntpoints" : "hyprctl notify 0 2000 1 'This is not a removable device.'"}
-    (label :class "stat-tile-icon" :text {icon})
-    (label :text {char} :halign "start")
-    (scale :min 0
-      :max 101
-      :active false
-      :value {EWW_DISK?.[mountpoint]?.used_perc ?: 0}
-    :halign "fill" :hexpand true)
-    (label :text {"${filesystem}" + " " +
-      "${formatbytes((EWW_DISK?.[mountpoint]?.used ?: 0), false, "si")}/${formatbytes((EWW_DISK?.[mountpoint]?.total ?: 0), false, "si")}"}
-      :visible {(EWW_DISK?.[mountpoint]?.used ?: 0) > 0}
-    :halign "start")
+  (box :class "startPanel" :orientation "v" :space-evenly false :spacing -5 :valign "end"
+    (box :orientation "v" :space-evenly false :valign "end" :class "stat-tiles" :spacing 10
+      (tile_combo)
+      (for disk in {mntpoints}
+        (tile_disk :char {disk.name ?: disk.mount}
+          :icon {disk.icon} :filesystem {disk.fs}
+          :mountpoint {disk.mount} :device {disk.dev})
+      ))
   ))
-
-(defwidget tile_batt [icons status value]
-  (tile
-    (label :class "stat-tile-icon" :text {status == 'Charging' ? icons[11] :
-      value < 5 ? icons[10] :
-      value < 15 ? icons[9] :
-      value < 25 ? icons[8] :
-      value < 35 ? icons[7] :
-      value < 45 ? icons[6] :
-      value < 55 ? icons[5] :
-      value < 65 ? icons[4] :
-      value < 75 ? icons[3] :
-      value < 85 ? icons[2] :
-      value < 95 ? icons[1] :
-    icons[0]})
-    (label :text "${value}%" :halign "start")
-    (scale :min 0
-      :max 101
-      :active false
-      :value {value}
-    :halign "fill" :hexpand true)
-    (label :text {bat_time == "100%  " ? "Fully Charged" : "${bat_time}"} :halign "start" :lines 0 :limit-width 25)
-  ))
-
-(defwidget tile_volume [] ; hard coded for now, will pull from global var shared with bar later
-  (tile
-    :Rclickcmd { speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ?
-    "pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && hyprctl notify 1 2000 1 \"Switched to internal speakers\""
-    : "pactl set-default-sink bluez_output.40_72_18_AD_77_86.1 && hyprctl notify 1 2000 1 \"Switched to bluetooth headphones\""}
-    (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" :class "stat-tile-icon" "${speaker_raw == 'bluez_output.40_72_18_AD_77_86.1' ? '󰋋' : '󰓃'}")
-    (label :text {speaker_raw == "bluez_output.40_72_18_AD_77_86.1" ? "JBL TUNE770NC 󰂯" : "Internal Speakers"} :halign "start")
-    (scale :min 0
-      :max 101
-      :active true
-      :value {volume[0] * 100}
-      :onchange "scripts/setvol {}"
-      :class {volume[1] == true ? "dull" : "vibrant"}
-    :halign "fill" :valign "center" :hexpand true)
-    (label :text "${volume[1] == true ? 'Muted' : '${round(volume[0] * 100, 0)}%'}" :halign "start")
-  ))
-
-(defwidget circlemetric [icon percent ?scrollcmd ?lclickcmd ?rclickcmd ?hovervar ?hover]
-  (eventbox :class "circle" :width 90 :height 90 :onscroll {scrollcmd}
-    :onhover {hovervar != "" ? "${EWW_CMD} update ${hovervar}=true" : "" }
-    :onhoverlost {hovervar != "" ? "${EWW_CMD} update ${hovervar}=false" : "" }
-    :onclick {lclickcmd} :onrightclick {rclickcmd}
-    (overlay
-      (circular-progress :start-at {(37.5)-(percent/2) > -1 ? (37.5)-(percent/2) : 100+(37.5)-(percent/2)} :value {percent}
-        :class "circle_stat"
-        ; :style ".circle_stat {color: transparentize(#D35D6E, ${((100 - percent )/ 100) * 0.2});}" ; tint the color depending on percent
-      :thickness 12)
-      (label :text {icon} :class "icons" :visible {hovervar != "" ? !hover : true }) ; replace with svg
-      (label :text "${round(percent,0)}%" :visible {hovervar != "" ? hover : false })
-    )))
-
-;; connections
-(defwindow connections
-  :monitor 0
-  :stacking "fg"
-  :geometry (geometry :x "420px" :y "640px"
-    :width "380px" :height "140px"
-  :anchor "bottom right")
-  (wireless))
-
-(defwidget wireless []
-  (box :class "startPanel"
-    (overlay
-      (graph :value {EWW_NET.wlan0.NET_UP} :dynamic true :time-range "20s" :thickness 3 :class "net_up")
-      (graph :value {EWW_NET.wlan0.NET_DOWN} :dynamic true :time-range "20s" :thickness 3 :class "net_down")
-      (box :orientation "v" :space-evenly false :valign "start" :vexpand true :hexpand true :width 10 :class "startBg"
-        (label :text {wifi} :unindent true)
-        (box 
-          (label :text "󰕒 ${formatbytes(round(EWW_NET.wlan0.NET_UP, 0))}" :xalign 0.5)
-          (label :text "󰇚 ${formatbytes(round(EWW_NET.wlan0.NET_DOWN, 0))}" :xalign 0.5)
-    )))))

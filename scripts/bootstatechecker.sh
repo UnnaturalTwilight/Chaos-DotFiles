@@ -10,5 +10,9 @@ else
     notify-send "C:/ is not mounted" "Apps that depend on data stored under windows will not work." --urgency=critical --app-name="Boot State Checker"
 fi
 
+if [ -z "$(pidof elephant)" ]; then
+    notify-send "Elephant is not running" "Walker will not work." --urgency=critical --app-name="Boot State Checker"
+fi
+
 exit 0
 # other checks
