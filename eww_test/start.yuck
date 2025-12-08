@@ -40,6 +40,7 @@
       (tooltip (label :text "Reboot" :class "tooltip") (button :onrightclick "systemctl reboot" ""))
       (tooltip (label :text "Suspend" :class "tooltip") (button :onrightclick "launch-start close && systemctl suspend" "󰤄"))
       (tooltip (label :text "Lock" :class "tooltip") (button :onrightclick "launch-start close && loginctl lock-session" ""))
+      (tooltip (label :text "logout" :class "tooltip") (button :onrightclick "launch-start close && hyprctl dispatch exit" ""))
     )
     (box :class "stat-tiles" :orientation "v" :space-evenly true :valign "end" :class "stat-tiles" :spacing 10 :vexpand true
       (tile_batt :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity})

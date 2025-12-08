@@ -1,6 +1,8 @@
 # Save in ~/Videos
 -o ~/Videos/%(title)s.%(ext)s
 
+--remote-components ejs:github
+
 --alias yt-music,-m "--config-locations '~/.config/yt-dlp/music'"
 
 --alias embed-square-thumbnail '--embed-thumbnail --convert-thumbnail jpg --ppa "ThumbnailsConvertor+FFmpeg_o:-c:v mjpeg -qmin 1 -qscale:v 1 -vf crop=\"'"'"'if(gt(ih,iw),iw,ih)'"'"':'"'"'if(gt(iw,ih),ih,iw)'"'"'\""'

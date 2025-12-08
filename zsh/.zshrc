@@ -56,7 +56,7 @@ alias logout='hyprctl dispatch exit'
 alias eww-test='eww -c ~/.config/eww_test'
 
 alias mini-fetch='hyfetch --distro arch_small --args="-c $HOME/.config/fastfetch/mini.jsonc"'
-alias fetch='fastfetch --kitty-icat ~/Images/GendyFluidMoon.png --logo-width 39'
+alias fetch='fastfetch -c $HOME/.config/fastfetch/moon.jsonc'
 
 alias vpn='windscribe-cli'
 alias vlc='env -u DISPLAY vlc' # run vlc in wayland
@@ -86,10 +86,20 @@ promptinit
 PROMPT='%n@%m %~ %F{white}%B%#%b%f '
 RPROMPT='[%F{yellow}%?%f]'
 
-# function set_win_title(){
-#     echo -ne "\033]0;zsh\007"
-# }
-# precmd_functions+=(set_win_title)
+autoload -Uz add-zsh-hook
+
+function xterm_title_precmd () {
+	print -Pn -- '\e]2;zsh %~\a'
+}
+
+function xterm_title_preexec () {
+	print -Pn -- '\e]2;' && print -n -- "${(q)1}\a"
+}
+
+if [[ "$TERM" == (Eterm*|alacritty*|aterm*|foot*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|wezterm*|tmux*|xterm*) ]]; then
+	add-zsh-hook -Uz precmd xterm_title_precmd
+	add-zsh-hook -Uz preexec xterm_title_preexec
+fi
 
 # load starship if it can render
 if [[ "$COLORTERM" == "truecolor" ]]; then
