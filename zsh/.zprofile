@@ -1,1 +1,1 @@
-
+/home/cal/dotfiles/zsh/.zprofile

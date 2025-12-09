@@ -10,11 +10,13 @@ I have setup Hyprland with EWW for the bar. Everything else was me just picking 
 
 Couldn't have done this without all the example configs on the Hypr wiki, Arch wiki, and many, many random repos on github. They worked far better than what I tried to cook up on my own.
 
-## Shortlist of things I use not included in this repo
+## Shortlist of things not included in this repo
+- [UnnaturalTwilight/dotfiles](https://github.com/UnnaturalTwilight/dotfiles) - New repo where I am trying to make my configs portable. Most of the simlinks in this repo point to files over there.
 - [Nordzy-cursors](https://github.com/guillaumeboehm/Nordzy-cursors)
-- Bash is configured to be much more frendly on the TTY (No Starship, etc)
-- My scripts related to keeping thunderbird running in the background are a little too jank right now but will be moved in here when they get some polish
-- Custom desktop files
+- [UnnaturalSDDM](https://github.com/UnnaturalTwilight/UnnaturalSDDM) - My SDDM theme.
+- [UnnaturalTwilight/eww](https://github.com/UnnaturalTwilight/eww) - My EWW fork, the `combinedcode` branch is needed for my config to work.
+- Bash is configured to be much more frendly on the TTY (No Starship, etc).
+- Custom desktop files.
 
 ## Credits
 Where i have copied others' configs I have tryed to include where it is from in a coment.

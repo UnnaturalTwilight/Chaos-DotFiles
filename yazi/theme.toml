@@ -1,7 +1,1 @@
-
-[flavor]
-dark = "catppuccin-mocha"
-
-[status]
-sep_left = { open = "", close = "" }
-sep_right = { open = "", close = "" }
+/home/cal/dotfiles/yazi/theme.toml

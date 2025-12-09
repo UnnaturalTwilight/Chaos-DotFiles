@@ -1,0 +1,1 @@
+/home/cal/dotfiles/scripts/hypr-close-or-minimize.sh
