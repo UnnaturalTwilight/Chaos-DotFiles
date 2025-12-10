@@ -4,17 +4,12 @@
 
 [general]
 
-# Smoothing mode. Can be 'normal', 'scientific' or 'waves'. DEPRECATED as of 0.6.0
-; mode = normal
-
 # Accepts only non-negative values.
 ; framerate = 60
 
 # 'autosens' will attempt to decrease sensitivity if the bars peak. 1 = on, 0 = off
 # new as of 0.6.0 autosens of low values (dynamic range)
-# 'overshoot' allows bars to overshoot (in % of terminal height) without initiating autosens. DEPRECATED as of 0.6.0
 ; autosens = 1
-; overshoot = 20
 
 # Manual sensitivity in %. If autosens is enabled, this will only be the initial value.
 # 200 means double height. Accepts only non-negative values.
@@ -36,7 +31,6 @@
 ; bar_width = 1
 ; bar_spacing = 0
 
-
 # Lower and higher cutoff frequencies for lowest and highest bars
 # the bandwidth of the visualizer.
 # Note: there is a minimum total bandwidth of 43Mhz x number of bars.
@@ -44,11 +38,9 @@
 ; lower_cutoff_freq = 50
 ; higher_cutoff_freq = 10000
 
-
 # Seconds with no input before cava goes to sleep mode. Cava will not perform FFT or drawing and
 # only check for input once per second. Cava will wake up once input is detected. 0 = disable.
 ; sleep_timer = 0
-
 
 [input]
 
@@ -239,8 +231,6 @@ gradient_color_5 = '#ac6bec'
 gradient_color_2 = '#7b5fd5'
 gradient_color_1 = '#6a5bcd'
 
-
-
 [smoothing]
 
 # Percentage value for integral smoothing. Takes values from 0 - 100.
@@ -266,7 +256,6 @@ gradient_color_1 = '#6a5bcd'
 # the raw visualization is very noisy, this factor adjusts the integral and gravity filters to keep the signal smooth
 # 100 will be very slow and smooth, 0 will be fast but noisy.
 ; noise_reduction = 77
-
 
 [eq]
 
