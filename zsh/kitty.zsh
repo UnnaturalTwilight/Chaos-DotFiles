@@ -1,0 +1,1 @@
+/home/cal/dotfiles/zsh/kitty.zsh

@@ -1,5 +1,6 @@
-#!/bin/sh
-hyprctl activewindow -j | jq --raw-output .class # Provides a little hint to if eww is reloading corectly
-# will output title if title is shorter than the first arg in chars, else class
-socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | stdbuf -o0 awk -F '>>|,' '/^activewindow>>/{if (length($3) > '$1') print $2; else print $3}'
-# breaks if window title or class includes a comma
+#!/usr/bin/bash
+# output: ["window_class", "window_title"]
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - | 
+sed -u -e s/'::*'/'::'/g -e s/'>>'/':::'/ -e s/','/':::'/ - | 
+stdbuf -o0 awk -F ':::' '/^activewindow:::/{ print "[\""$2"\", \""$3"\"]" }'
+# if window title or class has more than 2 colons in a row (ie ':::') they will be replaced with just 2 colons ('::')
