@@ -39,8 +39,8 @@
 (defpoll volume :interval "1s" :initial "[0, false]"
 "scripts/getvol")
 
-(defpoll speaker_raw :interval "1s" :initial ""
-"pactl get-default-sink")
+(defpoll audio_output :interval "1s" :initial ""
+"scripts/get-audio-output")
 
 (defpoll bat_time :interval "1s"
 "upower -b | grep time | cut -f2 -d: | awk '{print $1 \" \" $2}'")
