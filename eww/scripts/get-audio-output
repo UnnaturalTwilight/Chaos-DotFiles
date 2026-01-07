@@ -7,5 +7,5 @@ jq -c --arg current "$CURRENT_SINK" '[.[] | {(.name | tostring): {"description",
         icon: (if .["device.form_factor"] == "headset" then "󰋋" 
             elif .["device.form_factor"] == "internal" then "󰓃"
             else null end)})}] |
-    {default: $current} + .[0] + .[1:].[] ' |
+    {default: $current} + add(.[])' |
 sed 's/Built-in Audio Analog Stereo/Internal Speakers/g'
