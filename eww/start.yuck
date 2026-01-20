@@ -61,7 +61,7 @@
     (box :orientation "v" :space-evenly false :valign "end" :class "stat-tiles" :spacing 10
       (tile_combo)
       (for disk in {mntpoints}
-        (tile_disk :char {disk.name ?: disk.mount}
+        (tile_disk :char {disk.name ?: disk.label ?: disk.mount}
           :icon {disk.icon} :filesystem {disk.fs}
           :mountpoint {disk.mount} :device {disk.dev})
       ))

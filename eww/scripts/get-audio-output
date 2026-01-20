@@ -2,10 +2,10 @@
 CURRENT_SINK=$(pactl get-default-sink)
 
 pactl --format='json' list sinks |
-jq -c --arg current "$CURRENT_SINK" '[.[] | {(.name | tostring): {"description", "state", "mute"} + 
+jq -c --arg current "$CURRENT_SINK" '[.[] | {(.name | tostring): {"description", "state", "mute", "name", "active_port"} + 
     (.properties | {type: (.["device.form_factor"]), 
         icon: (if .["device.form_factor"] == "headset" then "󰋋" 
             elif .["device.form_factor"] == "internal" then "󰓃"
             else null end)})}] |
-    {default: $current} + add(.[])' |
+    {default: $current} + add(.[]) | add(. + {list: [(.[] | {desc:.description?, name: .name?})]})' |         
 sed 's/Built-in Audio Analog Stereo/Internal Speakers/g'

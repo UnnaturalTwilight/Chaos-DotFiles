@@ -75,13 +75,15 @@
 
 (defwidget tile_volume [] ; hard coded for now, will pull from global var shared with bar later
   (tile
-    :Rclickcmd { audio_output.default != "alsa_output.pci-0000_00_1f.3.analog-stereo" ?
-    "pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo && hyprctl notify 1 2000 1 \"Switched to internal speakers\""
-    : "pactl set-default-sink bluez_output.40:72:18:AD:77:86 && hyprctl notify 1 2000 1 \"Switched to bluetooth headphones\""}
-    (button :onclick "wpctl set-mute @DEFAULT_SINK@ toggle" :class "stat-tile-icon" 
+    :Rclickcmd { audio_output.default != "${replace(jq(audio_output, '.list.[0]?.name?'), '\"', '')}" ?
+    "pactl set-default-sink ${replace(jq(audio_output, '.list.[0]?.name?'), '\"', '')} && hyprctl notify 1 2000 1 \"Switched to ${replace(jq(audio_output, '.list.[0]?.desc?'), '\"', '')}\"; ${EWW_CMD} poll audio_output"
+    : "pactl set-default-sink ${replace(jq(audio_output, '.list.[1]?.name?'), '\"', '')} && hyprctl notify 1 2000 1 \"Switched to ${replace(jq(audio_output, '.list.[1]?.desc?'), '\"', '')}\"; ${EWW_CMD} poll audio_output"}
+    (button :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle; ${EWW_CMD} poll volume" :class "stat-tile-icon" 
       {audio_output?.["${audio_output.default}"]?.icon ?: ""})
     (box :halign "fill" :hexpand true :space-evenly false
-      (label :text {audio_output?.["${audio_output.default}"]?.description ?: "Speakers"} :halign "start")
+      (overlay (label :text {audio_output?.["${audio_output.default}"]?.description ?: "Speakers"} :halign "start")
+      (combo-box-text :items {replace(jq(audio_output, '[.list.[]?.desc?]'), "\"", "")} :halign "fill" :class "dropdown") ;; Combo boxes are broken in unforgivable ways
+      )
       (padding :space 10 :expand true)
       (label :text {volume[1] == true ? " " : playing == 'Playing' ? " " : ""} :unindent false :halign "start"))
     (box :halign "fill" :hexpand true :space-evenly false

@@ -53,6 +53,7 @@
     :spacing 20
     (workspaces)
     ; (systray :orientation "h" :icon-size 16 :spacing 5)
+    ; (image :icon {window[0]} :valign "fill" :halign "center")
     (label :text {window[1]} :visible {window[1] != ""} :truncate true)
   ))
 

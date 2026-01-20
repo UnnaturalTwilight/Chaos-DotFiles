@@ -39,10 +39,10 @@
 (defpoll volume :interval "1s" :initial "[0, false]"
 "scripts/getvol")
 
-(defpoll audio_output :interval "1s" :initial ""
+(defpoll audio_output :interval "10s" :initial ""
 "scripts/get-audio-output")
 
-(defpoll bat_time :interval "1s"
+(defpoll bat_time :interval "2s"
 "upower -b | grep time | cut -f2 -d: | awk '{print $1 \" \" $2}'")
 
 (defpoll wifi :interval "2s"
