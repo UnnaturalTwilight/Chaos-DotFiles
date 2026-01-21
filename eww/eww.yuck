@@ -28,8 +28,8 @@
 (defpoll dnd :interval "30s"
 "dunstctl is-paused")
 
-(defpoll dunsthist :interval "30s" 
-:initial "{\"data\":[[]]}" ; mini vertion of the data structure
+(defpoll dunsthist :interval "30s"
+  :initial "{\"data\":[[]]}" ; mini vertion of the data structure
 "dunstctl history")
 
 ;; system
@@ -61,33 +61,103 @@
 ;; Common Widgets
 
 (defwidget padding [space ?expand ?vspace ?vexpand ?visible]
-  (box :class "gap" :orientation "h" :halign "fill" :width space :height {vspace ?: 6} 
+  (box :class "gap" :orientation "h" :halign "fill" :width space :height {vspace ?: 6}
     :hexpand {expand ?: false} :vexpand {vexpand ?: false} :visible {visible ?: true}
     :css {debug ? ".gap {background-color: transparentize(#b0b4bc, 0.5); margin: 2px; border-radius: 5px;}" : ""}))
 
 (defwidget slider [value ?min ?max ?active ?onchange ?class ?visible]
   (scale :min {min ?: 0}
-      :max {max ?: 101}
-      :active {active ?: false}
-      :value {value}
-      :onchange {onchange}
-      :class {class ?: "slider"}
-      :visible {visible ?: true}
-    :halign "fill" :valign "center" :hexpand true))
+    :max {max ?: 101}
+    :active {active ?: false}
+    :value {value}
+    :onchange {onchange}
+    :class {class ?: "slider"}
+    :visible {visible ?: true}
+  :halign "fill" :valign "center" :hexpand true))
 
 (defwidget leftpad-label [text chars]
   (label :text {substring("${substring('                                                                                                                                ',
-   0, chars)}${text}", strlength("${text}"), chars)} :halign "start" :unindent false))
+        0, chars)}${text}", strlength("${text}"), chars)} :halign "start" :unindent false))
+
+;; Niri Eww Config
+
+; The idea is to place this in the backdrop -- behind windows rather than giving it any reserved space
+; Layout, Size & Shape all need to depend on the wallpaper for *Style Points*
 
 (defwidget bg-clock []
-    (box
-      :orientation "v"
-      :halign "end"
-      :valign "start"
-      (label :xalign 0 :text {formattime(EWW_TIME, "%H:%M" )})))
+  (box
+    :orientation "v"
+    :halign "end"
+    :valign "start"
+    :space-evenly false
+    :hexpand true
+    (label :xalign 1 :class "bg-clock" :text {formattime(EWW_TIME, "%H:%M" )})
+    (label :xalign 0.5 :class "bg-date" :text {formattime(EWW_TIME, "%A, %d %B %Y" )})))
 
 (defwindow bg-clock
-  :monitor 0
+  :monitor "eDP-1"
+  :namespace "backdrop-eww-clock"
   :stacking "bg"
-  :geometry (geometry :x "40px" :y "20px" :width "25px" :anchor "top right")
+  :geometry (geometry :x "50px" :y "30px" :anchor "top right")
   (bg-clock))
+
+(defwidget bg-audio []
+  (box
+    :orientation "v"
+    :halign "end"
+    :valign "end"
+    :width 60
+    :height 127
+    :space-evenly false
+    :hexpand true
+    :class "bg-symbols-container"
+    (label :xalign 0.5 :class {audio_output.default == "bluez_output.40:72:18:AD:77:86" ? "bg-audio-icon-bluetooth" : "bg-audio-icon-speakers"}
+    :text {audio_output?.["${audio_output.default}"]?.icon})
+    (slider
+      :active false
+      :value {volume[0] * 100}
+      :onchange "scripts/setvol {}"
+    :class {volume[1] == true ? "dull" : "scale"})))
+
+(defwidget bg-battery [status value]
+  (box
+    :orientation "v"
+    :halign "end"
+    :valign "end"
+    :width 60
+    :height 127
+    :space-evenly false
+    :hexpand true
+    :class "bg-symbols-container"
+    (label :xalign 0.5 :class "bg-battery-icon" :text 
+    {status == 'Charging' ? batt_icons[11] :
+      value < 5 ? batt_icons[10] :
+      value < 15 ? batt_icons[9] :
+      value < 25 ? batt_icons[8] :
+      value < 35 ? batt_icons[7] :
+      value < 45 ? batt_icons[6] :
+      value < 55 ? batt_icons[5] :
+      value < 65 ? batt_icons[4] :
+      value < 75 ? batt_icons[3] :
+      value < 85 ? batt_icons[2] :
+      value < 95 ? batt_icons[1] :
+    batt_icons[0]})
+    (slider :value {value})))
+
+(defwidget bg-symbols []
+  (box
+    :orientation "h"
+    :halign "end"
+    :valign "end"
+    :space-evenly false
+    :spacing 20
+    :hexpand true
+    (bg-audio)
+    (bg-battery :status {EWW_BATTERY.BAT1.status} :value {EWW_BATTERY.BAT1.capacity})))
+
+(defwindow bg-symbols
+  :monitor "eDP-1"
+  :namespace "backdrop-eww-symbols"
+  :stacking "bg"
+  :geometry (geometry :x "50px" :y "30px" :anchor "bottom right")
+  (bg-symbols))
