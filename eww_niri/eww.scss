@@ -21,11 +21,12 @@ tooltip {
 }
 
 .activate-linux {
-    color: rgba(250, 250, 250, 0.5);
-    &.background {
-      background: none;
-    }
+  color: rgba(250, 250, 250, 0.5);
+
+  &.background {
+    background: none;
   }
+}
 
 .bg-clock {
   font-size: 8rem;
@@ -41,7 +42,7 @@ tooltip {
 }
 
 .bg-symbols-container {
-  
+
   .bg-battery-icon {
     font-size: 5.5rem;
     font-family: $font-jbm-nfm;
@@ -82,5 +83,64 @@ tooltip {
 
   .dull trough highlight {
     background-color: transparentize($pinkish, 0.5);
+  }
+}
+
+.bg-workspaces-container {
+  background-color: transparentize(black, 0.3);
+  margin: 1rem;
+  border-radius: 1rem;
+
+  .workspaces {
+    font-family: $font-jbm-nf;
+    font-size: 1.2rem;
+    // color: $kinda-gray;
+    // background-color: $bg-dark;
+    padding: 0 0.25rem 0 0.25rem;
+    border-radius: 1rem;
+    box-shadow: black 0 0 0.75rem;
+    background-color: transparentize($navy, 0.5);
+    min-width: 1rem;
+
+    .workspace {
+      background-color: $navy;
+      margin: 0.25rem 0.125rem;
+      border-radius: 1rem;
+      min-width: 1.5rem;
+    }
+
+    .workspace.active {
+      background-color: transparentize($bar-gray, 0.4);
+
+      .column {
+        background-color: transparentize($pinkish, 0.6);
+      }
+
+      .column.focused {
+        background-color: $pinkish;
+        // min-width: 1rem;
+        // padding: 0.5rem 0.75rem;
+      }
+    }
+
+    .workspace.empty {
+      min-width: 1.25rem;
+      min-height: 1.25rem;
+      margin: 0.5rem;
+      background-color: $navy;
+    }
+
+    .workspace.active.empty {
+      background-color: transparentize($bar-gray, 0.4);
+    }
+
+    .column {
+      margin: 0.25rem;
+      padding: 0.5rem;
+      min-width: 0.25rem;
+      min-height: 0.25rem;
+      border-radius: 1rem;
+      background-color: transparentize($kinda-gray, 0.6);
+    }
   }
 }

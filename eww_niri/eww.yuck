@@ -10,6 +10,8 @@
 
 (defvar batt_icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
 
+(deflisten workspaces :initial "{}" "eww-niri-workspaces")
+
 ;; Common Widgets
 
 (defwidget padding [space ?expand ?vspace ?vexpand ?visible]
@@ -36,7 +38,7 @@
 ; The idea is to place this in the backdrop -- behind windows rather than giving it any reserved space
 ; Layout, Size & Shape all need to depend on the wallpaper for *Style Points*
 
-(defwidget bg-clock []
+(defwidget clock []
   (box
     :orientation "v"
     :halign "end"
@@ -51,7 +53,7 @@
   :namespace "backdrop-eww-clock"
   :stacking "bg"
   :geometry (geometry :x "50px" :y "30px" :anchor "top right")
-  (bg-clock))
+  (clock))
 
 (defwidget bg-audio []
   (box
@@ -78,8 +80,8 @@
     :space-evenly false
     :hexpand true
     :class "bg-symbols-container"
-    (label :xalign 0.5 :class "bg-battery-icon" :text 
-    {status == 'Charging' ? batt_icons[11] :
+    (label :xalign 0.5 :class "bg-battery-icon" :text
+      {status == 'Charging' ? batt_icons[11] :
       value < 5 ? batt_icons[10] :
       value < 15 ? batt_icons[9] :
       value < 25 ? batt_icons[8] :
@@ -93,7 +95,7 @@
     batt_icons[0]})
     (slider :value {value})))
 
-(defwidget bg-symbols []
+(defwidget symbols []
   (box
     :orientation "h"
     :halign "end"
@@ -109,4 +111,25 @@
   :namespace "backdrop-eww-symbols"
   :stacking "bg"
   :geometry (geometry :x "50px" :y "30px" :anchor "bottom right")
-  (bg-symbols))
+  (symbols))
+
+(defwidget workspaces [monitor]
+  (box :class "bg-workspaces-container"
+    (box :orientation "h"
+      :class "workspaces"
+      :space-evenly false
+      (for wsp in {"${workspaces.outputs[monitor].workspaces}"}
+        (box :space-evenly false
+          :class "workspace ${wsp.is_active ? 'active' : ''} ${arraylength(wsp.columns) == 0 ? 'empty' : ''}"
+          (for col in "${wsp.columns}"
+            (box :halign "start" :space-evenly false
+              :class "column ${col.has_focused_window ? 'focused' : ''}"
+              ; (label :text "")
+            )))))))
+
+(defwindow bg-workspaces [monitor]
+  :monitor {monitor}
+  :namespace "backdrop-eww-workspaces"
+  :stacking "bg"
+  :geometry (geometry :x "40px" :y "40px" :anchor "bottom left")
+  (workspaces :monitor {monitor}))
