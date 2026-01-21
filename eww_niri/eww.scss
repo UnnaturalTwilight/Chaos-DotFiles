@@ -1,0 +1,86 @@
+// vars
+$pinkish: #D35D6E;
+$bg-light: #55505A;
+$bg-dark: #414145;
+$kinda-gray: #b0b4bc;
+$bar-gray: #4e4e4e;
+$navy: #38384d;
+$gradient: linear-gradient(90deg, rgba(50, 0, 90, 0.5) 20%, rgba(15, 20, 90, 0.5) 50%, rgba(50, 0, 90, 0.5) 80%);
+$not-gradient: rgba(15, 20, 90, 0.9);
+$font-jbm-nfm: JetBrainsMono NFM;
+$font-jbm-nf: JetBrainsMono NF;
+
+* {
+  all: unset; // Unsets everything so you can style everything from scratch
+}
+
+tooltip {
+  background-color: $not-gradient;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.activate-linux {
+    color: rgba(250, 250, 250, 0.5);
+    &.background {
+      background: none;
+    }
+  }
+
+.bg-clock {
+  font-size: 8rem;
+  font-family: $font-jbm-nfm;
+  color: $kinda-gray;
+}
+
+.bg-date {
+  font-size: 1.5rem;
+  font-family: $font-jbm-nfm;
+  color: $kinda-gray;
+  margin-top: -1.5rem;
+}
+
+.bg-symbols-container {
+  
+  .bg-battery-icon {
+    font-size: 5.5rem;
+    font-family: $font-jbm-nfm;
+    color: $kinda-gray;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .bg-audio-icon-bluetooth {
+    font-size: 6rem;
+    font-family: $font-jbm-nfm;
+    color: $kinda-gray;
+  }
+
+  .bg-audio-icon-speakers {
+    font-size: 5rem;
+    font-family: $font-jbm-nfm;
+    color: $kinda-gray;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  scale {
+    margin-top: -2rem;
+  }
+
+  scale trough highlight {
+    background-color: $pinkish;
+    border-radius: 10px;
+  }
+
+  scale trough {
+    background-color: $bar-gray;
+    border-radius: 50px;
+    min-height: 10px;
+    min-width: 20px;
+  }
+
+  .dull trough highlight {
+    background-color: transparentize($pinkish, 0.5);
+  }
+}
