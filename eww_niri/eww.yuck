@@ -1,7 +1,7 @@
 ;; system
 
 (defpoll volume :interval "1s" :initial "[0, false]"
-"scripts/getvol")
+"scripts/get-vol")
 
 (defpoll audio_output :interval "10s" :initial ""
 "scripts/get-audio-output")
@@ -46,7 +46,7 @@
     :space-evenly false
     :hexpand true
     (label :xalign 1 :class "bg-clock" :text {formattime(EWW_TIME, "%H:%M" )})
-    (label :xalign 0.5 :class "bg-date" :text {formattime(EWW_TIME, "%A, %d %B %Y" )})))
+    (label :xalign 0.5 :class "bg-date" :text {formattime(EWW_TIME, "%A, %-d %B %Y" )})))
 
 (defwindow bg-clock
   :monitor "eDP-1"
@@ -65,7 +65,9 @@
     :space-evenly false
     :hexpand true
     :class "bg-symbols-container"
-    (label :xalign 0.5 :class {(audio_output?.default ?: "?") == "bluez_output.40:72:18:AD:77:86" ? "bg-audio-icon-bluetooth" : "bg-audio-icon-speakers"}
+    (label :xalign 0.5 
+      :class {((audio_output?.default ?: "?") == "bluez_output.40:72:18:AD:77:86" ? "bg-audio-icon-bluetooth" : "bg-audio-icon-speakers")
+      + " " + (volume[1] ? "dull-icon" : "")}
     :text {audio_output?.["${audio_output?.default}"]?.icon ?: "?" })
     (slider :value {(volume[0] ?: 0) * 100}
     :class {volume[1] ? "dull" : "slider"})))

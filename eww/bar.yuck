@@ -20,7 +20,7 @@
       :low " " :high " "
       :value {round(volume[0] * 100, 0)}
       :muted {volume[1]}
-    :onchange "scripts/setvol {}")
+    :onchange "scripts/set-vol {}")
     (_battery :status {EWW_BATTERY.BAT1.status}
     :value {EWW_BATTERY.BAT1.capacity})
     (alertmode)

@@ -90,7 +90,7 @@
       (slider
         :active true
         :value {volume[0] * 100}
-        :onchange "scripts/setvol {}"
+        :onchange "scripts/set-vol {}"
       :class {volume[1] == true ? "dull" : "vibrant"})
       (leftpad-label :text "${round(volume[0] * 100, 0)}%" :chars 5))
   ))

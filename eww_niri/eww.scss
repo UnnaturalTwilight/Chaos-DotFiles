@@ -9,23 +9,10 @@ $gradient: linear-gradient(90deg, rgba(50, 0, 90, 0.5) 20%, rgba(15, 20, 90, 0.5
 $not-gradient: rgba(15, 20, 90, 0.9);
 $font-jbm-nfm: JetBrainsMono NFM;
 $font-jbm-nf: JetBrainsMono NF;
+$font-noto-sans: Noto Sans;
 
 * {
   all: unset; // Unsets everything so you can style everything from scratch
-}
-
-tooltip {
-  background-color: $not-gradient;
-  padding: 3px;
-  border-radius: 5px;
-}
-
-.activate-linux {
-  color: rgba(250, 250, 250, 0.5);
-
-  &.background {
-    background: none;
-  }
 }
 
 .bg-clock {
@@ -36,7 +23,7 @@ tooltip {
 
 .bg-date {
   font-size: 1.5rem;
-  font-family: $font-jbm-nfm;
+  font-family: $font-noto-sans;
   color: $kinda-gray;
   margin-top: -1.5rem;
 }
@@ -54,6 +41,7 @@ tooltip {
   .bg-audio-icon-bluetooth {
     font-size: 6rem;
     font-family: $font-jbm-nfm;
+    margin-top: 2rem;
     color: $kinda-gray;
   }
 
@@ -63,6 +51,10 @@ tooltip {
     color: $kinda-gray;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
+  }
+
+  .dull-icon {
+    opacity: 0.5;
   }
 
   scale {
@@ -92,7 +84,7 @@ tooltip {
   border-radius: 1rem;
 
   .workspaces {
-    font-family: $font-jbm-nf;
+    font-family: $font-jbm-nfm;
     font-size: 1.2rem;
     // color: $kinda-gray;
     // background-color: $bg-dark;
@@ -108,30 +100,26 @@ tooltip {
       border-radius: 1rem;
       min-width: 1.5rem;
     }
-
-    .workspace.active {
-      background-color: transparentize($bar-gray, 0.4);
-
-      .column {
-        background-color: transparentize($pinkish, 0.6);
-      }
-
-      .column.focused {
-        background-color: $pinkish;
-        // min-width: 1rem;
-        // padding: 0.5rem 0.75rem;
-      }
-    }
-
-    .workspace.empty {
+    
+    .empty {
       min-width: 1.25rem;
       min-height: 1.25rem;
       margin: 0.5rem;
       background-color: $navy;
     }
 
-    .workspace.active.empty {
+    .active {
       background-color: transparentize($bar-gray, 0.4);
+
+      .column {
+        background-color: transparentize($pinkish, 0.6);
+      }
+
+      .focused {
+        background-color: $pinkish;
+        // min-width: 1rem;
+        // padding: 0.5rem 0.75rem;
+      }
     }
 
     .column {

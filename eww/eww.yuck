@@ -37,7 +37,7 @@
 "brightnessctl -m g")
 
 (defpoll volume :interval "1s" :initial "[0, false]"
-"scripts/getvol")
+"scripts/get-vol")
 
 (defpoll audio_output :interval "10s" :initial ""
 "scripts/get-audio-output")
