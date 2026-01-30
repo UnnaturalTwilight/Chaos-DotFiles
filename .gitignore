@@ -12,6 +12,7 @@
 /Electron
 /filetypesrc
 /font-manager
+/freerdp
 /gh
 /gh-copilot
 /GIMP
@@ -42,6 +43,7 @@
 /qalculate/qalc.history*
 /qimgv
 /QtProject.conf
+/quickshell/*/.qmlls.ini
 /session
 /solaar
 /systemd
@@ -55,4 +57,4 @@
 /yazi/flavors
 /yazi/plugins
 /zsh/.zcompdump
-/freerdp
+/zsh/.zkbd

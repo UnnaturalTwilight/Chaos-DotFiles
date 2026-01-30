@@ -2,6 +2,7 @@
 -o ~/Videos/%(title)s.%(ext)s
 
 --remote-components ejs:github
+# --extractor-args "youtube:player_client=default,-android_sdkless"
 
 --alias yt-music,-m "--config-locations '~/.config/yt-dlp/music'"
 
