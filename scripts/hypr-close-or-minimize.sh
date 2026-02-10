@@ -1,1 +1,1 @@
-/home/cal/dotfiles/scripts/hypr-close-or-minimize.sh
+/home/cal/Monolith/birdmanager/minimize.sh

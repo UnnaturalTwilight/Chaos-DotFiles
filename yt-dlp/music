@@ -2,7 +2,7 @@
 -o ~/Music/new/%(playlist|.)s/%(title)s.%(ext)s 
 --windows-filenames
 --sponsorblock-remove music_offtopic
---add-metadata 
+--embed-metadata
 # --embed-thumbnail
 -f 'ba[acodec^=mp3]/ba/b' 
 -x --audio-format mp3
