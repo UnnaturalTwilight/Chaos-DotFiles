@@ -41,6 +41,7 @@
 /pnpm
 /pulse
 /qalculate/qalc.history*
+/qalculate/qalculate-qt.cfg
 /qimgv
 /QtProject.conf
 /quickshell/*/.qmlls.ini

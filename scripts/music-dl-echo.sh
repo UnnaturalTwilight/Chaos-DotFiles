@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/zsh
 
-yt-dlp -m -a -;
-echo ""
-echo "Download complete, copy next link to clipboard to download more."
-echo "Press Ctrl+C to exit."
+command yt-dlp -m -a - && 
+  builtin print -l -- \
+  "" \
+  "Download complete, copy next link to clipboard to download more." \
+  "Press Ctrl+C to exit."
 echo ""
