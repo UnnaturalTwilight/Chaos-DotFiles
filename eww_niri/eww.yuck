@@ -10,7 +10,7 @@
 
 (defvar batt_icons `["󰁹", "󰂂", "󰂁", "󰂀", "󰁿", "󰁾", "󰁽", "󰁼", "󰁻", "󰁺", "󰂎", "󰂄"]`)
 
-(deflisten workspaces :initial "{}" "eww-niri-workspaces")
+(deflisten workspaces :initial "{}" "scripts/eww-niri-workspaces")
 
 ;; Common Widgets
 
