@@ -1,13 +1,14 @@
-/autostart
 /astro
+/autostart
 /baloofileinformationrc
 /blender
 /calibre
 /cat_installer
 /cava/shaders
 /Code
-/copilot
 /com.yuezk.qt
+/configstore
+/copilot
 /dconf
 /discord
 /dolphinrc
@@ -25,7 +26,9 @@
 /go
 /Google
 /google-chrome
+/gpu-screen-recorder
 /gtk-3.0/bookmarks
+/heroic
 /hosts.yml
 /inkscape
 /java
@@ -41,8 +44,8 @@
 /mimeapps.list
 /mozilla
 /mpd/playlists
-/OrcaSlicer
 /obsidian
+/OrcaSlicer
 /pnpm
 /pulse
 /qalculate/qalc.history*
@@ -62,7 +65,6 @@
 /yay
 /yazi/flavors
 /yazi/plugins
+/zen
 /zsh/.zcompdump
 /zsh/.zkbd
-/heroic
-/zen
