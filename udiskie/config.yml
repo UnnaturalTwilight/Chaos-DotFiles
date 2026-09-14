@@ -1,0 +1,30 @@
+# https://github.com/coldfix/udiskie/blob/master/doc/udiskie.8.txt
+
+program_options:
+  # Configure defaults for command line options
+
+  tray:             false   # [bool] Enable the tray icon. "auto"
+                            # means auto-hide the tray icon when
+                            # there are no handled devices.
+
+  automount:        true    # [bool] Enable automatic mounting.
+
+  notify:           true    # [bool] Enable notifications.
+
+  file_manager:     'xdg-open'
+    # [string] Set program to open directories. It will be invoked
+    # with the folder path as its last command line argument.
+
+  terminal:         'kitty -d'
+    # [string] Set terminal command line to open directories. It will be
+    # invoked with the folder path as its last command line argument.
+
+notification_actions:
+  # Define which actions should be shown on notifications. Note that there
+  # are currently only a limited set of actions available for each
+  # notification. Events that are not explicitly specified show the default
+  # set of actions. Specify an empty list if you don't want to see any
+  # notification for the specified event:
+
+  device_mounted:   [terminal, browse]
+  device_added:     [mount]
