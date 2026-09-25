@@ -110,27 +110,17 @@
             "Settings": [
               {
                 "Property": "Keys",
-                "Value": "Application+Tab"
+                "Value": "Application+None"
               }
             ],
             "Enable": true
           },
           {
-            "Path": "OpenTabletDriver.Desktop.Binding.AdaptiveBinding",
+            "Path": "OpenTabletDriver.Desktop.Binding.PresetBinding",
             "Settings": [
               {
-                "Property": "Binding",
-                "Value": "Button 3"
-              }
-            ],
-            "Enable": true
-          },
-          {
-            "Path": "OpenTabletDriver.Desktop.Binding.AdaptiveBinding",
-            "Settings": [
-              {
-                "Property": "Binding",
-                "Value": "Button 2"
+                "Property": "Preset",
+                "Value": "kamvas12-basic-setup"
               }
             ],
             "Enable": true
@@ -140,7 +130,29 @@
             "Settings": [
               {
                 "Property": "Keys",
-                "Value": "Control+Equal"
+                "Value": "Application+Control+F"
+              }
+            ],
+            "Enable": true
+          },
+          {
+            "Path": "VoiDPlugins.Binding.ScriptRunner.ScriptRunner",
+            "Settings": [
+              {
+                "Property": "Script",
+                "Value": "/home/cal/.config/scripts/hotplug.sh"
+              }
+            ],
+            "Enable": true
+          },
+          null,
+          null,
+          {
+            "Path": "OpenTabletDriver.Desktop.Binding.MultiKeyBinding",
+            "Settings": [
+              {
+                "Property": "Keys",
+                "Value": "Application+Q"
               }
             ],
             "Enable": true
@@ -150,37 +162,7 @@
             "Settings": [
               {
                 "Property": "Keys",
-                "Value": "Control+Minus"
-              }
-            ],
-            "Enable": true
-          },
-          {
-            "Path": "OpenTabletDriver.Desktop.Binding.KeyBinding",
-            "Settings": [
-              {
-                "Property": "Key",
-                "Value": "E"
-              }
-            ],
-            "Enable": true
-          },
-          {
-            "Path": "OpenTabletDriver.Desktop.Binding.KeyBinding",
-            "Settings": [
-              {
-                "Property": "Key",
-                "Value": "Space"
-              }
-            ],
-            "Enable": true
-          },
-          {
-            "Path": "OpenTabletDriver.Desktop.Binding.MultiKeyBinding",
-            "Settings": [
-              {
-                "Property": "Keys",
-                "Value": "Control+Z"
+                "Value": "Application+Space"
               }
             ],
             "Enable": true

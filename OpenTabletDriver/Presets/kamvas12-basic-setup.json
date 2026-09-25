@@ -59,10 +59,10 @@
       ],
       "AbsoluteModeSettings": {
         "Display": {
-          "Width": 1920.0,
-          "Height": 1080.0,
-          "X": 960.0,
-          "Y": 540.0,
+          "Width": 1536.0,
+          "Height": 864.0,
+          "X": 768.0,
+          "Y": 432.0,
           "Rotation": 0.0
         },
         "Tablet": {
@@ -83,7 +83,7 @@
         "RelativeResetDelay": "00:00:00.1000000"
       },
       "Bindings": {
-        "TipActivationThreshold": 5.0,
+        "TipActivationThreshold": 1.0,
         "TipButton": null,
         "EraserActivationThreshold": 1.0,
         "EraserButton": null,
@@ -116,11 +116,11 @@
             "Enable": true
           },
           {
-            "Path": "OpenTabletDriver.Desktop.Binding.MultiKeyBinding",
+            "Path": "OpenTabletDriver.Desktop.Binding.PresetBinding",
             "Settings": [
               {
-                "Property": "Keys",
-                "Value": "Application+None"
+                "Property": "Preset",
+                "Value": "kamvas12-wm-controls"
               }
             ],
             "Enable": true

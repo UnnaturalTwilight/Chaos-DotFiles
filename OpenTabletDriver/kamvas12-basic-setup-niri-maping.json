@@ -59,10 +59,10 @@
       ],
       "AbsoluteModeSettings": {
         "Display": {
-          "Width": 1536.0,
-          "Height": 864.0,
-          "X": 768.0,
-          "Y": 432.0,
+          "Width": 1920.0,
+          "Height": 1080.0,
+          "X": 960.0,
+          "Y": 540.0,
           "Rotation": 0.0
         },
         "Tablet": {
@@ -116,11 +116,11 @@
             "Enable": true
           },
           {
-            "Path": "OpenTabletDriver.Desktop.Binding.AdaptiveBinding",
+            "Path": "OpenTabletDriver.Desktop.Binding.PresetBinding",
             "Settings": [
               {
-                "Property": "Binding",
-                "Value": "Button 3"
+                "Property": "Preset",
+                "Value": "kamvas12-wm-controls"
               }
             ],
             "Enable": true
