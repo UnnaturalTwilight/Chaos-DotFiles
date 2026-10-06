@@ -1,6 +1,6 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "7200d73"
+rev = "6229767"
 hash = "187cc58ba7ac3befd49c342129e6f1b6"
 
 [[plugin.deps]]
@@ -10,12 +10,12 @@ hash = "9776f378459072b6c2875eae5addc49d"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:full-border"
-rev = "7200d73"
+rev = "6229767"
 hash = "f281261ff04ad7ec867c3f802a50835f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "7200d73"
+rev = "6229767"
 hash = "347cc6b190eb0c2fd60513cc7ae37412"
 
 [[plugin.deps]]
@@ -25,7 +25,7 @@ hash = "ba582ccda4ebc7c70bfe9a1496589b80"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "7200d73"
+rev = "6229767"
 hash = "b95f898e6dc60b52edbc415952e14395"
 
 [[plugin.deps]]
@@ -34,13 +34,8 @@ rev = "9997d5b"
 hash = "bfc1e4586266497bb2ed36a9544078d2"
 
 [[plugin.deps]]
-use = "boydaihungst/fuse-archive"
-rev = "5731dea"
-hash = "df46d73c838dc8357fd69f98427b680b"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:types"
-rev = "7200d73"
+rev = "6229767"
 hash = "d368d5a6a72657e1c0e7ee7340dcea8c"
 
 [[flavor.deps]]

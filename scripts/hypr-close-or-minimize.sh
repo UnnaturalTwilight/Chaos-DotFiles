@@ -1,1 +1,1 @@
-/home/cal/Monolith/birdmanager/minimize.sh
+/home/cal/Monolith/misc-scripts/birdmanager/minimize.sh
